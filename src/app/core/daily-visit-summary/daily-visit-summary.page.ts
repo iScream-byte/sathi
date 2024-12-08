@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { IonDatetime, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-daily-visit-summary',
@@ -9,10 +9,12 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./daily-visit-summary.page.scss'],
 })
 export class DailyVisitSummaryPage implements OnInit {
-
+  isModalOpen = false;
+  selectedDateTime: string;
   constructor(private router:Router,private platform: Platform, private location: Location) { }
 
   ngOnInit() {
+    this.selectedDateTime = '';
   }
 
   ionViewDidEnter() {
@@ -27,6 +29,17 @@ export class DailyVisitSummaryPage implements OnInit {
 
   goBack(){
     this.router.navigate(['landing-page'])
+  }
+
+  openDatetimeModal() {
+    this.isModalOpen = true;
+  }
+
+  onDateTimeChange(event: any) {
+    this.selectedDateTime = event.detail.value;
+  }
+  closeDatetimeModal() {
+    this.isModalOpen = false;
   }
 
 }
