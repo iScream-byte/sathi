@@ -1,0 +1,72 @@
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <!-- <ion-icon (click)="toggleMenu()" name="menu" style="color: white; font-size: 25px;"></ion-icon> -->
+    <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+    <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Customer Dashboard</div>
+    <div>      
+      <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
+    </div>
+  </div>
+
+
+  <div class="flex-container">    
+
+    <div class="inputContainer">
+      <div style="display: inline-flex">Select Customer <div style="color: red;">*</div></div>
+      <ion-select class="input" placeholder="Select one" (ionChange)="onOptionSelected($event)">
+        <ion-select-option value="option1">Option 1</ion-select-option>
+        <ion-select-option value="option2">Option 2</ion-select-option>
+        <ion-select-option value="option3">Option 3</ion-select-option>
+      </ion-select>
+    </div>
+    <div class="inputContainer">
+      <div style="display: inline-flex">Source <div style="color: red; padding-left: 5px;">*</div></div>
+      <ion-select class="input" placeholder="Select one" (ionChange)="onOptionSelected($event)">
+        <ion-select-option value="option1">Option 1</ion-select-option>
+        <ion-select-option value="option2">Option 2</ion-select-option>
+        <ion-select-option value="option3">Option 3</ion-select-option>
+      </ion-select>
+    </div>
+    <div class="inputContainer">
+      <div style="display: inline-flex">Product <div style="color: red; padding-left: 5px;">*</div></div>
+      <ion-select class="input" placeholder="Select one" (ionChange)="onOptionSelected($event)">
+        <ion-select-option value="option1">Option 1</ion-select-option>
+        <ion-select-option value="option2">Option 2</ion-select-option>
+        <ion-select-option value="option3">Option 3</ion-select-option>
+      </ion-select>
+    </div>
+
+
+    <div class="product-price">
+      <span style="font-size: 22px; color: #000; font-weight: 600;">Product Price</span>
+      <div class="row">
+        <div>Base Price:</div>
+        <div>5056</div>
+      </div>
+      <div  class="row">
+        <div>GST:</div>
+        <div>25%</div>
+      </div>
+      <div  class="row">
+        <div>CESS:</div>
+        <div>10%</div>
+      </div>
+      <div  class="row">
+        <div>Total Amount:</div>
+        <div>28443</div>
+      </div>
+    </div>
+
+
+    <div>
+      <ion-button class="submit-button" expand="block" type="submit">PROCEED</ion-button>
+    </div>
+  
+
+
+
+
+   
+  </div>
+  <app-footer></app-footer>
+</ion-content>

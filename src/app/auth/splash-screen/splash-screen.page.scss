@@ -1,0 +1,18 @@
+.splash-screen {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .splash-screen .image-container {
+    background: url('/assets/images/splash.png') no-repeat center center;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    z-index: -1;
+  }
+  

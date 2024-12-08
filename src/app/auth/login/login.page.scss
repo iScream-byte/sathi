@@ -1,0 +1,41 @@
+.image-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-container img {
+  width: 70%;
+  height: 40%;
+}
+
+.flex-container {
+  display: flex;           
+  flex-direction: column; 
+  gap: 16px;              
+  padding: 16px;           
+}
+
+.submit-button{
+  border-radius: 5px;
+}
+
+ion-input {
+  --padding-start: 12px;
+}
+
+ion-button {
+  --background: #5a7cdb;
+  --color: rgb(252, 252, 252);
+  --border-radius: 5px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 2px;  
+}

@@ -6,13 +6,20 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
+    { title: 'Home', url: 'landing-page', icon: 'home' },
+    { title: 'View Customer Dashboard', url: 'customer-dashboard', icon: 'book' },
+    { title: 'View & Top Up Permit', url: '/folder/favorites', icon: 'calendar' },
+    { title: 'Customer Payment', url: '/folder/archived', icon: 'wallet' },
+    { title: 'View Customer Complaints', url: '/folder/trash', icon: 'alert-circle' },
+    { title: 'Daily Visit Summary (Agent)', url: 'daily-visit-summary', icon: 'time' },
+    { title: 'New Cust. Reg. Summary (Today)', url: '/folder/spam', icon: 'document-text' },
+    { title: 'Customer Reg. Summary', url: '/folder/spam', icon: 'create' },
+    { title: 'Booking Summary (Today)', url: '/folder/spam', icon: 'create' },
+    { title: 'Truck No. Change Approval', url: '/folder/spam', icon: 'document-text' },
+    { title: 'Feedback', url: '/folder/spam', icon: 'thumbs-up' },
+    { title: 'Notifications', url: '/folder/spam', icon: 'alarm' },
+    { title: 'Change Password', url: '/folder/spam', icon: 'lock-open' },
+    { title: 'Log Out', url: '/folder/spam', icon: 'log-out' },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor() {}
 }

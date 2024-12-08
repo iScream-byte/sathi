@@ -1,0 +1,50 @@
+<ion-content [fullscreen]="true">  
+  <div class="header">
+    <ion-icon (click)="toggleMenu()" name="menu" style="color: white; font-size: 25px;"></ion-icon>
+    <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Welcome Username</div>
+    <div>
+      <ion-icon name="refresh" style="color: white; font-size: 20px;"></ion-icon>
+      <ion-icon name="notifications" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+    </div>
+  </div>
+
+
+  <div style="justify-self: center; margin-top: 5%; margin-bottom: 20px;">
+    <img src="assets/images/dashboard.png">
+  </div>
+
+
+  <div class="icon-container">
+    <div class="inner-icon-container" (click)="navigateTo('daily-visit-summary')">
+      <ion-icon class="icons" name="calendar"></ion-icon>
+      <span class="icon-text">View Daily Visit Summary</span>
+    </div>
+    <div class="inner-icon-container">
+      <ion-icon class="icons" name="create"></ion-icon>
+      <span class="icon-text">View Complaints</span>
+    </div>
+    <div class="inner-icon-container">
+      <ion-icon class="icons" name="wallet"></ion-icon>
+      <span class="icon-text">Payment Status</span>
+    </div>
+  </div>
+  <div class="icon-container" style="margin-top: 10px;">
+    <div class="inner-icon-container">
+      <ion-icon class="icons" name="document-text"></ion-icon>
+      <span class="icon-text">New Cust. Reg. Summary</span>
+    </div>
+    <div class="inner-icon-container">
+      <ion-icon class="icons" name="clipboard"></ion-icon>
+      <span class="icon-text">Booking Confirmation Status</span>
+    </div>
+    <div class="inner-icon-container" (click)="navigateTo('customer-dashboard')">
+      <ion-icon class="icons" name="speedometer"></ion-icon>
+      <span class="icon-text">View Customer Dashboard</span>
+    </div>
+  </div>
+
+  <div class="centered-container">
+    <span>Powered by &copy; MJunction Services LTD.</span>
+  </div>
+<app-footer></app-footer>
+</ion-content>
