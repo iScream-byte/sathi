@@ -38,16 +38,84 @@
 
 .inputContainer{
     color: rgb(75, 75, 75);
-    font-size: 15px;    
+    font-size: 15px; 
+    font-weight: 600;    
+}
+.inputContainer small{
+  color:red;
+  font-style: italic;
+  padding-left: 10px;
 }
 .input{
-    border: 1px solid rgb(138, 138, 138);
+    border: 2px solid rgb(138, 138, 138);
     border-radius: 5px;
     margin-top: 7px;
     font-size: 18px;
+    font-weight: 500;
     color: rgb(56, 56, 56);
+    background-color: #ffffff; 
 }
 
+
+.header{
+    height: 10%;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    z-index: 100;
+}
+.top-header{
+  background-color: #ffffff; 
+  height: 45%; 
+  width: 100%;
+  display: inline-flex;    
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.bottom-header{
+  background-color: #518ada; 
+  height: 55%; 
+  width: 100%;
+  display: inline-flex;    
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.centered-container {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;     
+  text-align: center; 
+  margin-top: 30px;
+  // margin-bottom: 100px;
+}
+
+
+ion-toast.custom-toast_success {
+  --background: #308126;
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #ffffff;
+  font-size: 20px;
+}
+ion-toast.custom-toast_error {
+  --background: #9e1010;
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #ffffff;
+  font-size: 20px;
+}
+ion-toast.custom-toast {
+  --background: #d3d3d3;
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #000000;
+  font-size: 20px;
+}
 
 
   

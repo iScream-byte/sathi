@@ -1,10 +1,19 @@
 <ion-content [fullscreen]="true">
   <div class="header">
-    <!-- <ion-icon (click)="toggleMenu()" name="menu" style="color: white; font-size: 25px;"></ion-icon> -->
-    <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-    <div style="color: white; font-weight: 600; font-size: 18px;">Daily Visit Summary</div>
-    <div>      
-      <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
+    <div class="top-header">
+      <div style="align-items: center; display: flex; gap: 15px;">
+        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+        <img src="assets/images/tatalogo.png" alt="">
+      </div>
+      <div>
+        <img src="assets/images/ibmdlogo.png" alt="">
+      </div>    </div>
+    <div class='bottom-header'>
+      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Customer Dashboard</div>
+      <div>      
+        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
+      </div>
     </div>
   </div>
 
@@ -47,7 +56,51 @@
         <ion-button class="submit-button" expand="block" type="submit">SEARCH</ion-button>
       </div>
     </div>
+
+
+    <div class="product-price">
+      <div class="row">
+        <div>Date Of Visit:</div>
+        <div>5056</div>
+      </div>
+      <div  class="row">
+        <div>Agent Name:</div>
+        <div>25%</div>
+      </div>
+      <div  class="row">
+        <div>Customer Name:</div>
+        <div>10%</div>
+      </div>
+      <div  class="row">
+        <div>Customer Type:</div>
+        <div>28443</div>
+      </div>      
+      <div  class="row">
+        <div>Customer Type:</div>
+        <div>28443</div>
+      </div>      
+      <div  class="row">
+        <div>Location:</div>
+        <div>28443</div>
+      </div>      
+      <div  class="row">
+        <div>District:</div>
+        <div>28443</div>
+      </div>      
+      <div  class="row">
+        <div>Industry Type:</div>
+        <div>28443</div>
+      </div>      
+      <div  class="row">
+        <div></div>
+        <div [routerLink]="['/','daily-visit-summary','1']" style="color: rgb(6, 78, 138); text-decoration: underline;">Check Summary</div>
+      </div>
+    </div>
+
   </div>
+
+
+
 
 
 

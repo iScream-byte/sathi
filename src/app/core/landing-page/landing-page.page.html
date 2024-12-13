@@ -1,20 +1,39 @@
 <ion-content [fullscreen]="true">  
+
   <div class="header">
-    <ion-icon (click)="toggleMenu()" name="menu" style="color: white; font-size: 25px;"></ion-icon>
-    <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Welcome Username</div>
-    <div>
-      <ion-icon name="refresh" style="color: white; font-size: 20px;"></ion-icon>
-      <ion-icon name="notifications" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+    <div class="top-header">
+      <div style="align-items: center; display: flex; gap: 15px;">
+        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+        <img src="assets/images/tatalogo.png" alt="">
+      </div>
+      <div>
+        <img src="assets/images/ibmdlogo.png" alt="">
+      </div>
+    </div>
+    <div class='bottom-header'>
+      <ion-icon  name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Welcome {{userData?.name}}</div>
+      <div>      
+        <ion-icon name="refresh" style="color: white; font-size: 20px;"></ion-icon>
+        <ion-icon name="notifications" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        </div>
     </div>
   </div>
 
 
-  <div style="justify-self: center; margin-top: 5%; margin-bottom: 20px;">
+  <div class="centered-image-container">
     <img src="assets/images/dashboard.png">
   </div>
 
+  <div class="icon-container" *ngIf="userData?.roletype=='AGENT'">
+    <div class="inner-icon-container" (click)="navigateTo('visit-report')">
+      <ion-icon class="icons" name="people"></ion-icon>
+      <span class="icon-text">Enter Visit Report</span>
+    </div>
+  </div>
 
-  <div class="icon-container">
+
+  <div class="icon-container" style="margin-top: 25px;">
     <div class="inner-icon-container" (click)="navigateTo('daily-visit-summary')">
       <ion-icon class="icons" name="calendar"></ion-icon>
       <span class="icon-text">View Daily Visit Summary</span>
@@ -28,7 +47,7 @@
       <span class="icon-text">Payment Status</span>
     </div>
   </div>
-  <div class="icon-container" style="margin-top: 10px;">
+  <div class="icon-container" style="margin-top: 25px;">
     <div class="inner-icon-container">
       <ion-icon class="icons" name="document-text"></ion-icon>
       <span class="icon-text">New Cust. Reg. Summary</span>

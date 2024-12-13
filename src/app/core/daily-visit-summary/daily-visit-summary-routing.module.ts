@@ -7,7 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: DailyVisitSummaryPage
+  },
+  {
+    path: ':id',
+    loadChildren: () => import('./visit-summary-details/visit-summary-details.module').then( m => m.VisitSummaryDetailsPageModule)
   }
+
 ];
 
 @NgModule({

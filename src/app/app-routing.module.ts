@@ -27,7 +27,15 @@ const routes: Routes = [
   {
     path: 'daily-visit-summary',
     loadChildren: () => import('./core/daily-visit-summary/daily-visit-summary.module').then( m => m.DailyVisitSummaryPageModule)
+  },  {
+    path: 'view-topup-permit',
+    loadChildren: () => import('./core/view-topup-permit/view-topup-permit.module').then( m => m.ViewTopupPermitPageModule)
   },
+  {
+    path: 'visit-report',
+    loadChildren: () => import('./core/visit-report/visit-report.module').then( m => m.VisitReportPageModule)
+  },
+
 
   
 ];

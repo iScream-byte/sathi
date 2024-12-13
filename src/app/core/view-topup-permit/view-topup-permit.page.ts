@@ -5,19 +5,21 @@ import { MenuController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 
 @Component({
-  selector: 'app-customer-dashboard',
-  templateUrl: './customer-dashboard.page.html',
-  styleUrls: ['./customer-dashboard.page.scss'],
+  selector: 'app-view-topup-permit',
+  templateUrl: './view-topup-permit.page.html',
+  styleUrls: ['./view-topup-permit.page.scss'],
 })
-export class CustomerDashboardPage implements OnInit {
+export class ViewTopupPermitPage implements OnInit {
+
   constructor(
     private menuController: MenuController,
     private router: Router,
     private platform: Platform,
     private location: Location
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   toggleMenu() {
     this.menuController.toggle();
@@ -34,7 +36,4 @@ export class CustomerDashboardPage implements OnInit {
   }
 
 
-  onOptionSelected(event: any) {
-    console.log('Selected value:', event.detail.value);
-  }
 }

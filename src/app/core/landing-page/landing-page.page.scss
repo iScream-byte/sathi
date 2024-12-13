@@ -1,23 +1,20 @@
-.header{
-    background-color: #518ada;
-    height: 8%;
-    width: 100%;
-    display: inline-flex;    
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    padding-left: 10px;
-    padding-right: 10px;
-}
+
+.centered-image-container {
+    display: flex;
+    justify-content: center;    
+    margin-top: 25%;
+    margin-bottom: 30px;
+  } 
+
+  
 
 .icon-container {
     display: flex; 
     flex-wrap: wrap; 
     width: 80%;
-    justify-content: space-between;
+    justify-content: space-evenly;
     border-radius: 5px;
-    margin: auto; 
-
+    margin: auto;
 }
 
 .inner-icon-container {
@@ -48,13 +45,7 @@
     font-size: 14px; 
 }
 
-.centered-container {
-    display: flex; 
-    justify-content: center; 
-    align-items: center;     
-    text-align: center; 
-    margin-top: 30px;
-  }
+
   
   
 

@@ -6,17 +6,19 @@
 <div style="text-align: center;font-size: 25px; font-weight: 600; font-family: Verdana, Geneva, Tahoma, sans-serif; color: rgb(65, 65, 65);">
   Login To Your Account
 </div>
-  <!-- <form (submit)="onLogin()"> -->
+  <form [formGroup]="loginForm" (ngSubmit)="loginPress()">
     
     <div class="flex-container">
     <div class="inputContainer">
       <div style="display: inline-flex">Username <div style="color: red; padding-left: 5px;">*</div></div>      
-      <ion-input class="input" type="text"  name="username" required></ion-input>
+      <ion-input formControlName="username" class="input" type="text"  name="username" required></ion-input>
+      <small *ngIf="loginForm.get('username').errors && loginForm.get('username').touched">Username is required</small>
     </div>
 
     <div class="inputContainer">
       <div style="display: inline-flex">Password <div style="color: red; padding-left: 5px;">*</div></div>      
-      <ion-input class="input" type="password"  name="password" required></ion-input>
+      <ion-input formControlName="password" class="input" type="password"  name="password" required></ion-input>
+      <small *ngIf="loginForm.get('password').errors && loginForm.get('password').touched">Password is required</small>
     </div>
 
 
@@ -24,16 +26,13 @@
       <ion-checkbox labelPlacement="end"><p style="font-size: 17px;">Remember me?</p></ion-checkbox>
       <div style="font-size: 17px; color: rgb(29, 79, 126); text-decoration: underline;">Forgot password</div>
     </div>
-    
-
-
 
 
     <div>
-      <ion-button (click)="loginPress()" class="submit-button" expand="block" type="submit">LOGIN</ion-button>
+      <ion-button [disabled]="loginForm.invalid" class="submit-button" expand="block" type="submit">LOGIN</ion-button>
     </div>
   </div>
-  <!-- </form> -->
+  </form>
 
   
 </ion-content>

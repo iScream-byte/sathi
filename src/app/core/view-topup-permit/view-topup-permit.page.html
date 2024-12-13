@@ -1,0 +1,64 @@
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <div class="top-header">
+      <div style="align-items: center; display: flex; gap: 15px;">
+        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+        <img src="assets/images/tatalogo.png" alt="">
+      </div>
+      <div>
+        <img src="assets/images/ibmdlogo.png" alt="">
+      </div>    </div>
+    <div class='bottom-header'>
+      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">View & Top Up Permit</div>
+      <div>      
+        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="flex-container">  
+    
+    <div class="inner-container">
+
+      <div class="inputContainer">
+        <div style="display: inline-flex">Select Customer <div style="color: red;"> *</div></div>
+        <ion-select class="input" placeholder="Select one">
+          <ion-select-option value="option1">Option 1</ion-select-option>
+          <ion-select-option value="option2">Option 2</ion-select-option>
+          <ion-select-option value="option3">Option 3</ion-select-option>
+        </ion-select>
+      </div>
+  
+      <div class="inputContainer">
+        <div style="display: inline-flex">Product Type <div style="color: red;"> *</div></div>
+        <ion-select class="input" placeholder="Select one">
+          <ion-select-option value="option1">Option 1</ion-select-option>
+          <ion-select-option value="option2">Option 2</ion-select-option>
+          <ion-select-option value="option3">Option 3</ion-select-option>
+        </ion-select>
+      </div>
+  
+  
+  
+  
+     
+        <div style="padding-left: 20px; padding-right: 20px;">
+          <ion-button class="submit-button" expand="block" type="submit">APPLY PERMIT TOPUP</ion-button>
+        </div>
+     
+  
+
+    </div>
+
+    <div class="centered-container">
+      <span>Powered by &copy; MJunction Services LTD.</span>
+    </div>
+
+
+  </div>
+
+  <app-footer></app-footer>
+</ion-content>

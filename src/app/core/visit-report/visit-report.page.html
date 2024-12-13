@@ -1,0 +1,178 @@
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <div class="top-header">
+      <div style="align-items: center; display: flex; gap: 15px;">
+        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+        <img src="assets/images/tatalogo.png" alt="">
+      </div>
+      <div>
+        <img src="assets/images/ibmdlogo.png" alt="">
+      </div>    </div>
+    <div class='bottom-header'>
+      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Visit Report</div>
+      <div>      
+        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <div class="flex-container">    
+
+    <div class="inputContainer">
+      <div style="display: inline-flex; gap: 5px;">Visit Type<div style="color: red;">*</div></div>
+      <ion-select class="input" placeholder="Select visit type" (ionChange)="getVisitType($event)">
+        <ion-select-option value="self">Self</ion-select-option>
+        <ion-select-option value="withbm">With BM</ion-select-option>
+        <ion-select-option value="withtslkam">With TSL KAM</ion-select-option>
+        <ion-select-option value="others">Others</ion-select-option>
+      </ion-select>
+    </div>
+
+
+
+    <div class="inputContainer" *ngIf="othersShown">
+      <div style="display: inline-flex">Please Specify <div style="color: red; padding-left: 5px;">*</div></div>      
+      <ion-input [(ngModel)]="data.VisitTypeOthers" class="input" type="text" ></ion-input>
+    </div>
+
+
+    <div class="inputContainer">
+      <div style="display: inline-flex; gap: 5px;">Visit Mode<div style="color: red;">*</div></div>
+      <ion-select [(ngModel)]="visitMode" class="input" placeholder="Select visit mode" (ionChange)="getVisitMode($event)">
+        <ion-select-option value="Online">Online</ion-select-option>
+        <ion-select-option value="Offline">Offline</ion-select-option>
+      </ion-select>
+    </div>
+
+
+    <div style="padding-left: 30px; padding-right: 30px;">
+      <ion-radio-group [(ngModel)]="selectedCustomerType" (click)="checkBoxClick($event)" style="display: flex; justify-content: space-between;">
+        <ion-radio labelPlacement="end" value="new">New Customer</ion-radio>
+        <ion-radio labelPlacement="end" value="existing">Existing Customer</ion-radio>
+      </ion-radio-group>
+    </div>
+
+
+    <div class="set">
+      
+          <div *ngIf="selectedCustomerType=='new'" style="display: flex; flex-direction: column; gap: 15px;">
+              <div class="inputContainer">
+                <div style="display: inline-flex">Proprietor Name <div style="color: red; padding-left: 5px;">*</div></div>      
+                <ion-input placeholder="Enter proprietor name" [(ngModel)]="data.ProprietorName" class="input" type="text" ></ion-input>
+              </div>      
+              
+              <div class="inputContainer">
+                <div style="display: inline-flex">Proprietor Phone No. <div style="color: red; padding-left: 5px;">*</div></div>      
+                <ion-input [(ngModel)]="data.PropritorPhoneNo" class="input" type="text" ></ion-input>
+              </div>
+
+              <div class="inputContainer">
+                <div style="display: inline-flex">Year Of Establishment <div style="color: red; padding-left: 5px;">*</div></div>      
+                <ion-input [(ngModel)]="data.YearOfEstablishment" class="input" type="text" ></ion-input>
+              </div>
+
+              <div class="inputContainer">
+                <div style="display: inline-flex">Company Name <div style="color: red; padding-left: 5px;">*</div></div>      
+                <ion-input [(ngModel)]="data.Visit_Customer_Name" class="input" type="text" ></ion-input>
+              </div>
+
+              <div class="inputContainer">
+                <div style="display: inline-flex; gap: 5px;">Type Of Company<div style="color: red;">*</div></div>
+                <ion-select  class="input" placeholder="Select visit mode" (ionChange)="getCustomerType($event)">
+                  <ion-select-option value="Retail">Retail</ion-select-option>
+                  <ion-select-option value="Institutional">Institutional</ion-select-option>
+                </ion-select>
+              </div>
+          </div>
+
+        
+        <div class="inputContainer">
+          <div style="display: inline-flex">Owner/ Contact Person Name <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input [(ngModel)]="data.OwnerName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>        
+        
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Owner/ Contact Person Phone No.<div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.Ownerphonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>        
+        
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Alternate Phone No.<div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.Alternatephonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>        
+        
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Registered Phone No.<div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.Registerednumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>        
+        
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Block Name<div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input [(ngModel)]="data.BlockName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>        
+        
+        
+        <div class="inputContainer">
+          <div style="display: inline-flex">District Name<div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input [(ngModel)]="districtName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>        
+        
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Location<div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input [(ngModel)]="data.Location" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>
+    </div>
+
+
+
+
+    <div style="display: flex; justify-content: center; font-size: 25px; font-weight: 600; font-style: italic; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+      PRODUCT MANUFACTURED
+    </div>
+
+    <div style="padding-left: 30px; padding-right: 30px;">
+      <ion-radio-group (click)="selectBrickOrOther($event)" style="display: flex; justify-content: space-between;">
+        <ion-radio labelPlacement="end" value="brick">Brick</ion-radio>
+        <ion-radio labelPlacement="end" value="other">Other</ion-radio>
+      </ion-radio-group>
+    </div>
+
+
+    <div class="set">
+
+      <div class="inputContainer">
+        <div style="display: inline-flex; gap: 5px;">Brick Kiln<div style="color: red;">*</div></div>
+        <ion-select class="input" placeholder="Select brick kiln" (ionChange)="getBrickKiln($event)">
+          <ion-select-option value="FCBT">FCBT</ion-select-option>
+          <ion-select-option value="ZigZag">ZigZag</ion-select-option>
+          <ion-select-option value="HawaBhatta">Hawa Bhatta</ion-select-option>
+        </ion-select>
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+  </div>
+
+
+
+<app-footer></app-footer>
+
+</ion-content>

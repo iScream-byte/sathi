@@ -1,20 +1,11 @@
-.header{
-    background-color: #518ada;
-    height: 8%;
-    width: 100%;
-    display: inline-flex;    
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    padding-left: 10px;
-    padding-right: 10px;
-}
 
-.flex-container {
+  .flex-container {
     display: flex;           
     flex-direction: column; 
     gap: 16px;              
-    padding: 25px;           
+    padding: 25px; 
+    margin-top: 16%; 
+    padding-bottom: 20%;         
   }
   
   .submit-button{
@@ -44,5 +35,22 @@
   
   ion-datetime {    
     width: 100%;
+  }
+  
+
+  .product-price{
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+
+  }
+  .row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   

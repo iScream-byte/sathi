@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { LocalStorageService } from './../../services/localstorage.service';
 
 @Component({
   selector: 'app-splash-screen',
@@ -9,7 +10,7 @@ import { MenuController } from '@ionic/angular';
 })
 export class SplashScreenPage implements OnInit {
 
-  constructor(private router:Router, private menuCtrl: MenuController) { }
+  constructor(private router:Router, private menuCtrl: MenuController, private storage:LocalStorageService) { }
 
   ngOnInit() {
   }
@@ -20,9 +21,15 @@ export class SplashScreenPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.menuCtrl.enable(false);
+    this.menuCtrl.enable(false);    
     setTimeout(() => {
-      this.router.navigate(['auth/login'], { replaceUrl: true });
+      this.storage.getItem('NSUDloginDetail').then(res=>{
+        if(res){
+          this.router.navigate(['/landing-page'], { replaceUrl: true });
+        }else{
+          this.router.navigate(['auth/login'], { replaceUrl: true });
+        }
+      })
     }, 2000);
   }
 

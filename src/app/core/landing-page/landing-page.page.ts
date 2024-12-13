@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { LoginResponseModel } from 'src/app/services/Interfaces';
+import { LocalStorageService } from './../../services/localstorage.service';
+import { ToastService } from './../../services/toast.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -8,10 +11,25 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./landing-page.page.scss'],
 })
 export class LandingPagePage implements OnInit {
+  constructor(
+    private menuController: MenuController, 
+    private router:Router, 
+    private storage: LocalStorageService,
+    private toast:ToastService
+    ) { }
 
-  constructor(private menuController: MenuController, private router:Router) { }
+  userData:LoginResponseModel
+  ngOnInit() {    
+  }
 
-  ngOnInit() {
+  ionViewWillEnter(){
+    this.storage.getItem('NSUDloginDetail').then(res=>{
+      if(res){
+        this.userData=JSON.parse(res)      
+        
+      }
+    })
+
   }
 
   toggleMenu(){
@@ -21,5 +39,6 @@ export class LandingPagePage implements OnInit {
   navigateTo(url:string){
     this.router.navigate([url])
   }
+
 
 }

@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonDatetime, Platform } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-daily-visit-summary',
@@ -11,10 +12,19 @@ import { IonDatetime, Platform } from '@ionic/angular';
 export class DailyVisitSummaryPage implements OnInit {
   isModalOpen = false;
   selectedDateTime: string;
-  constructor(private router:Router,private platform: Platform, private location: Location) { }
+  constructor(
+    private router:Router,
+    private platform: Platform, 
+    private location: Location,
+    private menuController: MenuController,
+    ) { }
 
   ngOnInit() {
     this.selectedDateTime = '';
+  }
+
+  toggleMenu(){
+    this.menuController.toggle()    
   }
 
   ionViewDidEnter() {
