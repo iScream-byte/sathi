@@ -27,7 +27,7 @@
 
     <div class="inputContainer">
       <div style="display: inline-flex; gap: 5px;">Visit Type<div style="color: red;">*</div></div>
-      <ion-select class="input" placeholder="Select visit type" (ionChange)="getVisitType($event)">
+      <ion-select okText="select" class="input" placeholder="select visit type" (ionChange)="getVisitType($event)">
         <ion-select-option value="self">Self</ion-select-option>
         <ion-select-option value="withbm">With BM</ion-select-option>
         <ion-select-option value="withtslkam">With TSL KAM</ion-select-option>
@@ -52,7 +52,7 @@
     </div>
 
 
-    <div style="padding-left: 30px; padding-right: 30px;">
+    <div style="padding-left: 20px; padding-right: 20px;">
       <ion-radio-group [(ngModel)]="selectedCustomerType" (click)="checkBoxClick($event)" style="display: flex; justify-content: space-between;">
         <ion-radio labelPlacement="end" value="new">New Customer</ion-radio>
         <ion-radio labelPlacement="end" value="existing">Existing Customer</ion-radio>
@@ -138,7 +138,7 @@
 
 
 
-    <div style="display: flex; justify-content: center; font-size: 25px; font-weight: 600; font-style: italic; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+    <div style="display: flex; justify-content: center; font-size: 20px; font-weight: 600; font-style: italic; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
       PRODUCT MANUFACTURED
     </div>
 

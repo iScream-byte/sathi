@@ -15,14 +15,18 @@ import { LocalStorageService } from './../../services/localstorage.service';
 
 export class FooterComponent  implements OnInit {
 
-  constructor(private router:Router,
+  constructor(
+    private router:Router,
     private alertController: AlertController,
     private storage: LocalStorageService,
     private loader: MyLoader,
     
     ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.router.getCurrentNavigation());
+    
+  }
 
   navigateTo(url:string){
     this.router.navigate([url])
@@ -62,5 +66,9 @@ export class FooterComponent  implements OnInit {
 
     await alert.present();
   }
+
+
+
+
 
 }

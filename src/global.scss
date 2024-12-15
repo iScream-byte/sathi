@@ -58,7 +58,7 @@
 
 
 .header{
-    height: 10%;
+    height: 12%;
     width: 100%;
     position: fixed;
     top: 0px;
@@ -66,7 +66,7 @@
 }
 .top-header{
   background-color: #ffffff; 
-  height: 45%; 
+  height: 48%; 
   width: 100%;
   display: inline-flex;    
   justify-content: space-between;
@@ -77,7 +77,7 @@
 }
 .bottom-header{
   background-color: #518ada; 
-  height: 55%; 
+  height: 52%; 
   width: 100%;
   display: inline-flex;    
   justify-content: space-between;
@@ -88,14 +88,7 @@
 }
 
 
-.centered-container {
-  display: flex; 
-  justify-content: center; 
-  align-items: center;     
-  text-align: center; 
-  margin-top: 30px;
-  // margin-bottom: 100px;
-}
+
 
 
 ion-toast.custom-toast_success {

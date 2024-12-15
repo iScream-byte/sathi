@@ -11,9 +11,8 @@
 .icon-container {
     display: flex; 
     flex-wrap: wrap; 
-    width: 80%;
+    width: 90%;
     justify-content: space-evenly;
-    border-radius: 5px;
     margin: auto;
 }
 
@@ -25,7 +24,6 @@
     width: 26%;
     border-radius: 5px;
     text-align: center;
-
 }
 
 .icons {
@@ -45,6 +43,15 @@
     font-size: 14px; 
 }
 
+
+.centered-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;     
+    text-align: center; 
+    margin-top: 30px;
+    margin-bottom: 150px;
+  }
 
   
   
