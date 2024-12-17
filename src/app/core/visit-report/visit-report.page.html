@@ -142,29 +142,405 @@
       PRODUCT MANUFACTURED
     </div>
 
-    <div style="padding-left: 30px; padding-right: 30px;">
-      <ion-radio-group (click)="selectBrickOrOther($event)" style="display: flex; justify-content: space-between;">
-        <ion-radio labelPlacement="end" value="brick">Brick</ion-radio>
-        <ion-radio labelPlacement="end" value="other">Other</ion-radio>
-      </ion-radio-group>
-    </div>
+
 
 
     <div class="set">
 
-      <div class="inputContainer">
-        <div style="display: inline-flex; gap: 5px;">Brick Kiln<div style="color: red;">*</div></div>
-        <ion-select class="input" placeholder="Select brick kiln" (ionChange)="getBrickKiln($event)">
-          <ion-select-option value="FCBT">FCBT</ion-select-option>
-          <ion-select-option value="ZigZag">ZigZag</ion-select-option>
-          <ion-select-option value="HawaBhatta">Hawa Bhatta</ion-select-option>
-        </ion-select>
+      <div style="padding-left: 30px; padding-right: 30px;">
+        <ion-radio-group [(ngModel)]="brickOrOther" (click)="selectBrickOrOther($event)" style="display: flex; justify-content: space-between;">
+          <ion-radio labelPlacement="end" value="brick">Brick</ion-radio>
+          <ion-radio labelPlacement="end" value="other">Other</ion-radio>
+        </ion-radio-group>
       </div>
+
+      <div *ngIf="brickOrOther=='brick'" style="display: flex; flex-direction: column; gap: 15px;">
+        <div class="inputContainer" *ngIf="brickOrOther=='brick'">
+          <div style="display: inline-flex; gap: 5px;">Brick Kiln<div style="color: red;">*</div></div>
+          <ion-select class="input" placeholder="Select brick kiln" (ionChange)="getBrickKiln($event)">
+            <ion-select-option value="FCBT">FCBT</ion-select-option>
+            <ion-select-option value="ZigZag">ZigZag</ion-select-option>
+            <ion-select-option value="HawaBhatta">Hawa Bhatta</ion-select-option>
+          </ion-select>
+        </div>
+
+        <div class="inputContainer" *ngIf="brickKiln=='FCBT'">
+          <div style="display: inline-flex">Paya <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.Paya" class="input" type="text" maxlength="4"></ion-input>
+        </div>        
+        
+        <div class="inputContainer" *ngIf="brickKiln=='ZigZag'">
+          <div style="display: inline-flex">Chamber <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.CHAMBER" class="input" type="text" maxlength="4" maxlength="100"></ion-input>
+        </div>        
+        
+        <div class="inputContainer" *ngIf="brickKiln=='HawaBhatta'">
+          <div style="display: inline-flex">Paya/ Chamber <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.PayaChamber" class="input" type="text" maxlength="4" maxlength="4"></ion-input>
+        </div>
+
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Expected Date of conversion to ZigZag/Hawa Bhatta <div style="color: red; padding-left: 5px;">*</div></div>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly [(ngModel)]="data.ExpectedDateForConversion"></ion-input>
+            <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('conversion')">
+              <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+            </div>
+          </div>
+        </div>        
+        
+        <div class="inputContainer">
+          <div style="display: inline-flex">Current Year Firing Plan: START <div style="color: red; padding-left: 5px;">*</div></div>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.CurrentYearFiringPlanStartMonthAndYear"></ion-input>
+            <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('firingStart')">
+              <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+            </div>
+          </div>
+        </div> 
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Current Year Firing Plan: CLOSE <div style="color: red; padding-left: 5px;">*</div></div>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.CurrentYearFiringPlanCloseMonthAndYear"></ion-input>
+            <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('firingClose')">
+              <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Last Year Firing Plan: START <div style="color: red; padding-left: 5px;">*</div></div>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.LastYearFiringPlanStartMonthAndYear"></ion-input>
+            <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('lastFiringStart')">
+              <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Last Year Firing Plan: CLOSE <div style="color: red; padding-left: 5px;">*</div></div>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.LastYearFiringPlanCloseMonthAndYear"></ion-input>
+            <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('lastFiringClose')">
+              <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Rounds In Season (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel"  [(ngModel)]="data.noOfRoundsInSeason"  class="input" type="text" maxlength="6"></ion-input>
+        </div>
+
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Bricks Per Round (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel"  [(ngModel)]="data.NoOfBircksPerRound"  class="input" type="text" maxlength="7"></ion-input>
+        </div>  
+        
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Coal Requirement In Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel"  [(ngModel)]="data.CoalRequirementInSeason"  class="input" type="text" maxlength="5"></ion-input>
+        </div>          
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Coal Requirement per Round (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel"  [(ngModel)]="data.CoalRequirementPerRoundMT"  class="input" type="text" maxlength="90"></ion-input>
+        </div>           
+
+        <div class="inputContainer">
+          <div style="display: inline-flex">Requirement of Coal in Balance Days of Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel"  [(ngModel)]="data.RequirementOfCoalinBalanceDaysOfSessionMT"  class="input" type="text" maxlength="90"></ion-input>
+        </div>  
+
+
+        
+
+
+
+      
+      </div>
+
+
+
+
+
+
+      
+      <div *ngIf="brickOrOther=='other'" style="display: flex; flex-direction: column; gap: 15px;">
+
+        <div class="inputContainer">
+          <div style="display: inline-flex; gap: 5px;">Industry Type<div style="color: red;">*</div></div>
+          <ion-select [(ngModel)]="data.IndustryType" class="input" placeholder="select industry type">
+            <ion-select-option *ngFor="let item of industryTypes" [value]="item.UnitTypeName">{{item.UnitTypeName}}</ion-select-option>
+          </ion-select>
+        </div>
+
+
+        <div class="inputContainer" >
+          <div style="display: inline-flex">Quantity Manufactured Annually (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.QuantityManufacturedAnnual" class="input" type="text" maxlength="7"></ion-input>
+        </div> 
+
+        <div class="inputContainer" >
+          <div style="display: inline-flex">Quantity Required Annually (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.QuantityRequiredAnnual" class="input" type="text" maxlength="7"></ion-input>
+        </div> 
+
+        <div class="inputContainer" *ngIf="selectedCustomerType=='new'">
+          <div style="display: inline-flex">Quantity Required in Balance Days of Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input type="tel" [(ngModel)]="data.QuantityRequiredInBalanceDays" class="input" type="text" maxlength="10"></ion-input>
+        </div> 
+
+
+      </div>
+
+
 
     </div>
 
 
+  
+    <ion-accordion-group>
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-label>Other Information</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content" style="display: flex; flex-direction: column; gap: 15px; background-color: rgb(243, 243, 243);">
 
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Inventory Of Coal (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input type="tel" [(ngModel)]="data.InventoryOfCoal" class="input" type="text" maxlength="6"></ion-input>
+          </div>
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Requirements (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input type="tel" [(ngModel)]="data.Requirements" class="input" type="text" maxlength="5"></ion-input>
+          </div> 
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Ghato Usage (%) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input type="tel" [(ngModel)]="data.Ghato_Usage" maxlength="4" class="input" ></ion-input>
+          </div>
+          
+          <div class="inputContainer">
+            <div style="display: inline-flex">Other Competitors <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input type="text" [(ngModel)]="data.Competition" maxlength="200" class="input" ></ion-input>
+          </div> 
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Landed Price Of Competition Coal (₹) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input type="tel" [(ngModel)]="data.LandedPriceCompetitionCoal" maxlength="5"  class="input" ></ion-input>
+          </div> 
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Avg. Price/ 1000 Bricks (₹) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input type="tel" [(ngModel)]="data.Avg_price_perThousand_bricks" maxlength="6" class="input" ></ion-input>
+          </div> 
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Kilns In Vicinity (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input type="tel" [(ngModel)]="data.Number_of_kilns_in_Visinity" maxlength="2" class="input" ></ion-input>
+          </div> 
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Inventory Of Raw Bricks (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input [(ngModel)]="data.Inventory_Raw_Bricks" type="tel" maxlength="10" class="input" ></ion-input>
+          </div>
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Inventory Of Prepared Bricks (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-input [(ngModel)]="data.Inventory_Prepared_Bricks" type="tel" maxlength="8" class="input" ></ion-input>
+          </div> 
+
+          <div class="inputContainer">
+            <div style="display: inline-flex">Remarks <div style="color: red; padding-left: 5px;">*</div></div>      
+            <ion-textarea type="text" [(ngModel)]="data.Remarks" rows="5" maxlength="150"  class="input" ></ion-textarea>
+          </div> 
+
+        </div>
+      </ion-accordion>
+
+
+
+      <ion-accordion value="second" *ngIf="hasNetwork">
+        <ion-item slot="header" color="light">
+          <ion-label>Upload Documents</ion-label>
+        </ion-item>
+
+        <div class="ion-padding" slot="content" *ngIf="selectedCustomerType=='new'">
+
+          <!-- PAN -->
+          <div class="doc-container">
+            <div class="image-container">
+              <img [src]="selectedImagePan!= null ? selectedImagePan : defaultImageUrl" width="70" height="70" class="doc-image" />
+            </div>
+            <div class="right-container">
+              <div>PAN CARD</div>
+              <div (click)="openCamera('pan')" class="up-document">Upload Documents</div>
+              <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox   [(ngModel)]="panna" (ionChange)="CheckboxpannaClicked()"></ion-checkbox>
+                  <ion-label>Not Available</ion-label>
+                </div>                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox  [(ngModel)]="pancl" (ionChange)="CheckboxpanclClicked()"></ion-checkbox>
+                  <ion-label>Collect Later</ion-label>
+                </div>
+              </div>
+              
+            </div>
+
+          </div>
+          <!---->
+
+
+
+          <!-- ADHAAR -->
+          <div class="doc-container">
+            <div class="image-container">
+              <img [src]="selectedImageAadhaar!= null ? selectedImageAadhaar : defaultImageUrl" width="70" height="70" class="doc-image"/>
+            </div>
+            <div class="right-container">
+              <div>ADHAAR CARD</div>
+              <div (click)="openCamera('adhar')" class="up-document">Upload Documents</div>
+              <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox   [(ngModel)]="aadharna" (ionChange)="CheckboxaadharnaClicked()"></ion-checkbox>
+                  <ion-label>Not Available</ion-label>
+                </div>                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox  [(ngModel)]="aadharcl" (ionChange)="CheckboxaadharclClicked()"></ion-checkbox>
+                  <ion-label>Collect Later</ion-label>
+                </div>
+              </div>
+              
+            </div>
+
+          </div>
+          <!---->
+
+
+
+          <!-- GST -->
+          <div class="doc-container">
+            <div class="image-container">
+              <img [src]="selectedImageTrade!= null ? selectedImageTrade : defaultImageUrl" width="70" height="70" class="doc-image"/>
+            </div>
+            <div class="right-container">
+              <div>GST</div>
+              <div (click)="openCamera('gst')" class="up-document">Upload Documents</div>
+              <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox   [(ngModel)]="GSTna" (ionChange)="CheckboxGSTnaClicked()"></ion-checkbox>
+                  <ion-label>Not Available</ion-label>
+                </div>                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox  [(ngModel)]="GSTcl" (ionChange)="CheckboxGSTclClicked()"></ion-checkbox>
+                  <ion-label>Collect Later</ion-label>
+                </div>
+              </div>              
+            </div>
+          </div>
+          <!---->          
+          
+          
+          
+          <!-- GST -->
+          <div class="doc-container">
+            <div class="image-container">
+              <img [src]="selectedImageCTO!= null ? selectedImageCTO : defaultImageUrl" width="70" height="70" class="doc-image"/>
+            </div>
+            <div class="right-container">
+              <div>CTO<span style="font-size: 10px;"> (Non Brick Kiln only)</span></div>
+              <div (click)="openCamera('cto')" class="up-document">Upload Documents</div>
+              <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox   [(ngModel)]="CTOna" (ionChange)="CheckboxCTOnaClicked()"></ion-checkbox>
+                  <ion-label>Not Available</ion-label>
+                </div>                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox  [(ngModel)]="CTOcl" (ionChange)="CheckboxCTOclClicked()"></ion-checkbox>
+                  <ion-label>Collect Later</ion-label>
+                </div>
+              </div>              
+            </div>
+          </div>
+          <!---->
+          
+          
+          
+          <!-- JIMMS -->
+          <div class="doc-container">
+            <div class="image-container">
+              <img [src]="selectedImageJIMMS!= null ? selectedImageJIMMS : defaultImageUrl" width="70" height="70" class="doc-image"/>
+            </div>
+            <div class="right-container">
+              <div>JIMMS</div>
+              <div (click)="openCamera('jimms')" class="up-document">Upload Documents</div>
+              <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox   [(ngModel)]="JIMMSna" (ionChange)="CheckboxJIMMSnaClicked()"></ion-checkbox>
+                  <ion-label>Not Available</ion-label>
+                </div>                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <ion-checkbox  [(ngModel)]="JIMMScl" (ionChange)="CheckboxJIMMSclClicked()"></ion-checkbox>
+                  <ion-label>Collect Later</ion-label>
+                </div>
+              </div>              
+            </div>
+          </div>
+          <!---->
+
+
+
+
+        </div>        
+        
+        
+
+
+
+        
+        <div class="ion-padding" slot="content" *ngIf="selectedCustomerType=='existing'">
+
+          <div class="doc-container" *ngFor="let item of existingCustomerUploadArr">
+            <div class="image-container">
+              <img [src]="item.pic!= null ? item.pic : defaultImageUrl" width="70" height="70" class="doc-image" />
+            </div>
+            <div class="right-container">
+              <div>{{item.name}}</div>
+            </div>
+          </div>
+
+
+          <div *ngIf="existingCustomerUploadArr.length <=1">
+            <ion-input placeholder="Document/ File Name" style="border: 2px solid gray; border-radius: 5px; margin-top: 10px;" type="text" [(ngModel)]="data.DocType">
+            </ion-input>
+          </div>
+
+
+          <div style="margin-top: 10px; width: 100%; display: flex; justify-content: center;" *ngIf="existingCustomerUploadArr.length <=1">
+            <div (click)="existingCustomerUpload()" class="up-document2">Upload Documents</div>
+          </div>
+
+
+
+
+
+
+
+
+        </div>
+      </ion-accordion>
+
+      
+
+    </ion-accordion-group>
+
+    <div (click)="saveNow()" class="save-button">SAVE NOW</div>
 
 
 
@@ -172,6 +548,97 @@
   </div>
 
 
+
+  <ion-modal [isOpen]="isConversionDatetimeModalOpen">
+    <ng-template>
+      <ion-content>
+        <div class="datetime-container">
+          <ion-datetime                       
+            presentation="month-year"
+            [(ngModel)]="data.ExpectedDateForConversion"
+            (ionChange)="expectedDateChanged($event)"
+          ></ion-datetime>
+        </div>
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <!-- <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button> -->
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>  
+  
+  <ion-modal [isOpen]="isFiringStartDateOpen">
+    <ng-template>
+      <ion-content>
+        <div class="datetime-container">
+          <ion-datetime                       
+            presentation="month-year"
+            [(ngModel)]="data.CurrentYearFiringPlanStartMonthAndYear"
+            (ionChange)="currentfiringMonthDateChanged($event)"
+          ></ion-datetime>
+        </div>
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <!-- <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button> -->
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>  
+  
+  <ion-modal [isOpen]="isFiringCloseDateOpen">
+    <ng-template>
+      <ion-content>
+        <div class="datetime-container">
+          <ion-datetime                       
+            presentation="month-year"
+            [(ngModel)]="data.CurrentYearFiringPlanCloseMonthAndYear"
+            (ionChange)="currentclosingMonthDateChanged($event)"
+          ></ion-datetime>
+        </div>
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <!-- <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button> -->
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isLastFiringStartDateOpen">
+    <ng-template>
+      <ion-content>
+        <div class="datetime-container">
+          <ion-datetime                       
+            presentation="month-year"
+            [(ngModel)]="data.LastYearFiringPlanStartMonthAndYear"
+            (ionChange)="lastfiringMonthDateChanged($event)"
+          ></ion-datetime>
+        </div>
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <!-- <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button> -->
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <ion-modal [isOpen]="isLastFiringStartDateClose">
+    <ng-template>
+      <ion-content>
+        <div class="datetime-container">
+          <ion-datetime                       
+            presentation="month-year"
+            [(ngModel)]="data.LastYearFiringPlanCloseMonthAndYear"
+            (ionChange)="lastclosingMonthDateChanged($event)"
+          ></ion-datetime>
+        </div>
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <!-- <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button> -->
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
 <app-footer></app-footer>
 

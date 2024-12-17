@@ -24,7 +24,7 @@ export class FooterComponent  implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log(this.router.getCurrentNavigation());
+    // console.log(this.router.getCurrentNavigation());
     
   }
 

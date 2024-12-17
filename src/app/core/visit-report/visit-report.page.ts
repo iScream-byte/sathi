@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuController, Platform } from '@ionic/angular';
+import { ActionSheetController, MenuController, Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { VisitReportSaveModel } from 'src/app/services/Interfaces';
-
+import { DropdownService } from './../../services/dropdown.service';
+import * as moment from 'moment';
+import { Network } from '@capacitor/network';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ToastService } from './../../services/toast.service';
+import { MyLoader } from './../../shared/MyLoader';
 @Component({
   selector: 'app-visit-report',
   templateUrl: './visit-report.page.html',
@@ -15,6 +20,10 @@ export class VisitReportPage implements OnInit {
     private router: Router,
     private platform: Platform,
     private location: Location,
+    private dropdownServices : DropdownService,
+    public actionSheetController: ActionSheetController,
+    public toast:ToastService,
+    public loader:MyLoader
   ) {}
 
 
@@ -120,6 +129,14 @@ export class VisitReportPage implements OnInit {
 
   }
 
+  isConversionDatetimeModalOpen = false;
+  isFiringStartDateOpen = false;
+  isFiringCloseDateOpen = false;
+  isLastFiringStartDateOpen = false;
+  isLastFiringStartDateClose = false;
+  hasNetwork=false
+  industryTypes:any=[]
+  existingCustomerUploadArr: any = [];
 
 
   visitType:string=''
@@ -129,10 +146,90 @@ export class VisitReportPage implements OnInit {
   districtName:any = "";
   brickKiln:string=''
 
+  completed3: boolean = false;
+  completed4: boolean = false;
+
   selectedCustomerType:string='new'
   brickOrOther:string=''
+  imageUrl: string;
+  defaultImageUrl: string = "/assets/images/placeholderImage.png";
 
-  ngOnInit() {}
+  selectedImageExistingUser: string;
+  selectedImageExistingUser1: string;
+  uploadType: any = '';
+  isCameraForNewCustomer: boolean;
+  isCameraForPan: boolean;
+  isCameraForAdhar: boolean;
+  isCameraForTrlicense: boolean;
+  isCameraForCTO: boolean;
+  isCameraForJIMMS: boolean;
+
+
+  selectedImagePan: string;
+  idPan = "";
+  selectedImageAadhaar: string;
+  idAadhaar = "";
+  selectedImageTrade: string;
+  idTrade = "";
+  selectedImageCTO: string;
+  idCTO = "";
+  selectedImageJIMMS: string;
+  idJIMMS = "";
+
+
+
+  panna: boolean = false;
+  pancl: boolean = false;
+  aadharna: boolean = false;
+  aadharcl: boolean = false;
+  GSTna: boolean = false;
+  GSTcl: boolean = false;
+  CTOna: boolean = false;
+  CTOcl: boolean = false;
+  JIMMSna: boolean = false;
+  JIMMScl: boolean = false;
+  geotag: boolean = false;
+
+  ngOnInit() {
+    this.dropdownServices.GetIndustryList().subscribe(res=>{
+      this.industryTypes=res      
+    })
+  }
+
+  async ionViewDidEnter() {
+    const status = await Network.getStatus();
+    if(status.connected){
+      this.hasNetwork = true;
+    }
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.goBack();
+    });
+  }
+
+
+
+  openDatetimeModal(name) {
+    if(name=='conversion'){
+      this.isConversionDatetimeModalOpen = true;
+    }else if(name=='firingStart'){
+      this.isFiringStartDateOpen = true
+    }else if(name=='firingClose'){
+      this.isFiringCloseDateOpen = true
+    }else if(name=='lastFiringStart'){
+      this.isLastFiringStartDateOpen = true
+    }else if(name=='lastFiringClose'){
+      this.isLastFiringStartDateClose = true
+    }
+  }
+
+
+  closeDatetimeModal() {
+    this.isConversionDatetimeModalOpen = false;
+    this.isFiringStartDateOpen = false
+    this.isFiringCloseDateOpen = false
+    this.isLastFiringStartDateOpen=false
+    this.isLastFiringStartDateClose=false
+  }
 
   toggleMenu() {
     this.menuController.toggle();
@@ -140,11 +237,8 @@ export class VisitReportPage implements OnInit {
   goBack() {
     this.location.back();
   }
-  ionViewDidEnter() {
-    this.platform.backButton.subscribeWithPriority(10, () => {
-      this.goBack();
-    });
-  }
+
+
 
 
 
@@ -165,7 +259,7 @@ export class VisitReportPage implements OnInit {
   }
 
   checkBoxClick(event){
-    console.log(event.target.value);
+    
     
   }
 
@@ -182,6 +276,21 @@ export class VisitReportPage implements OnInit {
 
 
   selectBrickOrOther(event){
+    if(event.target.value=='brick'){
+      if (this.completed3 == false) {      
+        this.completed3 = true;
+        this.completed4 = false;
+        this.data.Product_Manufactured = "Brick"
+        // console.log("---->>>>" + this.data.Product_Manufactured)
+      }
+    }else{
+      if (this.completed3 == false) {      
+        this.completed3 = false;
+        this.completed4 = true;
+        this.data.Product_Manufactured = "Other"
+        // console.log("---->>>>" + this.data.Product_Manufactured)
+      }
+    }
     
   }
 
@@ -202,4 +311,265 @@ export class VisitReportPage implements OnInit {
     }
     this.data.BrickKiln = this.brickKiln;
   }
+
+  expectedDateChanged(gotDate) {
+    const date2 = moment(gotDate.target.value).format("MMMM YYYY");
+    this.data.ExpectedDateForConversion = date2;
+  }
+
+  currentfiringMonthDateChanged(gotDate) {
+    const date2 = moment(gotDate.target.value).format("MMMM YYYY");
+    this.data.CurrentYearFiringPlanStartMonthAndYear = date2;
+  }
+
+  currentclosingMonthDateChanged(gotDate) {
+    const date2 = moment(gotDate.target.value).format("MMMM YYYY");
+    this.data.CurrentYearFiringPlanCloseMonthAndYear = date2;
+  }
+
+  lastfiringMonthDateChanged(gotDate) {
+    const date2 = moment(gotDate.target.value).format("MMMM YYYY");
+    this.data.LastYearFiringPlanStartMonthAndYear = date2;
+  }
+
+  lastclosingMonthDateChanged(gotDate) {
+    const date2 = moment(gotDate.target.value).format("MMMM YYYY");
+    this.data.LastYearFiringPlanCloseMonthAndYear = date2;
+  }
+
+
+  async takePhoto(source,docType) {
+    // this.loader.showLoader()
+    try {
+      const photo = await Camera.getPhoto({
+        resultType: CameraResultType.Base64,
+        source: source=='camera'? CameraSource.Camera:CameraSource.Photos, 
+        quality: 100, 
+      });
+      
+
+      if (docType == 'others') {
+        if (this.existingCustomerUploadArr.length < 1) {
+          this.selectedImageExistingUser = "data:image/jpeg;base64," + photo.base64String;
+          this.existingCustomerUploadArr.push({ type: this.uploadType, pic: this.selectedImageExistingUser, chk: '', name: this.data.DocType });
+          this.saveBase64ExistingData(photo.base64String);
+        } else {
+          this.selectedImageExistingUser1 = "data:image/jpeg;base64," + photo.base64String;
+          this.existingCustomerUploadArr.push({ type: this.uploadType, pic: this.selectedImageExistingUser1, chk: '', name: this.data.DocType });
+          this.saveBase64ExistingData1(photo.base64String);
+        }
+      }else if (docType == 'pan') {
+        console.log("Taking Pan Photo", docType);
+        this.selectedImagePan = "data:image/jpeg;base64," + photo.base64String;
+        this.saveBase64DataPan(photo.base64String);
+      }else if (docType == 'adhar') {
+        this.selectedImageAadhaar = "data:image/jpeg;base64," + photo.base64String;
+        this.saveBase64DataAadhaar(photo.base64String);
+      }else if (docType == 'gst') {
+        this.selectedImageTrade = "data:image/jpeg;base64," + photo.base64String;
+        this.saveBase64DataTrade(photo.base64String);
+      }else if (docType == 'cto') {
+        this.selectedImageCTO = "data:image/jpeg;base64," + photo.base64String;
+        this.saveBase64DataCTO(photo.base64String);
+      } else if (docType == 'jimms') {
+        this.selectedImageJIMMS = "data:image/jpeg;base64," + photo.base64String;
+        this.saveBase64DataJIMMS(photo.base64String);
+      }
+
+
+
+
+      
+      
+    } catch (error) {
+      console.error('Camera error:', error);
+    }
+  }
+
+
+
+  async openCamera(type) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Select Image Source',
+      buttons: [{
+        text: 'Load from Library',        
+        icon: 'document',
+        handler: () => {
+          this.takePhoto('gallery',type)
+        }
+      }, {
+        text: 'Use Camera',
+        icon: 'camera',
+        handler: () => {
+          this.takePhoto('camera',type)
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        icon: 'close',
+      }]
+    });
+    await actionSheet.present();
+  }
+
+
+
+  existingCustomerUpload() {
+    if (this.data.DocType.trim() == '') {
+      this.toast.presentToast('Please enter document name','error')
+    } else {      
+      this.openCamera('others');
+    }
+  }
+
+
+  saveBase64ExistingData(b64: string) {
+    if (b64.length != 0) {
+      //console.log("image data------>" + JSON.stringify(b64));
+      this.isCameraForNewCustomer = true;
+      this.data.filebyteOthers = b64;
+      this.data.FileNameOthers = "15";
+      this.data.OtherName = this.data.DocType;
+      this.data.DocType = '';
+    }
+    this.loader.dismissLoader()
+    // console.log("other details------->" + this.data.filebyteOthers);
+    // console.log("other name--------->" + this.data.FileNameOthers);
+  }
+
+  saveBase64ExistingData1(b64: string) {
+    if (b64.length != 0) {
+      //console.log("image data------>" + JSON.stringify(b64));
+      this.isCameraForNewCustomer = true;
+      this.data.filebyteOthers1 = b64;
+      this.data.FileNameOthers1 = "16";
+      this.data.OtherName1 = this.data.DocType;
+      this.data.DocType = '';
+    }
+    this.loader.dismissLoader()
+    // console.log("other details------->" + this.data.filebyteOthers1);
+    // console.log("other name--------->" + this.data.FileNameOthers1);
+  }
+
+  saveBase64DataPan(b64: string) {
+    if (b64.length != 0) {
+      this.isCameraForPan = true;
+      this.data.filebytePAN = b64;
+      this.data.FileNamePAN = "2";
+    }
+    // this.actLoader.dismissLodaing();
+    // console.log("pan details------->" + this.data.filebytePAN)
+    // console.log("pan namew--------->" + this.data.FileNamePAN)
+  }
+
+  saveBase64DataAadhaar(b64: string) {
+    if (b64.length != 0) {
+      this.isCameraForAdhar = true;
+      this.data.filebyteADHAR = b64;
+      this.data.FileNameADHAR = "3";
+    }
+    // this.actLoader.dismissLodaing();
+  }
+
+  saveBase64DataTrade(b64: string) {
+    if (b64.length != 0) {
+      this.isCameraForTrlicense = true;
+      this.data.filebyteTRLICENSE = b64;
+      this.data.FileNameTRLICENSE = "9";
+    }
+    // this.actLoader.dismissLodaing();
+  }
+
+  saveBase64DataCTO(b64: string) {
+    if (b64.length != 0) {
+      this.isCameraForCTO = true;
+      this.data.filebyteCTO = b64;
+      this.data.FileNameCTO = "11";
+    }
+    // this.actLoader.dismissLodaing();
+  }
+
+
+  saveBase64DataJIMMS(b64: string) {
+    if (b64.length != 0) {
+      this.isCameraForJIMMS = true;
+      this.data.filebyteJIMMS = b64;
+      this.data.FileNameJIMMS = "12";
+    }
+    // this.actLoader.dismissLodaing();
+  }
+
+
+
+
+  CheckboxpannaClicked() {
+    this.pancl = false;
+    this.panna = true;
+  }
+
+  CheckboxpanclClicked() {
+    this.pancl = true;
+    this.panna = false;
+  }
+
+  CheckboxaadharnaClicked() {
+    this.aadharcl = false;
+    this.aadharna = true;
+  }
+
+  CheckboxaadharclClicked() {
+    this.aadharcl = true;
+    this.aadharna = false;
+  }
+
+  CheckboxGSTnaClicked() {
+    this.GSTcl = false;
+    this.GSTna = true;
+  }
+
+  CheckboxGSTclClicked() {
+    this.GSTcl = true;
+    this.GSTna = false;
+  }
+
+  CheckboxCTOnaClicked() {
+    this.CTOcl = false;
+    this.CTOna = true;
+  }
+
+  CheckboxCTOclClicked() {
+    this.CTOcl = true;
+    this.CTOna = false;
+  }
+
+  CheckboxJIMMSnaClicked() {
+    this.JIMMScl = false;
+    this.JIMMSna = true;
+  }
+
+  CheckboxJIMMSclClicked() {
+    this.JIMMScl = true;
+    this.JIMMSna = false;
+  }
+
+
+
+
+
+
+
+
+
+
+  saveNow(){
+    if(this.visitMode =='Online' && this.hasNetwork == false) {
+      this.toast.presentToast('You are not connected to the network now, Please select offline in visit mode.','error')
+    }else{
+      
+    }
+  }
+
+
+
+
 }
