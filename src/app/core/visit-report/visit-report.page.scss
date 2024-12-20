@@ -10,6 +10,10 @@
 ion-input {
   --padding-start: 12px;
 }
+
+ion-textarea {
+  --padding-start: 12px;
+}
 ion-select {
   --padding-start: 12px;
 }
@@ -75,8 +79,8 @@ ion-datetime {
 }
 
 .up-document {
-  height: 28%;
-  width: 50%;
+  height: 30%;
+  width: 80%;
   background-color: #2e5794;
   border-radius: 20px;
   align-items: center;
@@ -85,6 +89,7 @@ ion-datetime {
   justify-content: center;
   color: #fff;
 }
+
 
 .up-document2 {
   height: 50px;

@@ -27,7 +27,7 @@
 
     <div class="inputContainer">
       <div style="display: inline-flex; gap: 5px;">Visit Type<div style="color: red;">*</div></div>
-      <ion-select okText="select" class="input" placeholder="select visit type" (ionChange)="getVisitType($event)">
+      <ion-select [(ngModel)]="visitType" okText="select" class="input" placeholder="select visit type" (ionChange)="getVisitType($event)">
         <ion-select-option value="self">Self</ion-select-option>
         <ion-select-option value="withbm">With BM</ion-select-option>
         <ion-select-option value="withtslkam">With TSL KAM</ion-select-option>
@@ -39,7 +39,7 @@
 
     <div class="inputContainer" *ngIf="othersShown">
       <div style="display: inline-flex">Please Specify <div style="color: red; padding-left: 5px;">*</div></div>      
-      <ion-input [(ngModel)]="data.VisitTypeOthers" class="input" type="text" ></ion-input>
+      <ion-input placeholder="Please specify" [(ngModel)]="data.VisitTypeOthers" class="input" type="text" ></ion-input>
     </div>
 
 
@@ -70,22 +70,22 @@
               
               <div class="inputContainer">
                 <div style="display: inline-flex">Proprietor Phone No. <div style="color: red; padding-left: 5px;">*</div></div>      
-                <ion-input [(ngModel)]="data.PropritorPhoneNo" class="input" type="text" ></ion-input>
+                <ion-input placeholder="Enter proprietor phone number" [(ngModel)]="data.PropritorPhoneNo" class="input" type="text" ></ion-input>
               </div>
 
               <div class="inputContainer">
                 <div style="display: inline-flex">Year Of Establishment <div style="color: red; padding-left: 5px;">*</div></div>      
-                <ion-input [(ngModel)]="data.YearOfEstablishment" class="input" type="text" ></ion-input>
+                <ion-input placeholder="Enter year of establishment" [(ngModel)]="data.YearOfEstablishment" class="input" type="text" ></ion-input>
               </div>
 
               <div class="inputContainer">
                 <div style="display: inline-flex">Company Name <div style="color: red; padding-left: 5px;">*</div></div>      
-                <ion-input [(ngModel)]="data.Visit_Customer_Name" class="input" type="text" ></ion-input>
+                <ion-input placeholder="Enter company name" [(ngModel)]="data.Visit_Customer_Name" class="input" type="text" ></ion-input>
               </div>
 
               <div class="inputContainer">
                 <div style="display: inline-flex; gap: 5px;">Type Of Company<div style="color: red;">*</div></div>
-                <ion-select  class="input" placeholder="Select visit mode" (ionChange)="getCustomerType($event)">
+                <ion-select  class="input" placeholder="Select type of company" (ionChange)="getCustomerType($event)">
                   <ion-select-option value="Retail">Retail</ion-select-option>
                   <ion-select-option value="Institutional">Institutional</ion-select-option>
                 </ion-select>
@@ -93,45 +93,63 @@
           </div>
 
         
+        <div class="inputContainer" *ngIf="selectedCustomerType=='existing'">
+          <div style="display: inline-flex; gap: 5px;">Select Customer<div style="color: red;">*</div></div>
+          <ion-input [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSearchModal()" class="input" type="text" ></ion-input>
+        </div>
+
+
+        <div class="inputContainer" *ngIf="selectedCustomerType=='existing'">
+          <div style="display: inline-flex">Type Of Customer <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input placeholder="Customer type" [(ngModel)]="customerTypeValue" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>
+        
+        <div class="inputContainer" *ngIf="selectedCustomerType=='existing'">
+          <div style="display: inline-flex">Customer Code <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input placeholder="Customer code" [(ngModel)]="customerCode" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+        </div>        
+        
+        
         <div class="inputContainer">
           <div style="display: inline-flex">Owner/ Contact Person Name <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input [(ngModel)]="data.OwnerName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter owner/ contact person name" [(ngModel)]="data.OwnerName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
         </div>        
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Owner/ Contact Person Phone No.<div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.Ownerphonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter owner/ contact person phone number" type="tel" [(ngModel)]="data.Ownerphonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
         </div>        
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Alternate Phone No.<div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.Alternatephonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter alternate phone number" type="tel" [(ngModel)]="data.Alternatephonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
         </div>        
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Registered Phone No.<div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.Registerednumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter registered phone number" type="tel" [(ngModel)]="data.Registerednumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
         </div>        
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Block Name<div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input [(ngModel)]="data.BlockName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter block name" [(ngModel)]="data.BlockName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
         </div>        
         
+
         
         <div class="inputContainer">
-          <div style="display: inline-flex">District Name<div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input [(ngModel)]="districtName" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
-        </div>        
+          <div style="display: inline-flex; gap: 5px;">District Name<div style="color: red;">*</div></div>
+          <ion-input [(ngModel)]="districtName" placeholder="Press to select district" [readonly]="selectedCustomerType=='existing'" (click)="openDistrictSelectModal()" class="input" type="text" ></ion-input>
+        </div>
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Location<div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input [(ngModel)]="data.Location" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter location" [(ngModel)]="data.Location" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
         </div>
     </div>
 
@@ -157,7 +175,7 @@
       <div *ngIf="brickOrOther=='brick'" style="display: flex; flex-direction: column; gap: 15px;">
         <div class="inputContainer" *ngIf="brickOrOther=='brick'">
           <div style="display: inline-flex; gap: 5px;">Brick Kiln<div style="color: red;">*</div></div>
-          <ion-select class="input" placeholder="Select brick kiln" (ionChange)="getBrickKiln($event)">
+          <ion-select [(ngModel)]="brickKiln" class="input" placeholder="Select brick kiln" (ionChange)="getBrickKiln($event)">
             <ion-select-option value="FCBT">FCBT</ion-select-option>
             <ion-select-option value="ZigZag">ZigZag</ion-select-option>
             <ion-select-option value="HawaBhatta">Hawa Bhatta</ion-select-option>
@@ -166,23 +184,23 @@
 
         <div class="inputContainer" *ngIf="brickKiln=='FCBT'">
           <div style="display: inline-flex">Paya <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.Paya" class="input" type="text" maxlength="4"></ion-input>
+          <ion-input placeholder="Enter paya" type="tel" [(ngModel)]="data.Paya" class="input" type="text" maxlength="4"></ion-input>
         </div>        
         
         <div class="inputContainer" *ngIf="brickKiln=='ZigZag'">
           <div style="display: inline-flex">Chamber <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.CHAMBER" class="input" type="text" maxlength="4" maxlength="100"></ion-input>
+          <ion-input placeholder="Enter chamber" type="tel" [(ngModel)]="data.CHAMBER" class="input" type="text" maxlength="4" maxlength="100"></ion-input>
         </div>        
         
         <div class="inputContainer" *ngIf="brickKiln=='HawaBhatta'">
           <div style="display: inline-flex">Paya/ Chamber <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.PayaChamber" class="input" type="text" maxlength="4" maxlength="4"></ion-input>
+          <ion-input placeholder="Enter paya/ chamber" type="tel" [(ngModel)]="data.PayaChamber" class="input" type="text" maxlength="4" maxlength="4"></ion-input>
         </div>
 
 
         <div class="inputContainer">
           <div style="display: inline-flex">Expected Date of conversion to ZigZag/Hawa Bhatta <div style="color: red; padding-left: 5px;">*</div></div>
-          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly [(ngModel)]="data.ExpectedDateForConversion"></ion-input>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input placeholder="Please select date" type="text" readonly [(ngModel)]="data.ExpectedDateForConversion"></ion-input>
             <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('conversion')">
               <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
             </div>
@@ -191,7 +209,7 @@
         
         <div class="inputContainer">
           <div style="display: inline-flex">Current Year Firing Plan: START <div style="color: red; padding-left: 5px;">*</div></div>
-          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.CurrentYearFiringPlanStartMonthAndYear"></ion-input>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input placeholder="Please select date" type="text" readonly  [(ngModel)]="data.CurrentYearFiringPlanStartMonthAndYear"></ion-input>
             <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('firingStart')">
               <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
             </div>
@@ -200,7 +218,7 @@
 
         <div class="inputContainer">
           <div style="display: inline-flex">Current Year Firing Plan: CLOSE <div style="color: red; padding-left: 5px;">*</div></div>
-          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.CurrentYearFiringPlanCloseMonthAndYear"></ion-input>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input placeholder="Please select date" type="text" readonly  [(ngModel)]="data.CurrentYearFiringPlanCloseMonthAndYear"></ion-input>
             <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('firingClose')">
               <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
             </div>
@@ -209,7 +227,7 @@
 
         <div class="inputContainer">
           <div style="display: inline-flex">Last Year Firing Plan: START <div style="color: red; padding-left: 5px;">*</div></div>
-          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.LastYearFiringPlanStartMonthAndYear"></ion-input>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input placeholder="Please select date" type="text" readonly  [(ngModel)]="data.LastYearFiringPlanStartMonthAndYear"></ion-input>
             <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('lastFiringStart')">
               <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
             </div>
@@ -219,7 +237,7 @@
 
         <div class="inputContainer">
           <div style="display: inline-flex">Last Year Firing Plan: CLOSE <div style="color: red; padding-left: 5px;">*</div></div>
-          <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly  [(ngModel)]="data.LastYearFiringPlanCloseMonthAndYear"></ion-input>
+          <div class="input" style="display: flex; flex-direction: row;"><ion-input placeholder="Please select date" type="text" readonly  [(ngModel)]="data.LastYearFiringPlanCloseMonthAndYear"></ion-input>
             <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('lastFiringClose')">
               <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
             </div>
@@ -229,29 +247,29 @@
 
         <div class="inputContainer">
           <div style="display: inline-flex">Rounds In Season (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel"  [(ngModel)]="data.noOfRoundsInSeason"  class="input" type="text" maxlength="6"></ion-input>
+          <ion-input placeholder="Enter rounds in season" type="tel"  [(ngModel)]="data.noOfRoundsInSeason"  class="input" type="text" maxlength="6"></ion-input>
         </div>
 
 
         <div class="inputContainer">
           <div style="display: inline-flex">Bricks Per Round (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel"  [(ngModel)]="data.NoOfBircksPerRound"  class="input" type="text" maxlength="7"></ion-input>
+          <ion-input placeholder="Enter bricks per round" type="tel"  [(ngModel)]="data.NoOfBircksPerRound"  class="input" type="text" maxlength="7"></ion-input>
         </div>  
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Coal Requirement In Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel"  [(ngModel)]="data.CoalRequirementInSeason"  class="input" type="text" maxlength="5"></ion-input>
+          <ion-input placeholder="Enter coal requirement in season" type="tel"  [(ngModel)]="data.CoalRequirementInSeason"  class="input" type="text" maxlength="5"></ion-input>
         </div>          
 
         <div class="inputContainer">
-          <div style="display: inline-flex">Coal Requirement per Round (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel"  [(ngModel)]="data.CoalRequirementPerRoundMT"  class="input" type="text" maxlength="90"></ion-input>
+          <div style="display: inline-flex">Coal Requirement Per Round (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input placeholder="Enter coal requirement per round" type="tel"  [(ngModel)]="data.CoalRequirementPerRoundMT"  class="input" type="text" maxlength="90"></ion-input>
         </div>           
 
         <div class="inputContainer">
-          <div style="display: inline-flex">Requirement of Coal in Balance Days of Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel"  [(ngModel)]="data.RequirementOfCoalinBalanceDaysOfSessionMT"  class="input" type="text" maxlength="90"></ion-input>
+          <div style="display: inline-flex">Requirement Of Coal In Balance Days Of Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input placeholder="Enter requirement of coal in balance" type="tel"  [(ngModel)]="data.RequirementOfCoalinBalanceDaysOfSessionMT"  class="input" type="text" maxlength="90"></ion-input>
         </div>  
 
 
@@ -280,17 +298,17 @@
 
         <div class="inputContainer" >
           <div style="display: inline-flex">Quantity Manufactured Annually (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.QuantityManufacturedAnnual" class="input" type="text" maxlength="7"></ion-input>
+          <ion-input placeholder="Enter quantity manufactured annually" type="tel" [(ngModel)]="data.QuantityManufacturedAnnual" class="input" type="text" maxlength="7"></ion-input>
         </div> 
 
         <div class="inputContainer" >
           <div style="display: inline-flex">Quantity Required Annually (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.QuantityRequiredAnnual" class="input" type="text" maxlength="7"></ion-input>
+          <ion-input placeholder="Enter quantity required annually" type="tel" [(ngModel)]="data.QuantityRequiredAnnual" class="input" type="text" maxlength="7"></ion-input>
         </div> 
 
         <div class="inputContainer" *ngIf="selectedCustomerType=='new'">
-          <div style="display: inline-flex">Quantity Required in Balance Days of Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-          <ion-input type="tel" [(ngModel)]="data.QuantityRequiredInBalanceDays" class="input" type="text" maxlength="10"></ion-input>
+          <div style="display: inline-flex">Quantity Required In Balance Days Of Season (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
+          <ion-input placeholder="Enter Quantity required in balance" type="tel" [(ngModel)]="data.QuantityRequiredInBalanceDays" class="input" type="text" maxlength="10"></ion-input>
         </div> 
 
 
@@ -312,52 +330,52 @@
 
           <div class="inputContainer">
             <div style="display: inline-flex">Inventory Of Coal (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input type="tel" [(ngModel)]="data.InventoryOfCoal" class="input" type="text" maxlength="6"></ion-input>
+            <ion-input placeholder="Enter inventory of coal" type="tel" [(ngModel)]="data.InventoryOfCoal" class="input" type="text" maxlength="6"></ion-input>
           </div>
 
           <div class="inputContainer">
             <div style="display: inline-flex">Requirements (MT) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input type="tel" [(ngModel)]="data.Requirements" class="input" type="text" maxlength="5"></ion-input>
+            <ion-input placeholder="Enter requirements" type="tel" [(ngModel)]="data.Requirements" class="input" type="text" maxlength="5"></ion-input>
           </div> 
 
           <div class="inputContainer">
             <div style="display: inline-flex">Ghato Usage (%) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input type="tel" [(ngModel)]="data.Ghato_Usage" maxlength="4" class="input" ></ion-input>
+            <ion-input placeholder="Enter ghato usage" type="tel" [(ngModel)]="data.Ghato_Usage" maxlength="4" class="input" ></ion-input>
           </div>
           
           <div class="inputContainer">
             <div style="display: inline-flex">Other Competitors <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input type="text" [(ngModel)]="data.Competition" maxlength="200" class="input" ></ion-input>
+            <ion-input placeholder="Enter other competitors" type="text" [(ngModel)]="data.Competition" maxlength="200" class="input" ></ion-input>
           </div> 
 
           <div class="inputContainer">
             <div style="display: inline-flex">Landed Price Of Competition Coal (₹) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input type="tel" [(ngModel)]="data.LandedPriceCompetitionCoal" maxlength="5"  class="input" ></ion-input>
+            <ion-input placeholder="Enter landed price of competition coal" type="tel" [(ngModel)]="data.LandedPriceCompetitionCoal" maxlength="5"  class="input" ></ion-input>
           </div> 
 
           <div class="inputContainer">
             <div style="display: inline-flex">Avg. Price/ 1000 Bricks (₹) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input type="tel" [(ngModel)]="data.Avg_price_perThousand_bricks" maxlength="6" class="input" ></ion-input>
+            <ion-input placeholder="Enter avg. price/ 1000 bricks" type="tel" [(ngModel)]="data.Avg_price_perThousand_bricks" maxlength="6" class="input" ></ion-input>
           </div> 
 
           <div class="inputContainer">
             <div style="display: inline-flex">Kilns In Vicinity (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input type="tel" [(ngModel)]="data.Number_of_kilns_in_Visinity" maxlength="2" class="input" ></ion-input>
+            <ion-input placeholder="Enter kilns in vicinity" type="tel" [(ngModel)]="data.Number_of_kilns_in_Visinity" maxlength="2" class="input" ></ion-input>
           </div> 
 
           <div class="inputContainer">
             <div style="display: inline-flex">Inventory Of Raw Bricks (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input [(ngModel)]="data.Inventory_Raw_Bricks" type="tel" maxlength="10" class="input" ></ion-input>
+            <ion-input placeholder="Enter inventory of raw bricks" [(ngModel)]="data.Inventory_Raw_Bricks" type="tel" maxlength="10" class="input" ></ion-input>
           </div>
 
           <div class="inputContainer">
             <div style="display: inline-flex">Inventory Of Prepared Bricks (No.) <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-input [(ngModel)]="data.Inventory_Prepared_Bricks" type="tel" maxlength="8" class="input" ></ion-input>
+            <ion-input placeholder="Enter inventory of prepared bricks" [(ngModel)]="data.Inventory_Prepared_Bricks" type="tel" maxlength="8" class="input" ></ion-input>
           </div> 
 
           <div class="inputContainer">
             <div style="display: inline-flex">Remarks <div style="color: red; padding-left: 5px;">*</div></div>      
-            <ion-textarea type="text" [(ngModel)]="data.Remarks" rows="5" maxlength="150"  class="input" ></ion-textarea>
+            <ion-textarea placeholder="Enter remarks" type="text" [(ngModel)]="data.Remarks" rows="5" maxlength="150"  class="input" ></ion-textarea>
           </div> 
 
         </div>
@@ -540,9 +558,34 @@
 
     </ion-accordion-group>
 
+
+
+    <div style="display: flex; justify-content: center; font-size: 18px; font-weight: 600; font-style: italic; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+      CURRENT LOCATION
+    </div>    
+    
+    <div style="display: flex; justify-content: center; font-size: 18px; font-weight: 400;">
+      Lat: {{lat?lat:'No data'}} | Long: {{long?long:'No data'}}
+    </div>
+
+
+    <div style="display: flex; align-items: center; gap: 5px; align-self: center;">
+      <ion-checkbox [(ngModel)]="geotag" [disabled]='geoTagChkBox' (change)="CheckboxgeotagClicked()"></ion-checkbox>
+      <ion-label>Geotag Current Location</ion-label>
+    </div>
+    
+
+    <div style="display: flex; justify-content: center; font-size: 18px; font-weight: 600; font-style: italic; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+      CURRENT GEO TAGGED LOCATION :
+    </div>    
+
+    <div *ngIf="geotag" style="display: flex; justify-content: center; font-size: 18px; font-weight: 400;">
+      Lat: {{lat?lat:'No data'}} | Long: {{long?long:'No data'}}
+    </div>
+
+
+
     <div (click)="saveNow()" class="save-button">SAVE NOW</div>
-
-
 
 
   </div>

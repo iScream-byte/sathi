@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{
+    modalData.modalName=='customer'?'Select Customer':
+    modalData.modalName=='district'?'Select District':
+    ''
+    }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-searchbar *ngIf="modalData.modalName=='customer'" class="searchCss" placeholder="Search name or code"
+  (ionInput)="filterItems($event)"></ion-searchbar>  
+  
+  <ion-searchbar *ngIf="modalData.modalName=='district'" class="searchCss" placeholder="Search district"
+  (ionInput)="filterDistrictFunc($event)"></ion-searchbar>
+
+
+  <ion-content padding *ngIf="modalData.modalName=='customer'">
+    <ion-list>
+      <ion-item *ngFor="let customer of filterCustomerName">
+        <ion-label (click)="selectCustomer(customer)">{{customer.CustomerName}} ({{customer.Customer_Code}})</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  
+  <ion-content padding *ngIf="modalData.modalName=='district'">
+    <ion-list>
+      <ion-item *ngFor="let item of filterDistrict">
+        <ion-label (click)="didSelect(item)">{{item.DistrictName}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+</ion-content>

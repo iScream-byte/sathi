@@ -12,7 +12,8 @@ import { VisitReportPage } from './visit-report.page';
     FormsModule,
     IonicModule,
     VisitReportPageRoutingModule,
-    FooterComponent,
+    FooterComponent,    
+    
   ],
   declarations: [VisitReportPage],
 })

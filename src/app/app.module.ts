@@ -12,14 +12,17 @@ import { LocalStorageService } from './services/localstorage.service';
 import { Storage } from '@ionic/storage-angular';
 import { AlertService } from './services/alert.service';
 import { ToastService } from './services/toast.service';
+import { SearchableDropdownComponent } from './utils/searchable-dropdown/searchable-dropdown.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SearchableDropdownComponent],
   imports: [
-    BrowserModule,
+
+  BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    
   ],
   providers: [
     {
@@ -35,6 +38,7 @@ import { ToastService } from './services/toast.service';
     Storage,
     AlertService,
     ToastService,
+    
   ],
   bootstrap: [AppComponent],
 })

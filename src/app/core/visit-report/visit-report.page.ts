@@ -1,14 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetController, MenuController, Platform } from '@ionic/angular';
+import { ActionSheetController, MenuController, ModalController, Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
-import { VisitReportSaveModel } from 'src/app/services/Interfaces';
+import { VisitReportSaveModel, LoginResponseModel } from 'src/app/services/Interfaces';
 import { DropdownService } from './../../services/dropdown.service';
 import * as moment from 'moment';
 import { Network } from '@capacitor/network';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ToastService } from './../../services/toast.service';
 import { MyLoader } from './../../shared/MyLoader';
+import { SearchableDropdownComponent } from './../../utils/searchable-dropdown/searchable-dropdown.component';
+import { LocalStorageService } from './../../services/localstorage.service';
+import { CoreService } from './../../services/core.service';
+import { Geolocation } from '@capacitor/geolocation';
+
 @Component({
   selector: 'app-visit-report',
   templateUrl: './visit-report.page.html',
@@ -23,8 +28,13 @@ export class VisitReportPage implements OnInit {
     private dropdownServices : DropdownService,
     public actionSheetController: ActionSheetController,
     public toast:ToastService,
-    public loader:MyLoader
-  ) {}
+    public loader:MyLoader,
+    private modalController: ModalController,
+    private storageService:LocalStorageService,
+    private coreServices:CoreService
+  ) {
+    this.getNativeStorageData()
+  }
 
 
   data: VisitReportSaveModel = {
@@ -129,6 +139,113 @@ export class VisitReportPage implements OnInit {
 
   }
 
+  dataForBlank: VisitReportSaveModel = {
+    Visit_ID: '',
+    sysuser_id: '',
+    sysuser_pwd: '',
+    CA_ID: '',
+    AgencyName: '',
+    Agent_ID: '',
+    AgentName: '',
+    ORG_ID: '',
+    District_ID: '',
+    DistrictName: '',
+    Visit_Date: '',
+    ProprietorName: '',
+    PropritorPhoneNo: '',
+    YearOfEstablishment: '',
+    Visit_Customer_Name: '',
+    VisitType: '',
+    VisitMode: '',
+    VisitTypeOthers: '',
+    Customer_Code: '',
+    Location: '',
+    Product_Manufactured: '',
+    Current_Firing_Plan_monthly_avg: '',
+    Last_Year_Firing_Plan_monthly_avg: '',
+    Last_Year_Firing_Month: '',
+    Current_Year_Firing_Month: '',
+    ExpectedDateForConversion: '',
+    noOfRoundsInSeason: '',
+    CategoryID: '',
+    BrickKiln: '',
+    CategoryName: '',
+    LastYearFiringPlanCloseMonthAndYear: '',
+    LastYearFiringPlanStartMonthAndYear: '',
+    CurrentYearFiringPlanCloseMonthAndYear: '',
+    CurrentYearFiringPlanStartMonthAndYear: '',
+    BlockName: '',
+    OwnerName: '',
+    DocType: '',
+    OtherName: '',
+    OtherName1: '',
+    Ownerphonenumber: '',
+    Alternatephonenumber: '',
+    Registerednumber: '',
+    IndustryType: '',
+    Paya: '',
+    CHAMBER: '',
+    PayaChamber: '',
+    NoOfBircksPerRound: '',
+    CoalRequirementInSeason: '',
+    CoalRequirementPerRoundMT: '',
+    RequirementOfCoalinBalanceDaysOfSessionMT: '',
+    QuantityManufacturedAnnual: '',
+    QuantityRequiredAnnual: '',
+    QuantityRequiredInBalanceDays: '',
+    InventoryOfCoal: '',
+    Requirements: '',
+    Ghato_Usage: '',
+    Competition: '',
+    LandedPriceCompetitionCoal: '',
+    Avg_price_perThousand_bricks: '',
+
+    Number_of_kilns_in_Visinity: '',
+    Inventory_Prepared_Bricks: '',
+    Inventory_Raw_Bricks: '',
+    Remarks: '',
+    LAT: '',
+    LONG: '',
+    CreatedDate: '',
+    CreatedBY: '',
+    UpdateDate: '',
+    UpdatedBY: '',
+    status: '',
+    message: '',
+    fromDate: '',
+    toDate: '',
+
+    FileNamePAN: 'NoImage',
+    FilePANPath: 'NoImage',
+    filebytePAN: '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',
+
+    FileNameADHAR: 'NoImage',
+    FileADHARPath: 'NoImage',
+    filebyteADHAR: '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',
+
+    FileNameTRLICENSE: 'NoImage',
+    FileTRLICENSEPath: 'NoImage',
+    filebyteTRLICENSE: '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',
+
+    FileNameCTO: 'NoImage',
+    FileCTOPath: 'NoImage',
+    filebyteCTO: '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',
+
+    FileNameJIMMS: 'NoImage',
+    FileJIMMSPath: 'NoImage',
+    filebyteJIMMS: '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',
+
+    FileNameOthers: 'NoImage',
+    FileOthersPath: 'NoImage',
+    filebyteOthers: 'iVBORw0KGgoAAAANSUhEUgAAAGQAAABPCAYAAAAdiWChAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAAH40lEQVR4Ae2biU6FOBiFUa/7vhuX938h38DEmLjGfXfm6+Q4lVCB0lK48icIt3vP6b+04MTx8fHX4+NjNjU1lX19fWWDpEHg4+MjW19fzybTdD/06kJgIMSFTKL0gZBEwLu6HQhxIZMofSAkEfCubgdCXMgkSh8ISQS8q9uRK6Mr6RMTE4VDGdc9U2cJgQhAZ8NUBP7k5GTGVZRXyGBPEjtLyPv7uwF8fn4+m52dzaanpw2kn5+f2evra/b8/GzukOLSop5w8GOYnSOEFc+1urpqLsgAdFvIR3MeHh6y6+vr7OXlxRz92GX6+twpQgAa8Hd3d7OlpSVDDGloRV4oB2mUu7i4yG5ubsaClM4QIjIODg4yzBQmC/nNHKElIpD71dVV70n5aQvyy7Dl33t7e99kQMRvZIgstIdre3s7W15eNqas5WEH7S45IYDOSl9ZWckWFxeNZpQRYSNAWbSLa2trKxuNRubZLtOn5+SEACTvYtbW1ryBhBS0ZGZmxhDLcx1Su0RYUkIADe3AZwAm5PgCST3q4+TxJzz3UZISAmAANzc3Z4gIASL7Fa6+aklyQljZ2vQ1XdEQinb0+XV0UkKkETJTujclJlQ7TcfhUz8pIQIO8xJKILmv5goMkhLCAACQs6kQAsGQwaaSZ2lgiLbbaiMpIQCGzX96ejJANpk0bUEC51pvb2/e0VqTMYSom5QQJgAhnNxCStNwFVJub28NLjKHIUBqs43khGiynENplSut6p16RFZ88Hd/fz9EWVWBc5VDMwBTh4MAXFVEBn7j/Py8arXOluvMaS8r/PLy0pgtPqkEaEVfReZHpFEPMk5PT01w0Oc9CKukM4QwGDSFVU7Utbm5+eOgUARQDoLkb3hJpTp9J4O5dYoQBgTQvGzChOkEmBNc0iVoBNHU3d2duUgfBzKYR+cIMYP6lwD5BF7RcrQC4GgGZoywlnz5D+rYGsTvvkonCQFcwIcIntEGAU66TBZ3pVclgDoQiknkhPns7MyQXbV+7HKdJESTFthoR17IU34+z/UbMjju53R5Y2PDEMG+hT1QV0ze/4bZNYsOpAt8++4zLOpDys7OzjcBvGX00TSf/qvU6QUhVSZSVkbagalaWFgwmoI/4uUYYTY+iTKp5U8QAtAAzttEwIcI0rjQGl4fY8YwZ6lJ+ROEQAChM1+mIJAgUR6ag9h5KtPm/U8QAsj4DaIqaYdARiNIQ3v0GVFKLRlrQgAWM8QXjoCdJ0OkSCuIvNAkyqWSJIQAgECIOXGFuERSv/UpLeE7YtvHxBybq+3WCQEYjkGI+10r1jXYuukArRC3rC+RgoMn8krl4FslRCaESR8dHZnIJka4qX5w1HXA1WJBo5A2tDi/yFojRCARXmLTORbhw2qeISWU0E9RiFulfeqiSexTGFcKLWmNENlwVi2OU5PlA2vMCkBQBlCaCO1AdlGIW6VdjRMHr6isSr1QZVohRNpBpEN4KXvO5HnGkaIt+JWmJow2IUNg1iVYWgKpkML42pRWCGFSgM0EmTCgIQILbeHL98PDQ2MufEihLdrBPzXdT4gU3sdoAbVFSnRCNLnfjicEpvwKZev6FcjAP2ESpYFNQGTRMC7a496WRCcEcKrE9yKOifMvbXX8isBTiCsNbAKiFgkkt3n4GJUQgYypqvK+gfKACYlV/Yr6IFStE+JWIUttM5a2Dh+jEcJkMDvY89+OLfLAUA8p8itFZdUHZi6Eqcr3wQJhMbW1N4lGCODIkTPJumYEYiDF9iv8RkQafTQJcU1jJX/oi34IOpoGCyVdmewohGgScuS+K1ftMFL8ChfEQgx5POM3IMW3jyogaTFpD0VfsSQKIQCGI4cQTcZ3AgCPAALtsV+BAD58wLYTloog3z7K6mlhMKfYe5MohEACA9dRtkAtm3hZPsBzrLG/v2/CUQiJqRn2eJgD/XOkwhhiaUlQQjRovewJDZbaZxeO+bI/nrPBi/XMQqNPTFcsCUpIfsBNzVXRpCGFdmOt0KI+laYFgYZgPn1OFNSW6x6MEAbLABWzh9YO1wTaTteCYJ74lND+KwghWjlsnuTISRtXYbERWGC60NaQliAIIRqU7cjHlQzmxWKDFPYlivJCzTcIIQwuliMPNdHQ7bAIIQYtqXIsVLX/IIQwMLSDe0j1rTqJFOWYK/5Dh4+hfGYjQjQo/Ebog70UINftk/lDBPMPdfjYiBAGw56AiEMqXHdSfS/PvDFZ2ps0tRDehGh1MBDtyPsOrs/4hQOHj7xhbBoGexHCINhz/DVH7iJMWoEf1UGnq2xZuhchmCqOEBgAogGVdTau+dISmW/w8RVvQuTI6ZwBDfLfibQOHzFdPlL7X9rQBiIKaQeaAiHSEj2LJNLzz/m0/MBVXulF5fNlVDZ/t8eVz9Nvta+ypOfbVxny8s+kgQPp3HlHc3JyQnJtqU0IPTBY/snfnkDtnse4AvgQefkcPtYmhM54OcQ/Sg7iRkCWw12iOKc2ITQDKYS6g7gR8LUe3qj6duiewpADAl5R1gBdPAQGQuJh69XyQIgXbPEqfRMy+IR4INdp+dupEzlBin23G1IeafazythpPCNFbdnlVJe7XSefbreTr5//bde12+WZdiSqpzvpetZdadztuvyWqGz+Tj5pSFHdfHnKcI04+vDd5pvehj9BEIADuBhxDIKwkRkkHQKQweHkPyMtmX05hquTAAAAAElFTkSuQmCC'
+
+  }
+
+  CA_ID:any
+  creater_id:any
+  agentID_id:any
+  org_id:any
+
   isConversionDatetimeModalOpen = false;
   isFiringStartDateOpen = false;
   isFiringCloseDateOpen = false;
@@ -164,6 +281,12 @@ export class VisitReportPage implements OnInit {
   isCameraForCTO: boolean;
   isCameraForJIMMS: boolean;
 
+  customerName = ''
+  customerCode = "";
+  customerCategoryTypeId = "";
+  districtID = "";
+  Registerednumber = "NA";
+  
 
   selectedImagePan: string;
   idPan = "";
@@ -188,7 +311,13 @@ export class VisitReportPage implements OnInit {
   CTOcl: boolean = false;
   JIMMSna: boolean = false;
   JIMMScl: boolean = false;
+
+
+
+  lat: any;
+  long: any;
   geotag: boolean = false;
+  geoTagChkBox:boolean=false
 
   ngOnInit() {
     this.dropdownServices.GetIndustryList().subscribe(res=>{
@@ -196,8 +325,27 @@ export class VisitReportPage implements OnInit {
     })
   }
 
+
+  getNativeStorageData() {
+    this.storageService.getItem('NSUDloginDetail').then((res) => {      
+      const val=JSON.parse(res)
+      this.data.CreatedBY = val.userId;
+      this.data.CA_ID = val.ca_id;
+      this.data.Agent_ID = val.agent_id;
+      this.data.ORG_ID = val.Org_ID;
+      this.creater_id = val.userId;
+      this.CA_ID = val.ca_id;
+      this.agentID_id = val.agent_id;
+      this.org_id = val.Org_ID;
+    }).catch((error) => {
+      console.log(error);
+      
+    });
+  }
+
   async ionViewDidEnter() {
     const status = await Network.getStatus();
+    this.getCurrentLocation()
     if(status.connected){
       this.hasNetwork = true;
     }
@@ -231,9 +379,13 @@ export class VisitReportPage implements OnInit {
     this.isLastFiringStartDateClose=false
   }
 
+
   toggleMenu() {
     this.menuController.toggle();
   }
+
+
+
   goBack() {
     this.location.back();
   }
@@ -254,14 +406,86 @@ export class VisitReportPage implements OnInit {
     this.visitType=event.target.value
   }
 
+
   getVisitMode(event) {
     this.visitMode=event.target.value    
   }
 
+
   checkBoxClick(event){
-    
-    
+    if(event.target.value=='new'){
+      this.Registerednumber = 'NA';
+      this.brickKiln = '';
+      this.geoTagChkBox=false;
+      this.geotag=false;
+      //this.data = this.dataForBlank;
+      this.data.ProprietorName = "";
+      this.data.PropritorPhoneNo = "";
+      this.data.YearOfEstablishment = "";
+      this.data.Visit_Customer_Name = "";
+      this.districtName = "";
+      //this.districtID = "",
+      this.data.OwnerName = "",
+      this.data.Ownerphonenumber = "",
+      this.data.Location = "";
+      this.data.BlockName = "",
+      this.data.Alternatephonenumber = "";
+      this.getNativeStorageData();
+
+      this.data.LAT = this.lat;
+      this.data.LONG = this.long;
+
+      // Clear values
+      this.customerCode = "";
+      this.customerTypeValue = "";
+      this.customerName = '';
+      this.customerCategoryTypeId = "";
+      //this.districtName = '';
+      this.districtID = "";
+      //  this.data.District_ID = this.districtID;
+
+      this.data.District_ID = '';
+      /* this.data.Visit_Proprieter_Name: '';
+      this.data.Visit_Proprieter_Phone: '';
+      this.data.Visit_YOE: ''; */
+      //this.data.Visit_Customer_Name = '';
+      this.data.Customer_Code = '';
+      this.data.CategoryID = '';
+      
+    }
+    if(event.target.value=='existing'){
+      this.Registerednumber = '';
+      this.brickKiln = '';
+      //this.data = this.dataForBlank;
+      this.getNativeStorageData();
+      this.data.LAT = this.lat;
+      this.data.LONG = this.long;
+
+      // Clear values
+      this.customerCode = "";
+      this.customerTypeValue = "";
+      this.customerName = '';
+      this.customerCategoryTypeId = "";
+      this.data.OwnerName = "",
+      this.data.Ownerphonenumber = "",
+      this.data.Location = "";
+      this.data.BlockName = "",
+      this.districtName = '';
+      this.data.Location = '';
+      this.data.ProprietorName = "";
+      this.data.PropritorPhoneNo = "";
+      this.data.YearOfEstablishment = "";
+      this.data.Visit_Customer_Name = "";
+      //  this.data.District_ID = this.districtID;
+
+      //this.data.District_ID = '';
+      this.data.Visit_Customer_Name = '';
+      this.data.Customer_Code = '';
+      this.data.CategoryID = '';    
+    }
   }
+
+  
 
   getCustomerType(event) {
     if (event.target.value == "Retail") {
@@ -556,19 +780,591 @@ export class VisitReportPage implements OnInit {
 
 
 
-
-
-
-
-
   saveNow(){
     if(this.visitMode =='Online' && this.hasNetwork == false) {
       this.toast.presentToast('You are not connected to the network now, Please select offline in visit mode.','error')
-    }else{
+    }else{     
+      if(!this.data.LAT){
+        this.toast.presentToast('Please enable your GPS', 'error')
+        return
+      }
+
       
+      if(!this.data.VisitType || this.data.VisitType.length == 0){
+        this.toast.presentToast('Please select visit type', 'error')
+        return
+      }
+
+
+      if(!this.data.District_ID || this.data.District_ID.length == 0){
+        this.toast.presentToast('Please select a district', 'error')
+        return
+      }
+
+
+      if (!this.data.Visit_Customer_Name || this.data.Visit_Customer_Name.length == 0) {
+        this.toast.presentToast('Please enter company name', 'error')
+        return
+      }
+
+
+      if (!this.data.CategoryID || this.data.CategoryID.length == 0) {
+        this.toast.presentToast('Please enter company type', 'error')
+        return
+      }
+
+
+      if (!this.data.Location) {
+        this.toast.presentToast('Please enter location', 'error')
+        return
+      }      
+      
+      if (!this.brickOrOther) {
+        this.toast.presentToast('Please select either brick or other', 'error')
+        return
+      }
+
+
+
+      if(this.brickOrOther=='brick'){
+        if(this.validateFieldForBricks()){
+          this.data.QuantityManufacturedAnnual = ""
+          this.data.QuantityRequiredAnnual = ""
+          this.data.QuantityRequiredInBalanceDays = ""
+          if(this.hasNetwork && this.visitMode == "Online"){
+            //  this.saveCustomerData();
+          }else {
+            // this.saveOfflineCustomerData();
+          } 
+        }       
+        
+      }else if(this.brickOrOther=='other'){
+        if(this.validateFieldForOthers()){
+          this.data.Current_Firing_Plan_monthly_avg = "";
+          this.data.Last_Year_Firing_Plan_monthly_avg = "";
+          this.data.Last_Year_Firing_Month = "";
+          this.data.Current_Year_Firing_Month = "";
+          this.data.ExpectedDateForConversion = "";
+          this.data.noOfRoundsInSeason = "";
+          this.data.Paya = "";
+          this.data.CHAMBER = "";
+          this.data.PayaChamber = "";
+          this.data.BrickKiln = "";
+          this.data.NoOfBircksPerRound = "";
+          this.data.CoalRequirementInSeason = "";
+          this.data.CoalRequirementPerRoundMT = "";
+          this.data.RequirementOfCoalinBalanceDaysOfSessionMT = "";
+          if(this.hasNetwork && this.visitMode == "Online"){
+            // this.saveCustomerData();
+          } else {
+            // this.saveOfflineCustomerData();
+          }                     
+        }
+      }
+
+      
+
+
     }
   }
 
+
+
+  async openCustomerSearchModal() {
+    if (this.data.CA_ID == undefined || this.data.CA_ID == '') {
+      this.toast.presentToast("Please select a CA", "error")
+      return
+    }
+    let data={
+      CA_ID: this.data.CA_ID,
+      visitMode:this.visitMode,
+      modalName:'customer'
+    }
+    const modal = await this.modalController.create({
+      component: SearchableDropdownComponent,
+      componentProps: {
+        modalData: data
+      }
+    });
+    
+    modal.present();
+
+    const  result  = await modal.onDidDismiss();
+
+    if (result.data) {
+      // console.log("Data received from modal:", result.data);
+      this.customerName = result.data.CustomerName;
+      this.customerCode = result.data.Customer_Code;
+      this.customerTypeValue = result.data.CategoryName;
+      this.customerCategoryTypeId = result.data.CategoryID;
+      this.districtName = result.data.DistrictName;
+      this.districtID = result.data.DistrictId;
+
+      this.Registerednumber = result.data.Registerednumber;
+
+      this.data.District_ID = result.data.DistrictId;
+      this.data.Visit_Customer_Name = result.data.CustomerName;
+      this.data.Customer_Code = result.data.Customer_Code;
+      this.data.CategoryID = result.data.CategoryID;
+      this.getExistingCustomerReportDetails(result.data.Customer_Code)
+    }
+  }  
+  
+  
+  async openDistrictSelectModal() {
+    let data={
+      CA_ID: this.data.CA_ID,
+      modalName:'district'
+    }
+    const modal = await this.modalController.create({
+      component: SearchableDropdownComponent,
+      componentProps: {
+        modalData: data
+      }
+    });
+    
+    modal.present();
+
+    const  result  = await modal.onDidDismiss();
+    this.districtName = result.data.DistrictName;
+    this.districtID = result.data.DistrictId;
+    this.data.District_ID = result.data.DistrictId;
+  }
+
+
+
+  getExistingCustomerReportDetails(customerId:string){
+    this.coreServices.GetCustomerDetails(customerId).subscribe(res=>{
+      console.log(res);
+      if(res.status=='Success'){
+        this.data=res
+        if (res.LAT!=null || res.LAT!='' || res.LAT!=undefined) {
+          this.lat = res.LAT;
+          this.long = res.LONG;
+          this.geotag=true;
+          this.geoTagChkBox=true
+        }else{
+          this.geoTagChkBox=false
+          this.geotag=false;
+          this.getCurrentLocation()
+        }
+
+        if (res.CategoryName === "Retail") {
+          this.data.CategoryID = "2";
+        } else if (res.CategoryName === "Institutional") {
+          this.data.CategoryID = "1";
+        }
+        this.customerTypeValue = res.CategoryName;
+        const lastfiringDate = moment(res.Last_Year_Firing_Month, 'YYYY-MM').format('MMMM YYYY');
+        this.data.Last_Year_Firing_Month = lastfiringDate;
+
+        const lastclosingDate = moment(res.LastYearFiringPlanCloseMonthAndYear, 'YYYY-MM').format('MMMM YYYY');
+       
+        this.data.LastYearFiringPlanCloseMonthAndYear = lastclosingDate;
+
+        const currentfiringDate = moment(res.Current_Year_Firing_Month, 'YYYY-MM').format('MMMM YYYY');
+        this.data.Current_Year_Firing_Month = currentfiringDate;
+
+        const conversionDate = moment(res.ExpectedDateForConversion, 'YYYY-MM').format('MMMM YYYY');
+        this.data.ExpectedDateForConversion = conversionDate;
+
+        const currentclosingDate = moment(res.CurrentYearFiringPlanCloseMonthAndYear, 'YYYY-MM').format('MMMM YYYY');
+        this.data.CurrentYearFiringPlanCloseMonthAndYear = currentclosingDate;
+
+        this.brickKiln=res.BrickKiln
+
+        //for image
+        if (res.FilePANPath && res.filebytePAN) {
+          this.data.FilePANPath = res.FilePANPath;
+          this.data.filebytePAN = res.filebytePAN;
+          this.data.FileNamePAN = res.FileNamePAN;
+          //this.fetchedFilePANPath = res.FilePANPath;
+          this.selectedImagePan = "data:image/jpeg;base64," + res.filebytePAN;
+          //this.selectedImagePan = this.data.FilePANPath;
+        } else {
+          this.data.filebytePAN = this.dataForBlank.filebytePAN;
+          this.data.FileNamePAN = this.dataForBlank.FileNamePAN;
+          this.data.FilePANPath = this.dataForBlank.FilePANPath;
+          this.selectedImagePan = null;
+        }
+
+
+        if (res.FileADHARPath && res.filebyteADHAR) {
+          this.data.FileADHARPath = res.FileADHARPath;
+          this.data.filebyteADHAR = res.filebyteADHAR;
+          this.data.FileNameADHAR = res.FileNameADHAR;
+          //this.fetchedFileADHARPath = res.FileADHARPath;
+          //this.selectedImageAadhaar = this.data.FileADHARPath;
+          this.selectedImageAadhaar = "data:image/jpeg;base64," + res.filebyteADHAR;
+        } else {
+          this.data.FileADHARPath = this.dataForBlank.FileADHARPath;
+          this.data.filebyteADHAR = this.dataForBlank.filebyteADHAR;
+          this.data.FileNameADHAR = this.dataForBlank.FileNameADHAR;
+          this.selectedImageAadhaar = null;
+        }
+
+        
+        if (res.FileTRLICENSEPath && res.filebyteTRLICENSE) {
+          this.data.FileTRLICENSEPath = res.FileTRLICENSEPath;
+          this.data.filebyteTRLICENSE = res.filebyteTRLICENSE;
+          this.data.FileNameTRLICENSE = res.FileNameTRLICENSE;
+          //this.fetchedFileTRLICENSEPath = res.FileTRLICENSEPath;
+          //this.selectedImageTrade = this.data.FileTRLICENSEPath;
+          this.selectedImageTrade = "data:image/jpeg;base64," + res.filebyteTRLICENSE;
+        } else {
+          this.data.filebyteTRLICENSE = this.dataForBlank.filebyteTRLICENSE;
+          this.data.FileNameTRLICENSE = this.dataForBlank.FileNameTRLICENSE;
+          this.data.FileTRLICENSEPath = this.dataForBlank.FileTRLICENSEPath;
+          this.selectedImageTrade = null;
+        }
+
+
+
+        if (res.FileCTOPath && res.filebyteCTO) {
+          this.data.FileCTOPath = res.FileCTOPath;
+          this.data.filebyteCTO = res.filebyteCTO;
+          this.data.FileNameCTO = res.FileNameCTO;
+          this.selectedImageCTO = "data:image/jpeg;base64," + res.filebyteCTO;
+        } else {
+          this.data.filebyteCTO = this.dataForBlank.filebyteCTO;
+          this.data.FileNameCTO = this.dataForBlank.FileNameCTO;
+          this.data.FileCTOPath = this.dataForBlank.FileCTOPath;
+          this.selectedImageCTO = null;
+        }
+
+
+        if (res.FileJIMMSPath && res.filebyteJIMMS) {
+          this.data.FileJIMMSPath = res.FileJIMMSPath;
+          this.data.filebyteJIMMS = res.filebyteJIMMS;
+          this.data.FileNameJIMMS = res.FileNameJIMMS;
+          this.selectedImageJIMMS = "data:image/jpeg;base64," + res.filebyteJIMMS;
+        } else {
+          this.data.filebyteJIMMS = this.dataForBlank.filebyteJIMMS;
+          this.data.FileNameJIMMS = this.dataForBlank.FileNameJIMMS;
+          this.data.FileJIMMSPath = this.dataForBlank.FileJIMMSPath;
+          this.selectedImageJIMMS = null;
+        }
+
+
+
+        if (res.FileOthersPath && res.filebyteOthers) {
+          this.data.FileOthersPath = res.FileOthersPath;
+          this.data.filebyteOthers = res.filebyteOthers;
+          this.data.FileNameOthers = res.FileNameOthers;
+          this.selectedImageExistingUser = "data:image/jpeg;base64," + res.filebyteOthers;
+        } else {
+          this.data.filebyteOthers = this.dataForBlank.filebyteOthers;
+          this.data.FileNameOthers = this.dataForBlank.FileNameOthers;
+          this.data.FileOthersPath = this.dataForBlank.FileOthersPath;
+          this.selectedImageExistingUser = null;
+        }
+
+
+        if (res.FileOthersPath1 && res.filebyteOthers1) {
+          this.data.FileOthersPath1 = res.FileOthersPath1;
+          this.data.filebyteOthers1 = res.filebyteOthers1;
+          this.data.FileNameOthers1 = res.FileNameOthers1;
+          this.selectedImageExistingUser1 = "data:image/jpeg;base64," + res.filebyteOthers1;
+        } else {
+          this.data.filebyteOthers1 = this.dataForBlank.filebyteOthers1;
+          this.data.FileNameOthers1 = this.dataForBlank.FileNameOthers1;
+          this.data.FileOthersPath1 = this.dataForBlank.FileOthersPath1;
+          this.selectedImageExistingUser1 = null;
+        }
+
+
+        this.districtName = this.data.DistrictName;
+        this.districtID = this.data.District_ID;
+        if (this.data.Product_Manufactured == "Brick") {
+          this.brickOrOther = 'brick';          
+          this.completed3 = true;
+          this.completed4 = false;
+        } else {
+          this.brickOrOther = 'other';          
+          this.completed3 = false;
+          this.completed4 = true;
+        }
+
+      }else{
+        this.coreServices.GetCustomerDetailsAgain(customerId).subscribe(res2=>{
+            this.data.Location = res2.Location;
+            this.data.Alternatephonenumber = res2.Alternatephonenumber;
+            this.data.Ownerphonenumber = res2.Ownerphonenumber;          
+        })
+
+        if (res.LAT==null || res.LAT=='' || res.LAT!=undefined) {
+          this.geoTagChkBox=false;
+          this.geotag= false;
+          console.log("LAT & Long", res.LAT, res.LONG);
+          console.log("GeoCheckBox Value ---------->>>", this.geoTagChkBox);
+        }
+        else{
+          this.geoTagChkBox=true;
+          this.geotag=true;
+          console.log("GeoCheckBox Value ---------->>>", this.geoTagChkBox);
+        }
+
+        this.getCurrentLocation();
+          
+        this.getNativeStorageData();
+
+
+        this.data.District_ID = this.districtID;
+        this.data.Visit_Customer_Name = this.customerName;
+        this.data.Customer_Code = this.customerCode;
+        this.data.CategoryID = this.customerCategoryTypeId;
+        this.data.LAT = this.lat;
+        this.data.LONG = this.long;
+
+        this.selectedImagePan = null;
+        this.selectedImageAadhaar = null;
+        this.selectedImageTrade = null;
+      }
+      
+    })
+    this.getNativeStorageData();
+  }
+
+
+
+
+  async getCurrentLocation() {
+    try {
+      // Request the current position
+      const position = await Geolocation.getCurrentPosition();
+
+      // Access the latitude and longitude
+      this.lat = position.coords.latitude;
+      this.long = position.coords.longitude;
+
+      this.data.LAT=position.coords.latitude.toString()
+      this.data.LONG=position.coords.longitude.toString()
+
+      console.log('Latitude:', this.lat);
+      console.log('Longitude:', this.long);
+    } catch (error) {
+      console.error('Error getting location', error);
+    }
+  }
+
+
+  CheckboxgeotagClicked() {    
+    if (this.geotag) {
+      this.geotag = false;
+    } else {
+      this.geotag = true;
+    }
+  }
+
+
+
+  validateDecimal(data:any){
+      var reg = /^(?!^\.|\.\d+$|\d*\.\d*$)\d+$/;
+      console.log('test',reg.test(data.trim()) );  
+      return reg.test(data.trim())      
+    }
+
+
+
+  validateFieldForBricks(): boolean {
+    if (!this.data.District_ID || this.data.District_ID.length < 1) {
+      this.toast.presentToast("Please select a district name.", 'error');
+      return false;
+    } else if (!this.data.Visit_Customer_Name || this.data.Visit_Customer_Name.length < 1) {
+      this.toast.presentToast("Please enter customer name.", 'error');
+      return false;
+    } else if (!this.data.CategoryID || this.data.CategoryID.length < 1) {
+      this.toast.presentToast("Please select a type of customer.", 'error');
+      return false;
+    } else if (!this.data.Location || this.data.Location.length < 1) {
+      this.toast.presentToast("Please enter location name.", 'error');
+      return false;
+    } else if (!this.data.Product_Manufactured || this.data.Product_Manufactured.length < 1) {
+      this.toast.presentToast("Please select manufactured product type.", 'error');
+      return false;
+    } else if (this.data.BrickKiln.length < 1) {
+      this.toast.presentToast("Please select Brick Kiln.", 'error');
+      return false;
+    } else if ((this.data.BrickKiln == 'FCBT' && !this.data.Paya.trim()) || (this.data.BrickKiln == 'FCBT' && this.data.Paya.length < 1)) {
+      this.toast.presentToast("Please enter paya value.", 'error');
+      return false;
+    } else if (this.data.BrickKiln == 'FCBT' && !this.validateDecimal(this.data.Paya)) {
+      this.toast.presentToast("Paya value must be non-decimal.", 'error');
+      return false;
+    } else if ((this.data.BrickKiln == 'ZigZag' && !this.data.CHAMBER) || (this.data.BrickKiln == 'ZigZag' && this.data.CHAMBER.length < 1)) {
+      this.toast.presentToast("Please enter chamber value.", 'error');
+      return false;
+    } else if ((this.data.BrickKiln == 'HawaBhatta' && !this.data.PayaChamber) || (this.data.BrickKiln == 'HawaBhatta' && this.data.PayaChamber.length < 1)) {
+      this.toast.presentToast("Please enter paya/chamber value.", 'error');
+      return false;
+    } else if (!this.data.ExpectedDateForConversion || this.data.ExpectedDateForConversion.length < 1) {
+      this.toast.presentToast("Please enter Expected Date of conversion to ZigZag/Hawa Bhatta.", 'error');
+      return false;
+    } else if (!this.data.CurrentYearFiringPlanStartMonthAndYear || this.data.CurrentYearFiringPlanStartMonthAndYear.length < 1) {
+      this.toast.presentToast("Please enter Current Year Firing Plan: START.", 'error');
+      return false;
+    } else if (!this.data.CurrentYearFiringPlanCloseMonthAndYear || this.data.CurrentYearFiringPlanCloseMonthAndYear.length < 1) {
+      this.toast.presentToast("Please enter Current Year Firing Plan: CLOSE.", 'error');
+      return false;
+    } else if (!this.data.LastYearFiringPlanStartMonthAndYear || this.data.LastYearFiringPlanStartMonthAndYear.length < 1) {
+      this.toast.presentToast("Please enter Last Year Firing Plan: START.", 'error');
+      return false;
+    } else if (!this.data.LastYearFiringPlanCloseMonthAndYear || this.data.LastYearFiringPlanCloseMonthAndYear.length < 1) {
+      this.toast.presentToast("Please enter Last Year Firing Plan: CLOSE.", 'error');
+      return false;
+    } else if (!this.data.noOfRoundsInSeason.trim() || this.data.noOfRoundsInSeason.length < 1) {
+      this.toast.presentToast("Please enter no of rounds in season.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.noOfRoundsInSeason)) {
+      this.toast.presentToast("No of rounds in season must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.NoOfBircksPerRound.trim() || this.data.NoOfBircksPerRound.length < 1) {
+      this.toast.presentToast("Please enter no of bricks per round.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.NoOfBircksPerRound)) {
+      this.toast.presentToast("No of bricks per round must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.CoalRequirementInSeason.trim() || this.data.CoalRequirementInSeason.length < 1) {
+      this.toast.presentToast("Please enter coal requirement in season.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.CoalRequirementInSeason)) {
+      this.toast.presentToast("Coal requirement in season must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.InventoryOfCoal.trim() || this.data.InventoryOfCoal.length < 1) {
+      this.toast.presentToast("Please enter inventory of coal.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.InventoryOfCoal)) {
+      this.toast.presentToast("Inventory of coal must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Requirements.trim() || this.data.Requirements.length < 1) {
+      this.toast.presentToast("Please enter requirements.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Requirements)) {
+      this.toast.presentToast("Requirements must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Ghato_Usage.trim() || this.data.Ghato_Usage.length < 1) {
+      this.toast.presentToast("Please enter ghato usage.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Ghato_Usage)) {
+      this.toast.presentToast("Ghato usage must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Competition || this.data.Competition.length < 1) {
+      this.toast.presentToast("Please enter competition.", 'error');
+      return false;
+    } else if (!this.data.LandedPriceCompetitionCoal || this.data.LandedPriceCompetitionCoal.length < 1) {
+      this.toast.presentToast("Please enter landed price competition coal.", 'error');
+      return false;
+    } else if (!this.data.Avg_price_perThousand_bricks || this.data.Avg_price_perThousand_bricks.length < 1) {
+      this.toast.presentToast("Please enter average price per thousand bricks.", 'error');
+      return false;
+    } else if (!this.data.Number_of_kilns_in_Visinity.trim() || this.data.Number_of_kilns_in_Visinity.length < 1) {
+      this.toast.presentToast("Please enter Number of kilns in Visinity.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Number_of_kilns_in_Visinity)) {
+      this.toast.presentToast("Number of kilns in Visinity must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Inventory_Raw_Bricks || this.data.Inventory_Raw_Bricks.length < 1) {
+      this.toast.presentToast("Please enter Inventory Raw Bricks.", 'error');
+      return false;
+    } else if (!this.data.Inventory_Prepared_Bricks.trim() || this.data.Inventory_Prepared_Bricks.length < 1) {
+      this.toast.presentToast("Please enter Inventory Prepared Bricks.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Inventory_Prepared_Bricks)) {
+      this.toast.presentToast("Inventory Prepared Bricks must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Remarks || this.data.Remarks.length < 1) {
+      this.toast.presentToast("Please enter Remarks.", 'error');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+
+
+  validateFieldForOthers(): boolean {
+    if (!this.data.District_ID || this.data.District_ID.length < 1) {
+      this.toast.presentToast("Please select a district name.", 'error');
+      return false;
+    } else if (!this.data.Visit_Customer_Name || this.data.Visit_Customer_Name.length < 1) {
+      this.toast.presentToast("Please enter customer name.", 'error');
+      return false;
+    } else if (!this.data.CategoryID || this.data.CategoryID.length < 1) {
+      this.toast.presentToast("Please select a type of customer.", 'error');
+      return false;
+    } else if (!this.data.Location || this.data.Location.length < 1) {
+      this.toast.presentToast("Please enter location name.", 'error');
+      return false;
+    } else if (!this.data.Product_Manufactured || this.data.Product_Manufactured.length < 1) {
+      this.toast.presentToast("Please select manufactured product type.", 'error');
+      return false;
+    } else if (!this.data.QuantityManufacturedAnnual.trim() || this.data.QuantityManufacturedAnnual.length < 1) {
+      this.toast.presentToast("Please enter quantity manufactured annually.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.QuantityManufacturedAnnual)) {
+      this.toast.presentToast("Quantity manufactured annually must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.QuantityRequiredAnnual.trim() || this.data.QuantityRequiredAnnual.length < 1) {
+      this.toast.presentToast("Please enter quantity required annually.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.QuantityRequiredAnnual)) {
+      this.toast.presentToast("Quantity required annually must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.InventoryOfCoal.trim() || this.data.InventoryOfCoal.length < 1) {
+      this.toast.presentToast("Please enter inventory of coal.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.InventoryOfCoal)) {
+      this.toast.presentToast("Inventory of coal must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Requirements.trim() || this.data.Requirements.length < 1) {
+      this.toast.presentToast("Please enter requirements.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Requirements)) {
+      this.toast.presentToast("Requirements must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Ghato_Usage.trim() || this.data.Ghato_Usage.length < 1) {
+      this.toast.presentToast("Please enter ghato usage.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Ghato_Usage)) {
+      this.toast.presentToast("Ghato usage must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Competition || this.data.Competition.length < 1) {
+      this.toast.presentToast("Please enter competition.", 'error');
+      return false;
+    } else if (!this.data.LandedPriceCompetitionCoal || this.data.LandedPriceCompetitionCoal.length < 1) {
+      this.toast.presentToast("Please enter landed price competition coal.", 'error');
+      return false;
+    } else if (!this.data.Avg_price_perThousand_bricks || this.data.Avg_price_perThousand_bricks.length < 1) {
+      this.toast.presentToast("Please enter average price per thousand bricks.", 'error');
+      return false;
+    } else if (!this.data.Number_of_kilns_in_Visinity.trim() || this.data.Number_of_kilns_in_Visinity.length < 1) {
+      this.toast.presentToast("Please enter Number of kilns in Visinity.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Number_of_kilns_in_Visinity)) {
+      this.toast.presentToast("Number of kilns in Visinity must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Inventory_Raw_Bricks || this.data.Inventory_Raw_Bricks.length < 1) {
+      this.toast.presentToast("Please enter Inventory Raw Bricks.", 'error');
+      return false;
+    } else if (!this.data.Inventory_Prepared_Bricks.trim() || this.data.Inventory_Prepared_Bricks.length < 1) {
+      this.toast.presentToast("Please enter Inventory Prepared Bricks.", 'error');
+      return false;
+    } else if (!this.validateDecimal(this.data.Inventory_Prepared_Bricks)) {
+      this.toast.presentToast("Inventory Prepared Bricks must be non-decimal.", 'error');
+      return false;
+    } else if (!this.data.Remarks || this.data.Remarks.length < 1) {
+      this.toast.presentToast("Please enter Remarks.", 'error');
+      return false;
+    } else {
+      return true;
+    }
+  }
+  
+
+
+
+  
+  
 
 
 

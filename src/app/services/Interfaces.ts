@@ -125,3 +125,147 @@ export interface VisitReportSaveModel {
     FileOthersPath1?: string,
     filebyteOthers1?: string
 }
+
+export interface Comp {
+    CA_ID?: any,
+    Customer_Code?: string,
+    CustomerName?: string,
+    Complain?: any,
+    ComplaintDate?: any,
+    Response?: any,
+    Status?: any,
+    fromDate?: any,
+    toDate?: any,
+    message?: any
+}
+
+export interface ComplaintsCustomerList {
+    comps?: Comp[],
+    Status?: string
+}
+
+
+export interface VisitReportResponseModel{
+    sysuser_id?: any,
+    sysuser_pwd?: any,
+    CA_ID?: string,
+    AgencyName?: any,
+    Agent_ID?: string,
+    AgentName?: any,
+    ORG_ID?: string,
+    District_ID?: string,
+    DistrictName?: string,
+    Visit_Date?: string,
+    ProprietorName?: string,
+    PropritorPhoneNo?: string,
+    YearOfEstablishment?: string,
+    Visit_Customer_Name?: string,
+    Customer_Code?: string,
+    Location?: string,
+    Product_Manufactured?: string,
+    Current_Firing_Plan_monthly_avg?: string,
+    Last_Year_Firing_Plan_monthly_avg?: string,
+    LastYearFiringPlanCloseMonthAndYear?: string,
+    LastYearFiringPlanStartMonthAndYear?: string,
+    CurrentYearFiringPlanCloseMonthAndYear?: string,
+    CurrentYearFiringPlanStartMonthAndYear?: string,
+    BlockName?: string,
+    OwnerName?: string,
+    DocType?: string,
+    OtherName?: string,
+    OtherName1?: string,
+    Ownerphonenumber?: string,
+    Alternatephonenumber?: string,
+    Registerednumber?: string,
+    noOfRoundsInSeason?: string,
+    Paya?: string,
+    CHAMBER?: string,
+    PayaChamber?: string,
+    BrickKiln?: string,
+    NoOfBircksPerRound?: string,
+    CoalRequirementInSeason?: string,
+    CoalRequirementPerRoundMT?: string,
+    RequirementOfCoalinBalanceDaysOfSessionMT?: string,
+    QuantityManufacturedAnnual?: string,
+    QuantityRequiredAnnual?: string,
+    QuantityRequiredInBalanceDays?: string,
+    InventoryOfCoal?: string,
+    Requirements?: string,
+    Ghato_Usage?: string,
+    Competition?: string,
+    LandedPriceCompetitionCoal?: string,
+    Avg_price_perThousand_bricks?: string,
+    Number_of_kilns_in_Visinity?: string,
+    Inventory_Prepared_Bricks?: string,
+    Inventory_Raw_Bricks?: string,
+    Remarks?: string,
+    LAT?: string,
+    LONG?: string,
+    CreatedDate?: string,
+    CreatedBY?: string,
+    UpdateDate?: string,
+    UpdatedBY?: string,
+    status?: string,
+    message?: string,
+    fromDate?: any,
+    toDate?: any,
+    CategoryID?: any,
+    CategoryName?: any,
+    Last_Year_Firing_Month?: any,
+    Current_Year_Firing_Month?: any,
+    ExpectedDateForConversion?: any,
+    FileNamePAN?: string,
+    FilePANPath?: string,
+    filebytePAN?: string,
+
+    FileNameADHAR?: string,
+    FileADHARPath?: string,
+    filebyteADHAR?: string,
+
+    FileNameTRLICENSE?: string,
+    FileTRLICENSEPath?: string,
+    filebyteTRLICENSE?: string,
+
+    FileNameCTO?: string,
+    FileCTOPath?: string,
+    filebyteCTO?: string,
+
+    FileNameJIMMS?: string,
+    FileJIMMSPath?: string,
+    filebyteJIMMS?: string,
+
+    FileNameOthers?: string,
+    FileOthersPath?: string,
+    filebyteOthers?: string,
+
+    FileNameOthers1?: string,
+    FileOthersPath1?: string,
+    filebyteOthers1?: string
+}
+
+
+
+export interface VisitReportDistrictResponseModel{
+    DistrictId?: string,
+    DistrictName?: string,
+    CA_Id?: string
+}
+
+
+export interface DailyVisitReportSearchModel {
+    userId?:string,
+    CaId?:string,
+    fromDate?:any,
+    toDate?:any,
+    DistrictID?:string
+ }
+
+
+ export interface User {
+    id: number
+    name: string
+    active: number
+    /* for version 2
+    email: string
+    */
+}
