@@ -21,18 +21,14 @@
   <div class="flex-container">    
 
     <div class="inputContainer">
-      <div style="display: inline-flex">Select District <div style="color: red;">*</div></div>
-      <ion-select class="input" placeholder="Select one">
-        <ion-select-option value="option1">Option 1</ion-select-option>
-        <ion-select-option value="option2">Option 2</ion-select-option>
-        <ion-select-option value="option3">Option 3</ion-select-option>
-      </ion-select>
+      <div style="display: inline-flex; gap: 5px;">District Name<div style="color: red;">*</div></div>
+      <ion-input [(ngModel)]="districtName" placeholder="Press to select district" (click)="openDistrictSelectModal()" class="input" type="text" ></ion-input>
     </div>
 
     <div class="inputContainer">
       <div style="display: inline-flex">Start Date <div style="color: red; padding-left: 5px;">*</div></div>
-      <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly></ion-input>
-        <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal()">
+      <div class="input" style="display: flex; flex-direction: row;"><ion-input [(ngModel)]="selectedStartDateTime" type="text" readonly></ion-input>
+        <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('startDate')">
           <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
         </div>
       </div>
@@ -40,8 +36,8 @@
 
     <div class="inputContainer">
       <div style="display: inline-flex">End Date <div style="color: red; padding-left: 5px;">*</div></div>
-      <div class="input" style="display: flex; flex-direction: row;"><ion-input type="text" readonly></ion-input>
-        <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal()">
+      <div class="input" style="display: flex; flex-direction: row;"><ion-input [(ngModel)]="selectedEndDateTime" type="text" readonly></ion-input>
+        <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('endDate')">
           <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
         </div>
       </div>
@@ -107,15 +103,39 @@
 
   
   
-  <ion-modal [isOpen]="isModalOpen">
+  <ion-modal [isOpen]="isStartDateModalOpen">
     <ng-template>
       <ion-content>
 
         <div class="datetime-container">
           <ion-datetime
-            [(ngModel)]="selectedDateTime"
+            [(ngModel)]="selectedStartDateTime"
             presentation="date"
-            (ionChange)="onDateTimeChange($event)"
+            (ionChange)="onDateTimeChange($event,'startDate')"
+          ></ion-datetime>
+        </div>
+  
+
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button>
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+
+
+  <ion-modal [isOpen]="isEndDateModalOpen">
+    <ng-template>
+      <ion-content>
+
+        <div class="datetime-container">
+          <ion-datetime
+            [(ngModel)]="selectedEndDateTime"
+            presentation="date"
+            (ionChange)="onDateTimeChange($event,'endDate')"
           ></ion-datetime>
         </div>
   

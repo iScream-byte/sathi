@@ -41,7 +41,7 @@ export class SearchableDropdownComponent implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
-    
+    this.loader.showLoader()
     if(this.modalData.modalName=='customer'){
       const caId = this.modalData.CA_ID;
 
@@ -50,18 +50,21 @@ export class SearchableDropdownComponent implements OnInit {
           if (res.Status === 'Success') {
             this.customerList = res.comps;
             this.filterCustomerName = this.customerList;
+            this.loader.dismissLoader();
           } else {
             this.customerList = [];
             this.filterCustomerName = [];
+            this.loader.dismissLoader();
           }
         },
         (error) => {
           console.error('Error fetching customer list', error);
           this.customerList = [];
           this.filterCustomerName = [];
+          this.loader.dismissLoader();
         },
         () => {
-          this.loader.dismissLoader();
+          // this.loader.dismissLoader();
         }
       );
 
@@ -74,13 +77,16 @@ export class SearchableDropdownComponent implements OnInit {
           if(res.length>0){
             this.districtList = res;
             this.filterDistrict = this.districtList;
+            this.loader.dismissLoader();
           }else{
             this.districtList = [undefined]; 
-            this.filterDistrict = [];            
+            this.filterDistrict = [];    
+            this.loader.dismissLoader();        
           }
         }else{
           this.districtList = [undefined];
           this.filterDistrict = [];
+          this.loader.dismissLoader();
         }
         
       })

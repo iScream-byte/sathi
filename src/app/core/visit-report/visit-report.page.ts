@@ -832,7 +832,7 @@ export class VisitReportPage implements OnInit {
           this.data.QuantityRequiredAnnual = ""
           this.data.QuantityRequiredInBalanceDays = ""
           if(this.hasNetwork && this.visitMode == "Online"){
-            //  this.saveCustomerData();
+             this.saveCustomerData();
           }else {
             // this.saveOfflineCustomerData();
           } 
@@ -855,7 +855,7 @@ export class VisitReportPage implements OnInit {
           this.data.CoalRequirementPerRoundMT = "";
           this.data.RequirementOfCoalinBalanceDaysOfSessionMT = "";
           if(this.hasNetwork && this.visitMode == "Online"){
-            // this.saveCustomerData();
+            this.saveCustomerData();
           } else {
             // this.saveOfflineCustomerData();
           }                     
@@ -1360,6 +1360,40 @@ export class VisitReportPage implements OnInit {
     }
   }
   
+
+
+
+
+  saveCustomerData(){
+    this.getNativeStorageData()
+    
+    this.data.VisitType=this.visitType
+    this.data.CreatedBY =this.creater_id;
+    this.data.CA_ID = this.CA_ID;
+    this.data.Agent_ID = this.agentID_id;
+    this.data.ORG_ID = this.org_id;
+    this.data.VisitMode=this.visitMode
+
+    console.log('******Creator ID',this.data.CreatedBY );
+    console.log('******CA ID', this.data.CA_ID );
+    console.log('******Agent ID',this.data.Agent_ID );
+    console.log('******ORG ID', this.data.ORG_ID);
+    console.log('****** visit type',this.data.VisitType);
+    console.log('****** visit moode',this.data.VisitMode);
+
+
+    this.coreServices.SaveCustomerReport(this.data).subscribe(res=>{
+      console.log(res);
+      alert(res)
+      
+    },err=>{
+      console.log('errorr================',err);
+      alert(err.statusText)
+      
+    })
+  }
+
+
 
 
 
