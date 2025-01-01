@@ -146,4 +146,14 @@ export class CoreService {
       { headers: headers }
     );
   }
+
+  GetVisitReportSummary(payload){
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('userId', payload.userId);
+    urlSearchParams.append('CaId', payload.CaId);
+    urlSearchParams.append('fromDate', payload.fromDate);
+    urlSearchParams.append('toDate', payload.toDate);
+    urlSearchParams.append('DistrictID', payload.DistrictID);
+    return this.http.get(configs.apiBase+'GetDatewiseVisitSummary?'+urlSearchParams)
+  }
 }
