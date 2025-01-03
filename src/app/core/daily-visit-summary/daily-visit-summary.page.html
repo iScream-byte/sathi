@@ -54,38 +54,38 @@
     </div>
 
 
-    <div class="product-price">
+    <div class="product-price" *ngFor="let item of searchResults">
       <div class="row">
         <div>Date Of Visit:</div>
-        <div>5056</div>
+        <div>{{item.Visit_Date}}</div>
       </div>
       <div  class="row">
         <div>Agent Name:</div>
-        <div>25%</div>
+        <div>{{item.AgentName}}</div>
       </div>
       <div  class="row">
         <div>Customer Name:</div>
-        <div>10%</div>
+        <div>{{item.Visit_Customer_Name}}</div>
       </div>
       <div  class="row">
         <div>Customer Type:</div>
-        <div>28443</div>
+        <div>{{item.Customer_Code}}</div>
       </div>      
       <div  class="row">
         <div>Customer Type:</div>
-        <div>28443</div>
+        <div>{{item.CategoryName}}</div>
       </div>      
       <div  class="row">
         <div>Location:</div>
-        <div>28443</div>
+        <div>{{item.Location}}</div>
       </div>      
       <div  class="row">
         <div>District:</div>
-        <div>28443</div>
+        <div>{{item.DistrictName}}</div>
       </div>      
       <div  class="row">
         <div>Industry Type:</div>
-        <div>28443</div>
+        <div>{{item.IndustryType}}</div>
       </div>      
       <div  class="row">
         <div></div>

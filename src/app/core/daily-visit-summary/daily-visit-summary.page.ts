@@ -5,7 +5,7 @@ import { IonDatetime, ModalController, Platform } from '@ionic/angular';
 import { MenuController } from '@ionic/angular';
 import * as moment from 'moment';
 import { CoreService } from 'src/app/services/core.service';
-import { DailyVisitReportSearchModel } from 'src/app/services/Interfaces';
+import { DailyResponseArray, DailyVisitReportSearchModel } from 'src/app/services/Interfaces';
 import { LocalStorageService } from 'src/app/services/localstorage.service';
 import { MyLoader } from 'src/app/shared/MyLoader';
 import { SearchableDropdownComponent } from 'src/app/utils/searchable-dropdown/searchable-dropdown.component';
@@ -32,6 +32,8 @@ export class DailyVisitSummaryPage implements OnInit {
     toDate: '',
     DistrictID: ''
   };
+
+  searchResults?:DailyResponseArray[]
   
   constructor(
     private router:Router,
@@ -101,13 +103,17 @@ export class DailyVisitSummaryPage implements OnInit {
   }
 
   search(){
-    // this.loader.showLoader('searching for records...')
-    // setTimeout(() => {
-    //   this.loader.stopLoader()
-    // }, 3000);
+    this.loader.showLoader('searching for records...')
     this.dataForSearch.DistrictID = this.selectedDistrictId;
     this.coreServices.GetVisitReportSummary(this.dataForSearch).subscribe((res:any)=>{
-      alert(res.status)
+      console.log(res);
+      if(res.status=='Success'){
+        this.searchResults=res.visitLst
+        this.loader.stopLoader()
+      }else{
+        this.loader.stopLoader()
+      }
+      
     })
     // alert(this.dataForSearch.userId)
   }

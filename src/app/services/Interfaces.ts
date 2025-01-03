@@ -345,4 +345,5 @@ export interface DailyResponseArray {
   FileNameOthers?: string;
   FileOthersPath?: string;
   filebyteOthers?: string;
+  IndustryType?:string
 }
