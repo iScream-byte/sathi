@@ -35,7 +35,11 @@ const routes: Routes = [
   {
     path: 'visit-report',
     loadChildren: () => import('./core/visit-report/visit-report.module').then( m => m.VisitReportPageModule)
+  },  {
+    path: 'view-complaint',
+    loadChildren: () => import('./core/view-complaint/view-complaint.module').then( m => m.ViewComplaintPageModule)
   },
+
 
 
 

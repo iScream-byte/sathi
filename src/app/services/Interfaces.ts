@@ -345,5 +345,13 @@ export interface DailyResponseArray {
   FileNameOthers?: string;
   FileOthersPath?: string;
   filebyteOthers?: string;
-  IndustryType?:string
+  IndustryType?: string;
+}
+
+export interface CAListResponseModel {
+  DistrictId?: string,
+  CA_Name?: string,
+  CA_ID?: string,
+  Loc_ID?: string,
+  Location?: string
 }

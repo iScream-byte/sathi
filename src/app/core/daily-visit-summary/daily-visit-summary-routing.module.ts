@@ -9,7 +9,7 @@ const routes: Routes = [
     component: DailyVisitSummaryPage
   },
   {
-    path: ':id',
+    path: 'details',
     loadChildren: () => import('./visit-summary-details/visit-summary-details.module').then( m => m.VisitSummaryDetailsPageModule)
   }
 

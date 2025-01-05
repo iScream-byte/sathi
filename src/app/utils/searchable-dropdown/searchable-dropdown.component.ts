@@ -40,8 +40,11 @@ export class SearchableDropdownComponent implements OnInit {
 
   ngOnInit() {}
 
-  ionViewWillEnter() {
+  ionViewWillEnter() {    
     this.loader.showLoader()
+  }
+
+  ionViewDidEnter(){
     if(this.modalData.modalName=='customer'){
       const caId = this.modalData.CA_ID;
 
@@ -50,21 +53,18 @@ export class SearchableDropdownComponent implements OnInit {
           if (res.Status === 'Success') {
             this.customerList = res.comps;
             this.filterCustomerName = this.customerList;
-            this.loader.dismissLoader();
+            this.loader.stopLoader();
           } else {
             this.customerList = [];
             this.filterCustomerName = [];
-            this.loader.dismissLoader();
+            this.loader.stopLoader();
           }
         },
         (error) => {
           console.error('Error fetching customer list', error);
           this.customerList = [];
           this.filterCustomerName = [];
-          this.loader.dismissLoader();
-        },
-        () => {
-          // this.loader.dismissLoader();
+          this.loader.stopLoader();
         }
       );
 
@@ -73,28 +73,29 @@ export class SearchableDropdownComponent implements OnInit {
 
     if(this.modalData.modalName=='district'){
       this.dropdownService.GetDistrictList(this.modalData.CA_ID).subscribe(res=>{
-        if(res){
+        if(res){          
           if(res.length>0){
             this.districtList = res;
-            this.filterDistrict = this.districtList;
-            this.loader.dismissLoader();
+            this.filterDistrict = this.districtList;           
+            this.loader.stopLoader();
           }else{
             this.districtList = [undefined]; 
-            this.filterDistrict = [];    
-            this.loader.dismissLoader();        
+            this.filterDistrict = []; 
+            this.loader.stopLoader();        
           }
         }else{
           this.districtList = [undefined];
           this.filterDistrict = [];
-          this.loader.dismissLoader();
-        }
-        
+          this.loader.stopLoader();
+        }        
+      },err=>{
+        this.districtList = [undefined];
+        this.filterDistrict = [];
+        this.loader.stopLoader()
       })
-
     }
-
-
   }
+
 
   selectCustomer(customer) {
     this.modalController.dismiss(customer);
@@ -129,6 +130,7 @@ export class SearchableDropdownComponent implements OnInit {
   didSelect(data: any) {
     this.modalController.dismiss(data);
   }
+
 
 
 }

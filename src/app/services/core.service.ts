@@ -156,4 +156,7 @@ export class CoreService {
     urlSearchParams.append('DistrictID', payload.DistrictID);
     return this.http.get(configs.apiBase+'GetDatewiseVisitSummary?'+urlSearchParams)
   }
+
+
+  
 }
