@@ -93,7 +93,7 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'Customer Payment',
-              url: '/folder/archived',
+              url: 'payment-status',
               icon: 'wallet',
             },
             {
@@ -150,7 +150,7 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'Customer Payment',
-              url: '/folder/archived',
+              url: 'payment-status',
               icon: 'wallet',
             },
             {
@@ -212,7 +212,7 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'Customer Payment',
-              url: '/folder/archived',
+              url: 'payment-status',
               icon: 'wallet',
             },
             {

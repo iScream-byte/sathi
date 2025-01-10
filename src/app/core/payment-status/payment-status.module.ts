@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ViewComplaintPageRoutingModule } from './view-complaint-routing.module';
+import { PaymentStatusPageRoutingModule } from './payment-status-routing.module';
 
-import { ViewComplaintPage } from './view-complaint.page';
+import { PaymentStatusPage } from './payment-status.page';
 import { FooterComponent } from "../../shared/footer/footer.component";
 
 @NgModule({
@@ -14,9 +14,9 @@ import { FooterComponent } from "../../shared/footer/footer.component";
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewComplaintPageRoutingModule,
+    PaymentStatusPageRoutingModule,
     FooterComponent
 ],
-  declarations: [ViewComplaintPage]
+  declarations: [PaymentStatusPage]
 })
-export class ViewComplaintPageModule {}
+export class PaymentStatusPageModule {}

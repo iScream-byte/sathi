@@ -43,7 +43,7 @@
       <span class="icon-text">View Complaints</span>
     </div>
     <div class="inner-icon-container">
-      <ion-icon class="icons" name="wallet"></ion-icon>
+      <ion-icon class="icons" name="wallet" (click)="navigateTo('payment-status')"></ion-icon>
       <span class="icon-text">Payment Status</span>
     </div>
   </div>
@@ -53,7 +53,7 @@
       <span class="icon-text">New Cust. Reg. Summary</span>
     </div>
     <div class="inner-icon-container">
-      <ion-icon class="icons" name="clipboard"></ion-icon>
+      <ion-icon class="icons" name="clipboard" (click)="navigateTo('booking-confirmation-status')"></ion-icon>
       <span class="icon-text">Booking Confirmation Status</span>
     </div>
     <div class="inner-icon-container" (click)="navigateTo('customer-dashboard')">

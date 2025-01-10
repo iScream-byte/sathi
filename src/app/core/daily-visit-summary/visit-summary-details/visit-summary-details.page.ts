@@ -5,7 +5,6 @@ import { Location } from '@angular/common';
 import { DailyResponseArray } from 'src/app/services/Interfaces';
 import { MyLoader } from 'src/app/shared/MyLoader';
 import { Browser } from '@capacitor/browser';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 @Component({
   selector: 'app-visit-summary-details',
   templateUrl: './visit-summary-details.page.html',
@@ -25,7 +24,6 @@ export class VisitSummaryDetailsPage implements OnInit {
     private menuController: MenuController,
     private acRoute:ActivatedRoute,
     private loader:MyLoader,
-    private iab: InAppBrowser
   ) {  }
 
   ngOnInit() {
@@ -64,28 +62,12 @@ export class VisitSummaryDetailsPage implements OnInit {
     this.menuController.toggle()    
   }
 
-  openBrowser() {
-    const browser = this.iab.create('https://www.google.com/maps/search/?api=1&query='+this.dataForSummary.LAT+','+this.dataForSummary.LONG, '_self', {
-      location: 'no', 
-      zoom: 'no',      
-      toolbar: 'no', 
-    });
 
-    browser.on('loadstart').subscribe(() => {
-    });
-
-    browser.on('loadstop').subscribe(() => {
-    });
-
-    browser.on('exit').subscribe(() => {
-    });
-  }
 
   async openInApp() {
-    // Open a URL inside the app using Capacitor Browser
     await Browser.open({
       url: 'https://www.google.com/maps/search/?api=1&query='+this.dataForSummary.LAT+','+this.dataForSummary.LONG,
-      presentationStyle: 'fullscreen', // For iOS, use 'fullscreen' or 'popover'
+      presentationStyle: 'fullscreen',
     });
   }
 

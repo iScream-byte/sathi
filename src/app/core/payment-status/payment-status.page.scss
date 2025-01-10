@@ -1,5 +1,5 @@
 
-.flex-container {
+  .flex-container {
     display: flex;           
     flex-direction: column; 
     gap: 16px;              
@@ -54,8 +54,50 @@
     justify-content: space-between;
   }
 
+
   .inactive{
     opacity: 0.5; 
     pointer-events: none; 
   }
   
+
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: rgb(48, 48, 48);
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid rgb(94, 94, 94);
+  }
+  
+  th {
+    background-color: #cbd9ff;
+  }
+  
+  td {
+    text-align: center;
+    font-size: smaller;
+  }
+
+  tr:nth-child(odd) {
+    background-color: #f0f0f0;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #d8d8d8;
+  }
+  
+
+  ion-card-header {
+    text-align: center; 
+  }
+  
+  ion-card-title {
+    display: inline-block; 
+    margin: 0 auto;
+  }

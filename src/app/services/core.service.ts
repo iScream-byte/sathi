@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { configs } from './../../environments/configs';
-import { VisitReportResponseModel, VisitReportSaveModel } from './Interfaces';
+import { BookingSummaryDetailsResponse, PaymentResponseModel, VisitReportResponseModel, VisitReportSaveModel } from './Interfaces';
+import { BookingSummaryResponseModel } from 'src/app/services/Interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -155,6 +156,30 @@ export class CoreService {
     urlSearchParams.append('toDate', payload.toDate);
     urlSearchParams.append('DistrictID', payload.DistrictID);
     return this.http.get(configs.apiBase+'GetDatewiseVisitSummary?'+urlSearchParams)
+  }
+
+
+  GetComplaintList(source:any,queries:any){
+    if(source=='sahaj'){
+      return this.http.get(configs.apiBase+'GetComplaintDetails?'+queries)
+    }else{
+      return this.http.get(configs.apiBase+'GetHelpDeskList?'+queries)    
+    }
+  }
+
+
+  GetPaymentStatus(queries:any){
+    return this.http.get<PaymentResponseModel>(configs.apiBase+'GetPaymentDetails?'+queries)
+  }
+
+
+  GetBookingSummary(queries:string){
+    return this.http.get<BookingSummaryResponseModel>(configs.apiBase+'GetBookingSummary?'+queries)
+  }
+
+
+  GetBookingSummaryDetails(queries:string){
+    return this.http.get<BookingSummaryDetailsResponse>(configs.apiBase+'GetBookingStatusType?'+queries)
   }
 
 

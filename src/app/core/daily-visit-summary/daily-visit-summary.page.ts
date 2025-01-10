@@ -75,7 +75,7 @@ export class DailyVisitSummaryPage implements OnInit {
         this.roleType = this.userDetails.roletype;
         this.dataForSearch.userId = this.userDetails.userId;
         this.dataForSearch.CaId = this.userDetails.ca_id;
-        if (this.roleType != 'AGENT') {
+        if (this.roleType != 'TSL') {
           this.dataForSearch.CaId = this.userDetails.ca_id;
         } else {
           this.dataForSearch.CaId = '';

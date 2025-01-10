@@ -10,12 +10,13 @@
       </div>    </div>
     <div class='bottom-header'>
       <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Daily Visit Summary</div>
+      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Customer Payment Status</div>
       <div>      
         <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
       </div>
     </div>
   </div>
+
 
 
   <div class="flex-container">
@@ -26,11 +27,13 @@
         <ion-select-option *ngFor="let ca of caListResponse" [value]="ca">{{ca.CA_Name}}</ion-select-option>
       </ion-select>
     </div>
-    
+
+
     <div class="inputContainer">
-      <div style="display: inline-flex; gap: 5px;">District Name</div>
-      <ion-input readonly [(ngModel)]="districtName" placeholder="Press to select district" (click)="openDistrictSelectModal()" class="input" type="text" ></ion-input>
+      <div style="display: inline-flex; gap: 5px;">Customer</div>
+      <ion-input readonly [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSelectModal()"  class="input" type="text" ></ion-input>
     </div>
+
 
     <div class="inputContainer">
       <div style="display: inline-flex">Start Date</div>
@@ -41,7 +44,7 @@
       </div>
     </div>
 
-    <div class="inputContainer">
+    <div class="inputContainer" [ngClass]="selectedStartDateTime ? 'active' : 'inactive'">
       <div style="display: inline-flex">End Date</div>
       <div class="input" style="display: flex; flex-direction: row;"><ion-input [(ngModel)]="selectedEndDateTime" type="text" readonly></ion-input>
         <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('endDate')">
@@ -51,56 +54,53 @@
     </div>
 
 
+
     <div style="display: inline-flex; align-items: center; align-self: center;">
       <div>
-        <ion-button (click)="resetFilter()" expand="block" fill="outline" type="submit">RESET</ion-button>
+        <ion-button  expand="block" fill="outline" type="submit" (click)="resetFilter()">RESET</ion-button>
       </div>
       <div>
-        <ion-button (click)="search()" class="submit-button" expand="block" type="submit">SEARCH</ion-button>
+        <ion-button class="submit-button" expand="block" type="submit" (click)="search()">SEARCH</ion-button>
       </div>
     </div>
 
 
-    <div class="product-price" *ngFor="let item of searchResults">
-      <div class="row">
-        <div>Date Of Visit:</div>
-        <div>{{item.Visit_Date}}</div>
-      </div>
-      <div  class="row">
-        <div>Agent Name:</div>
-        <div>{{item.AgentName}}</div>
-      </div>
-      <div  class="row">
-        <div>Customer Name:</div>
-        <div>{{item.Visit_Customer_Name}}</div>
-      </div>
-      <div  class="row">
-        <div>Customer Type:</div>
-        <div>{{item.Customer_Code}}</div>
-      </div>      
-      <div  class="row">
-        <div>Customer Type:</div>
-        <div>{{item.CategoryName}}</div>
-      </div>      
-      <div  class="row">
-        <div>Location:</div>
-        <div>{{item.Location}}</div>
-      </div>      
-      <div  class="row">
-        <div>District:</div>
-        <div>{{item.DistrictName}}</div>
-      </div>      
-      <div  class="row">
-        <div>Industry Type:</div>
-        <div>{{item.IndustryType}}</div>
-      </div>      
-      <div  class="row">
-        <div></div>
-        <div (click)="goToDetails(item)" style="color: rgb(6, 78, 138); font-size: larger; text-decoration: underline;">Check Summary</div>
-      </div>
-    </div>
 
-    <div style="display: inline-flex; align-items: center; align-self: center;" *ngIf="noData==true">No Data Found</div>
+
+
+
+
+
+    <ion-card *ngIf="isPaymentListExist">
+      <div style="background-color: #1b4169; color: white; padding: 10px; text-align: center; font-weight: bold; border-radius: 5px;">
+        Total Amount: {{totalPayment}}
+      </div>
+  
+      <ion-card-content>
+        <table>
+          <thead>
+            <tr>
+              <th>Customer Code</th>
+              <th>Customer Name</th>
+              <th>Payment Date</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of paymentListArray">
+              <td>{{i.Customer_Code}}</td>
+              <td>{{i.Customer_Name}}</td>
+              <td>{{i.PaymentDate}}</td>
+              <td>{{i.Amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ion-card-content>
+    </ion-card>
+
+
+
+
 
   </div>
 
@@ -108,10 +108,7 @@
 
 
 
-
-
-  
-  
+      
   <ion-modal [isOpen]="isStartDateModalOpen">
     <ng-template>
       <ion-content>
@@ -121,13 +118,14 @@
             [(ngModel)]="selectedStartDateTime"
             presentation="date"
             (ionChange)="onDateTimeChange($event,'startDate')"
+            [max]="currentDate"
           ></ion-datetime>
         </div>
   
 
         <ion-footer>
           <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
-          <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button>
+          <ion-button expand="full" (click)="cancelDatetimeModal('startDate')">Cancel</ion-button>
         </ion-footer>
       </ion-content>
     </ng-template>
@@ -145,21 +143,19 @@
             [(ngModel)]="selectedEndDateTime"
             presentation="date"
             (ionChange)="onDateTimeChange($event,'endDate')"
+            [min]="minimumEndDate"
+            [max]="maximumEndDate"
           ></ion-datetime>
         </div>
   
 
         <ion-footer>
           <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
-          <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button>
+          <ion-button expand="full" (click)="cancelDatetimeModal('endDate')">Cancel</ion-button>
         </ion-footer>
       </ion-content>
     </ng-template>
   </ion-modal>
 
-
-
-
-
-  <app-footer></app-footer>
+<app-footer></app-footer>
 </ion-content>

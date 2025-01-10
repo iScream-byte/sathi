@@ -1,0 +1,69 @@
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <div class="top-header">
+      <div style="align-items: center; display: flex; gap: 15px;">
+        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+        <img src="assets/images/tatalogo.png" alt="">
+      </div>
+      <div>
+        <img src="assets/images/ibmdlogo.png" alt="">
+      </div>    </div>
+    <div class='bottom-header'>
+      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div>
+          <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Location West Bokaro</div>
+          <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Booking-DK3920OQDS</div>
+        </div>
+      <div>      
+        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="flex-container">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" size-md="4" size-lg="3">
+          <div class="box" style="background-color: rgb(81, 131, 197);" (click)="goToDetailsPageWithThisParams('UniqueCustomer')">
+            <ion-icon name="people" class="icon"></ion-icon>
+            <h3>{{bookingSummaryDetails.UniqueCustomer}}</h3>
+            <p>Total Unique Customers</p>
+          </div>
+        </ion-col>
+        <ion-col size="6" size-md="4" size-lg="3">
+          <div class="box" style="background-color: rgb(21, 68, 121);" (click)="goToDetailsPageWithThisParams('Received')">
+            <ion-icon name="book" class="icon"></ion-icon>
+            <h3>{{bookingSummaryDetails.Received}}</h3>
+            <p>Total Bookings Received</p>
+          </div>
+        </ion-col>
+        <ion-col size="6" size-md="4" size-lg="3">
+          <div class="box" style="background-color: rgb(21, 68, 121);" (click)="goToDetailsPageWithThisParams('Approved')">
+            <ion-icon name="checkmark-circle" class="icon"></ion-icon>
+            <h3>{{bookingSummaryDetails.Approved}}</h3>
+            <p>Total Bookings Confirmed</p>
+          </div>
+        </ion-col>
+        <ion-col size="6" size-md="4" size-lg="3">
+          <div class="box" style="background-color: rgb(81, 131, 197);" (click)="goToDetailsPageWithThisParams('Rejected')">
+            <ion-icon name="close-circle" class="icon"></ion-icon>
+            <h3>{{bookingSummaryDetails.Rejected}}</h3>
+            <p>Total Bookings Rejected</p>
+          </div>
+        </ion-col>
+        <ion-col size="6" size-md="4" size-lg="3">
+          <div class="box" style="background-color: rgb(81, 131, 197);" (click)="goToDetailsPageWithThisParams('Pending')">
+            <ion-icon name="hourglass" class="icon"></ion-icon>
+            <h3>{{bookingSummaryDetails.Pending}}</h3>
+            <p>Pending For Approval</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+
+
+<app-footer></app-footer>
+</ion-content>

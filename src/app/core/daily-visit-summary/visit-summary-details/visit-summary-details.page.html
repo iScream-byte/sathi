@@ -24,7 +24,7 @@
     <div class="details">
       <div class="row">
         <div>Visit Type:</div>
-        <div (click)="openInApp()" class="text-right">{{dataForSummary?.VisitType}}</div>
+        <div class="text-right">{{dataForSummary?.VisitType}}</div>
       </div>
       <div  class="row">
         <div>Visit Mode:</div>
@@ -176,7 +176,7 @@
       </div>                   
       <div  class="row">
         <div>Location Captured:</div>
-        <div (click)="openBrowser()" class="text-right">{{dataForSummary?.LAT}} || {{dataForSummary?.LONG}}</div>
+        <div (click)="openInApp()" class="text-right">{{dataForSummary?.LAT}} || {{dataForSummary?.LONG}}</div>
       </div>      
       
     </div>

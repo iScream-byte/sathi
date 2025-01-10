@@ -41,7 +41,7 @@ export class SearchableDropdownComponent implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {    
-    this.loader.showLoader()
+    // this.loader.showLoader()
   }
 
   ionViewDidEnter(){

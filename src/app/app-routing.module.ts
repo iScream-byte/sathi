@@ -39,6 +39,14 @@ const routes: Routes = [
     path: 'view-complaint',
     loadChildren: () => import('./core/view-complaint/view-complaint.module').then( m => m.ViewComplaintPageModule)
   },
+  {
+    path: 'payment-status',
+    loadChildren: () => import('./core/payment-status/payment-status.module').then( m => m.PaymentStatusPageModule)
+  },
+  {
+    path: 'booking-confirmation-status',
+    loadChildren: () => import('./core/booking-confirmation-status/booking-confirmation-status.module').then( m => m.BookingConfirmationStatusPageModule)
+  },
 
 
 

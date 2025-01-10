@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ViewComplaintPageRoutingModule } from './view-complaint-routing.module';
+import { BookingConfirmationStatusPageRoutingModule } from './booking-confirmation-status-routing.module';
 
-import { ViewComplaintPage } from './view-complaint.page';
+import { BookingConfirmationStatusPage } from './booking-confirmation-status.page';
 import { FooterComponent } from "../../shared/footer/footer.component";
 
 @NgModule({
@@ -14,9 +14,9 @@ import { FooterComponent } from "../../shared/footer/footer.component";
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewComplaintPageRoutingModule,
+    BookingConfirmationStatusPageRoutingModule,
     FooterComponent
 ],
-  declarations: [ViewComplaintPage]
+  declarations: [BookingConfirmationStatusPage]
 })
-export class ViewComplaintPageModule {}
+export class BookingConfirmationStatusPageModule {}

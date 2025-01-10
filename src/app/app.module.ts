@@ -13,7 +13,6 @@ import { Storage } from '@ionic/storage-angular';
 import { AlertService } from './services/alert.service';
 import { ToastService } from './services/toast.service';
 import { SearchableDropdownComponent } from './utils/searchable-dropdown/searchable-dropdown.component';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent, SearchableDropdownComponent],
@@ -38,9 +37,7 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
     LocalStorageService,
     Storage,
     AlertService,
-    ToastService,
-    InAppBrowser
-    
+    ToastService,    
   ],
   bootstrap: [AppComponent],
 })

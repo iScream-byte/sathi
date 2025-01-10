@@ -349,9 +349,126 @@ export interface DailyResponseArray {
 }
 
 export interface CAListResponseModel {
-  DistrictId?: string,
-  CA_Name?: string,
-  CA_ID?: string,
+  DistrictId?: string;
+  CA_Name?: string;
+  CA_ID?: string;
+  Loc_ID?: string;
+  Location?: string;
+}
+
+export interface ViewComplaintsSearchModel {
+  CaId?: string;
+  Customer_Code?: string;
+  Status?: string;
+  fromDate?: any;
+  toDate?: any;
+}
+
+export interface ViewComplaintListSearchData {
+  CA_ID?: string;
+  Customer_Code?: string;
+  CustomerName?: string;
+  Complain?: string;
+  ComplaintDate?: string;
+  Response?: string;
+  Status?: string;
+  fromDate?: any;
+  toDate?: any;
+  message?: any;
+  ResponseDate?: any;
+}
+
+export interface ComplaintSearchList {
+  comps?: ViewComplaintListSearchData[];
+  Status?: string;
+}
+
+export interface PaymentListArray {
+  Amount?: string;
+  CA_ID?: string;
+  Customer_Code?: string;
+  Customer_Name?: string;
+  frmDate?: string;
+  message?: string;
+  PaymentDate?: string;
+  Status?: string;
+  toDate?: string;
+}
+
+export interface PaymentResponseModel {
+  Status?: string;
+  paymentLst?: PaymentListArray[];
+  TotalPayment?: string;
+}
+
+export interface PaymentDataSend {
+  formDate?: string;
+  CustomerCode?: string;
+  caid?: string;
+  toDate?: string;
+  LocId?: string;
+}
+
+export interface PaymentResponseModel {
+  Status?: string;
+  paymentLst?: PaymentListArray[];
+  TotalPayment?: string;
+}
+
+export interface PaymentListArray {
+  Amount?: string;
+  CA_ID?: string;
+  Customer_Code?: string;
+  Customer_Name?: string;
+  frmDate?: string;
+  message?: string;
+  PaymentDate?: string;
+  Status?: string;
+  toDate?: string;
+}
+
+export interface BookingSummaryResponseModel {
+  Received?: string;
+  AutoReject?: string;
+  Pending?: string;
+  Approved?: string;
+  Rejected?: string;
+  Confirmed?: string;
+  UniqueCustomer?: string;
+  Status?: string;
+  message?: any;
+  BookStatus?: string;
+  Customer_Code: string;
+  CustomerName: string;
+  TruckNo: string;
+  Quantity: string;
+  Loc_ID: string;
+  ca_id: string;
+  CaName: string;
+}
+
+
+export interface BookingSummaryDetailsResponse {
+  BookOrdLst?: BookOrdLst[],
+  Status?: string
+}
+
+export interface BookOrdLst {
+  Received?: any,
+  AutoReject?: any,
+  Pending?: any,
+  Approved?: any,
+  Rejected?: any,
+  Confirmed?: any,
+  UniqueCustomer?: any,
+  Status?: any,
+  message?: any,
+  BookStatus?: any,
+  Customer_Code?: string,
+  CustomerName?: string,
+  TruckNo?: string,
+  Quantity?: string,
   Loc_ID?: string,
-  Location?: string
+  ca_id?: string,   
+  CaName?: string
 }

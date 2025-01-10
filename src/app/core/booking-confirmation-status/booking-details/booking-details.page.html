@@ -1,0 +1,78 @@
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <div class="top-header">
+      <div style="align-items: center; display: flex; gap: 15px;">
+        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+        <img src="assets/images/tatalogo.png" alt="">
+      </div>
+      <div>
+        <img src="assets/images/ibmdlogo.png" alt="">
+      </div>    </div>
+    <div class='bottom-header'>
+      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div>
+          <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Booking Details</div>
+        </div>
+      <div>      
+        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="flex-container">
+    <ion-card-content>
+
+
+
+      <table *ngIf="queryParams.endParam=='UniqueCustomer'">
+        <thead>
+          <tr>
+            <th>Customer Code</th>
+            <th>Customer Name</th>            
+            <th>CA Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of bookingSummaryDetailsData">
+            <td>{{i.Customer_Code}}</td>
+            <td>{{i.CustomerName}}</td>
+            <td>{{i.CaName}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
+      <table *ngIf="queryParams.endParam!='UniqueCustomer'">
+        <thead>
+          <tr>
+            <th>Customer Code</th>
+            <th>Customer Name</th>            
+            <th>Truck No.</th>            
+            <th>Quantity</th>            
+            <th>CA Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of bookingSummaryDetailsData">
+            <td>{{i.Customer_Code}}</td>
+            <td>{{i.CustomerName}}</td>
+            <td>{{i.TruckNo}}</td>
+            <td>{{i.Quantity}}</td>
+            <td>{{i.CaName}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </ion-card-content>
+
+    <div style="display: inline-flex; align-items: center; align-self: center;" *ngIf="noData==true">No Data Found</div>
+
+    
+  </div>
+
+
+
+</ion-content>
