@@ -1,12 +1,3 @@
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 25px;
-  margin-top: 26%;
-  padding-bottom: 22%;
-}
-
 ion-input {
   --padding-start: 12px;
 }
@@ -90,7 +81,6 @@ ion-datetime {
   color: #fff;
 }
 
-
 .up-document2 {
   height: 50px;
   width: 80%;
@@ -111,12 +101,11 @@ ion-datetime {
   align-items: center;
   text-align: center;
   display: flex;
-  justify-content: center;  
+  justify-content: center;
   color: #fff;
   align-self: center;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
-
 
 .doc-image {
   border-radius: 10px;

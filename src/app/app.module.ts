@@ -13,17 +13,17 @@ import { Storage } from '@ionic/storage-angular';
 import { AlertService } from './services/alert.service';
 import { ToastService } from './services/toast.service';
 import { SearchableDropdownComponent } from './utils/searchable-dropdown/searchable-dropdown.component';
+import { FooterComponent } from "./shared/footer/footer.component";
 
 @NgModule({
   declarations: [AppComponent, SearchableDropdownComponent],
   imports: [
-
-  BrowserModule,
+    BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    
-  ],
+    FooterComponent
+],
   providers: [
     {
       provide: RouteReuseStrategy,

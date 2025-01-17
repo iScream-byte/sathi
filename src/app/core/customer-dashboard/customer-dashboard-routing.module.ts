@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: CustomerDashboardPage
+  },  {
+    path: 'customer-dashboard-details',
+    loadChildren: () => import('./customer-dashboard-details/customer-dashboard-details.module').then( m => m.CustomerDashboardDetailsPageModule)
   }
+
 ];
 
 @NgModule({

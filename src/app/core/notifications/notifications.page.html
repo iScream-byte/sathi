@@ -1,0 +1,125 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Notifications</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="flex-container">
+
+    <div class="inputContainer" *ngIf="roleType == 'TSL' && boolHasCAResponseYes">
+      <div style="display: inline-flex; gap: 5px;">Select CA</div>
+      <ion-select (ionChange)="getCaId($event)" okText="select" class="input" placeholder="select CA" [(ngModel)]="ca">
+        <ion-select-option *ngFor="let ca of caListResponse" [value]="ca">{{ca.CA_Name}}</ion-select-option>
+      </ion-select>
+    </div>
+
+
+    <div class="inputContainer">
+      <div style="display: inline-flex">Start Date</div>
+      <div class="input" style="display: flex; flex-direction: row;"><ion-input [(ngModel)]="selectedStartDateTime" type="text" readonly></ion-input>
+        <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('startDate')">
+          <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="inputContainer" [ngClass]="{'inactive': currentDate==selectedStartDateTime}">
+      <div style="display: inline-flex">End Date</div>
+      <div class="input" style="display: flex; flex-direction: row;"><ion-input [(ngModel)]="selectedEndDateTime" type="text" readonly></ion-input>
+        <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('endDate')">
+          <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div style="display: inline-flex; align-items: center; align-self: center;">
+      <div>
+        <ion-button (click)="resetFilter()" expand="block" fill="outline" type="submit">RESET</ion-button>
+      </div>
+      <div>
+        <ion-button (click)="search()" class="submit-button" expand="block" type="submit">SEARCH</ion-button>
+      </div>
+    </div>
+
+
+
+    <div class="product-price" *ngFor="let item of nofificationData">
+
+      <p>{{item.Notification}}</p>
+      <span>{{item.NotificationDate}}</span>
+
+    </div>
+
+
+
+  </div>
+
+
+
+
+    
+  <ion-modal [isOpen]="isStartDateModalOpen">
+    <ng-template>
+      <ion-content>
+
+        <div class="datetime-container">
+          <ion-datetime
+            
+            presentation="date"
+            (ionChange)="onDateTimeChange($event,'startDate')"
+          ></ion-datetime>
+        </div>
+  
+
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button>
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+
+
+  <ion-modal [isOpen]="isEndDateModalOpen">
+    <ng-template>
+      <ion-content>
+
+        <div class="datetime-container">
+          <ion-datetime
+            
+            presentation="date"
+            (ionChange)="onDateTimeChange($event,'endDate')"
+          ></ion-datetime>
+        </div>
+  
+
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Cancel</ion-button>
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+
+<app-footer></app-footer>

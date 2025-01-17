@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { configs } from './../../environments/configs';
-import { CAListResponseModel, ComplaintsCustomerList, VisitReportDistrictResponseModel } from './Interfaces';
+import { CAListResponseModel, ComplaintsCustomerList, SourceResponseModel, VisitReportDistrictResponseModel, ProductResponseModel, ProductPriceResponseModel } from './Interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +24,17 @@ export class DropdownService {
 
   GetCAList(){
     return this.http.get<[CAListResponseModel]>(configs.apiBase+'GetCAList')
+  }
+
+  GetSourceListByCustomerCode(queries:string){
+    return this.http.get<SourceResponseModel>(configs.apiBase+'GetSourceByCustomer?'+queries)
+  }  
+  
+  GetProductPriceBySourceId(queries:string){
+    return this.http.get<ProductResponseModel>(configs.apiBase+'GetProductByLocSource?'+queries)
+  }  
+  
+  GetFinalProductPrice(queries:string){
+    return this.http.get<ProductPriceResponseModel>(configs.apiBase+'GetProductListByLocSourceProdCust?'+queries)
   }
 }

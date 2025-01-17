@@ -1,10 +1,3 @@
-.flex-container {
-  padding: 25px;
-  margin-top: 16%;
-  padding-bottom: 20%;
-  height: 90%;
-}
-
 .inner-container {
   display: flex;
   flex-direction: column;
@@ -23,7 +16,6 @@
   --border-radius: 5px;
   --padding-top: 15px;
   --padding-bottom: 15px;
-
 }
 
 ion-input {
@@ -47,7 +39,7 @@ ion-datetime {
 
 .product-price {
   background-color: rgb(255, 255, 255);
-  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -58,4 +50,22 @@ ion-datetime {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+}
+
+.inactive {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.buttons {
+  color: #fff;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: small;
+  background-color: #253553;
 }

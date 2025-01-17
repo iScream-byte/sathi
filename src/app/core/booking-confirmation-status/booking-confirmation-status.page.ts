@@ -63,6 +63,8 @@ export class BookingConfirmationStatusPage implements OnInit {
 
   ngOnInit() {
     this.loader.showLoader();
+    let date = new Date();
+    this.formatDate = moment(date).format("DD-MM-YYYY");
     this.storage.getItem('NSUDloginDetail').then((u) => {
       if (u) {
         this.userDetails = JSON.parse(u);
@@ -109,7 +111,6 @@ export class BookingConfirmationStatusPage implements OnInit {
       loggedInUserLocationId: this.loggedInUserLocationId,
       loggedInUserCaId: this.loggedInUserCaId,
     };
-    console.log(params);
     this.router.navigate(['booking-details'], {
       relativeTo: this.activatedRoute,
       queryParams: params,

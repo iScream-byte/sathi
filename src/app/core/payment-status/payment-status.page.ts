@@ -91,6 +91,13 @@ export class PaymentStatusPage implements OnInit {
     });
   }
 
+
+  async ionViewDidEnter() {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.goBack();
+    });
+  }
+
   toggleMenu() {
     this.menuController.toggle();
   }

@@ -1,0 +1,93 @@
+.product-price {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.inactive {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.buttons {
+  color: #fff;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: small;
+}
+
+.approve {
+  background-color: rgb(3, 92, 3);
+}
+
+.approve:active {
+  background-color: rgb(4, 34, 4);
+}
+
+.reject {
+  background-color: rgb(148, 0, 0);
+}
+
+.reject:active {
+  background-color: rgb(51, 3, 3);
+}
+
+.popover-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.popover-header h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(20, 66, 97);
+}
+
+.input-item {
+  margin-bottom: 0px;
+}
+
+.submit-container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+ion-item {
+  --background: #f8f8f8;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ion-button {
+  --background: rgb(30, 65, 112);
+  --color: white;
+  --border-radius: 10px;
+  font-weight: 600;
+}
+
+
+.small-modal {
+  --width: 200px;      
+  --height: 200px;    
+  --border-radius: 10px; 
+  
+}
+
+
+
+
+
+

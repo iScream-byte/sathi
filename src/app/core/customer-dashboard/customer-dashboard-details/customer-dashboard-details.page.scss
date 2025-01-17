@@ -1,0 +1,91 @@
+.image-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-container img {
+  width: 70%;
+  height: 40%;
+}
+
+.submit-button {
+  border-radius: 5px;
+}
+
+ion-input {
+  --padding-start: 12px;
+}
+ion-select {
+  --padding-start: 12px;
+}
+
+ion-button {
+  --background: #5a7cdb;
+  --color: rgb(252, 252, 252);
+  --border-radius: 5px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 2px;
+}
+
+.product-price {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.inactive {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: rgb(48, 48, 48);
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid rgb(0, 0, 0);
+}
+
+th {
+  background-color: #234d8d;
+  font-size: medium;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+td {
+  text-align: center;
+  font-size: smaller;
+}
+
+tr:nth-child(odd) {
+  background-color: #d3d3d3;
+}
+
+tr:nth-child(even) {
+  background-color: #d3d3d3;
+}

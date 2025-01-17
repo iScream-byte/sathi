@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Update 27C Form</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+
+
+
+<ion-content [fullscreen]="true">
+  <div class="flex-container">
+
+    <div class="inputContainer">
+      <div style="display: inline-flex; gap: 5px;">Customer<div style="color: red; padding-left: 5px;">*</div></div>
+      <ion-input readonly [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSelectModal()"  class="input" type="text" ></ion-input>
+    </div>
+
+
+    <div class="inputContainer">
+      <div style="display: inline-flex">Select Month & Year <div style="color: red; padding-left: 5px;">*</div></div>
+      <div class="input" style="display: flex; flex-direction: row;"><ion-input [(ngModel)]="selectedTime" type="text" readonly></ion-input>
+        <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal()">
+          <ion-icon style="font-size: 30px;" name="calendar-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="display: inline-flex; align-items: center; justify-content: center;">      
+      <ion-checkbox [(ngModel)]="isChecked" labelPlacement="end"><p style="font-size: 17px;">27C Form recieved?</p></ion-checkbox>
+    </div>
+
+
+    <div style="display: inline-flex; align-items: center; align-self: center;">
+      <div>
+        <ion-button class="submit-button" expand="block" type="submit" (click)="save()">Save Now</ion-button>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <ion-modal [isOpen]="isDatetimeModalOn">
+    <ng-template>
+      <ion-content>
+
+        <div class="datetime-container">
+          <ion-datetime
+            presentation="month-year"
+            (ionChange)="onDateTimeChange($event)"
+          ></ion-datetime>
+        </div>
+  
+
+        <ion-footer>
+          <ion-button expand="full" (click)="closeDatetimeModal()">Done</ion-button>
+          <ion-button expand="full" (click)="cancelDatetimeModal()">Cancel</ion-button>
+        </ion-footer>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>
+
+
+<app-footer></app-footer>
+

@@ -1,0 +1,79 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Permit Top Up Approval</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+
+
+<ion-content [fullscreen]="true">
+  <div class="flex-container">
+    <div style="display: inline-flex; align-items: center; align-self: center;" *ngIf="nodatafound==true">No Data Found</div>
+
+
+    
+    <div class="product-price" *ngFor="let topup of topupListArray;let i= index">
+      <div class="row">
+        <div>Date &amp; Time:</div>
+        <div>{{topup.LastDateOfPermitTopUp}} {{topup.TopUpTime}}</div>
+      </div>
+      <div  class="row">
+        <div>CA Point Name:</div>
+        <div>{{topup.CAName}}</div>
+      </div>
+      <div  class="row">
+        <div>CA Agent Name:</div>
+        <div>{{topup.AgentName}}</div>
+      </div>
+      <div  class="row">
+        <div>Top Up Requested (Qty):</div>
+        <div>{{topup.PermitTopUpApplied}}</div>
+      </div>          
+      <div  class="row">
+        <div>Product:</div>
+        <div>{{topup.productName}}</div>
+      </div>          
+      <div  class="row">
+        <div>Customer Name:</div>
+        <div>{{topup.CustomerName}}</div>
+      </div>          
+      <div  class="row">
+        <div>Customer Code:</div>
+        <div>{{topup.Customer_Code}}</div>
+      </div>      
+      <div  class="row">
+        <div>Industry Type:</div>
+        <div>{{topup.IndustryType}}</div>
+      </div>
+      <div class="row" style="margin-top: 10px;">
+        <div></div>
+        <div style="display: flex; flex-direction: row; gap: 10px;">
+          <div class="buttons approve" (click)="btnApproverejectModal('Approve',topup)">Approve</div>
+          <div class="buttons reject" (click)="btnApproverejectModal('Reject',topup)">Reject</div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</ion-content>
+
+<app-footer></app-footer>

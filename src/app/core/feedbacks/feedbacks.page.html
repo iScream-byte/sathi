@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Feedbacks</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="flex-container">
+    <ion-textarea 
+    placeholder="Message..." 
+    rows="2" 
+    [(ngModel)]="message" 
+    class="custom-textarea">
+  </ion-textarea>
+
+  <div class="button-container">
+    <div expand="full" class="custom-button" (click)="submit()">SUBMIT</div>
+    <div expand="full" class="custom-button" (click)="goToMyFeedbacks()" >My Feedbacks</div>
+  </div>
+  </div>
+
+
+
+
+</ion-content>
+
+
+<app-footer></app-footer>

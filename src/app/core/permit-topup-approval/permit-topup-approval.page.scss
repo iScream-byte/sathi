@@ -1,0 +1,46 @@
+.product-price {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inactive {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.buttons {
+  color: #fff;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: small;
+}
+
+.approve {
+  background-color: rgb(3, 92, 3);
+}
+
+.approve:active {
+  background-color: rgb(4, 34, 4);
+}
+
+.reject {
+  background-color: rgb(148, 0, 0);
+}
+
+.reject:active {
+  background-color: rgb(51, 3, 3);
+}

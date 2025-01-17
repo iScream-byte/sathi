@@ -47,6 +47,38 @@ const routes: Routes = [
     path: 'booking-confirmation-status',
     loadChildren: () => import('./core/booking-confirmation-status/booking-confirmation-status.module').then( m => m.BookingConfirmationStatusPageModule)
   },
+  {
+    path: 'new-customer-reg-summary',
+    loadChildren: () => import('./core/new-customer-reg-summary/new-customer-reg-summary.module').then( m => m.NewCustomerRegSummaryPageModule)
+  },
+  {
+    path: 'customer-reg-summary',
+    loadChildren: () => import('./core/customer-reg-summary/customer-reg-summary.module').then( m => m.CustomerRegSummaryPageModule)
+  },
+  {
+    path: 'update27c',
+    loadChildren: () => import('./core/update27c/update27c.module').then( m => m.Update27cPageModule)
+  },
+  {
+    path: 'permit-topup-approval',
+    loadChildren: () => import('./core/permit-topup-approval/permit-topup-approval.module').then( m => m.PermitTopupApprovalPageModule)
+  },
+  {
+    path: 'truck-no-change-approval',
+    loadChildren: () => import('./core/truck-no-change-approval/truck-no-change-approval.module').then( m => m.TruckNoChangeApprovalPageModule)
+  },
+  {
+    path: 'offline-report',
+    loadChildren: () => import('./core/offline-report/offline-report.module').then( m => m.OfflineReportPageModule)
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./core/notifications/notifications.module').then( m => m.NotificationsPageModule)
+  },
+  {
+    path: 'feedbacks',
+    loadChildren: () => import('./core/feedbacks/feedbacks.module').then( m => m.FeedbacksPageModule)
+  },
 
 
 

@@ -1,0 +1,101 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Truck No. Change Approval</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content [fullscreen]="true" scrollY="true">
+
+
+  <div class="flex-container">
+    <div class="product-price" *ngFor="let item of chageRequestList">
+
+      <div class="row">
+        <div>Booking Date:</div>
+        <div class="text-right">{{item.receivedOn | date:'dd/MM/yyyy'}}</div>
+      </div>      
+      <div class="row">
+        <div>Booking No.:</div>
+        <div class="text-right">{{item.BookingID}}</div>
+      </div>
+      <div  class="row">
+        <div>Truck No.:</div>
+        <div class="text-right">{{item.ExistingTruckno}}</div>
+      </div>
+      <div  class="row">
+        <div>Requested Truck No.:</div>
+        <div class="text-right">{{item.ChangedTrukno}}</div>
+      </div>          
+      <div  class="row">
+        <div>Quantity:</div>
+        <div class="text-right">{{item.NoOfChange}}</div>
+      </div>         
+      <div  class="row">
+        <div>Booking Status:</div>
+        <div class="text-right">Approved</div>
+      </div>
+      <div  class="row">
+        <div>Customer:</div>
+        <div class="text-right">{{item.company_name}}</div>
+      </div>        
+      <div  class="row" *ngIf="roleType=='TSL'">
+        <div>Approved By:</div>
+        <div class="text-right">{{item.CA_ApproveReject_By}}</div>
+      </div>
+      <div  class="row" *ngIf="roleType=='TSL'">
+        <div>Approved At:</div>
+        <div class="text-right">{{item.CA_ApproveRejectOn | date:'dd/MM/yyyy'}}</div>
+      </div>     
+      <div class="row" style="margin-top: 10px;">
+        <div>Action:</div>
+        <div style="display: flex; flex-direction: row; gap: 10px;">
+          <div class="buttons approve" (click)="presentConfirmAlert(item)">Approve</div>
+          <div class="buttons reject" (click)="presentPopover(item,$event)">Reject</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <ion-modal #popover [isOpen]="isOpen" (didDismiss)="isOpen = false; rejectThisItem=null; rejectReason=''" cssClass="small-modal">
+    <ng-template>
+      <ion-content class="ion-padding" scrollY="true">
+        <div class="popover-header">
+          <h3>Enter Reason</h3>
+        </div>
+  
+        <ion-item lines="full" class="input-item">
+          <ion-input [(ngModel)]="rejectReason" type="text" placeholder="Reject reason"></ion-input>
+        </ion-item>
+  
+        <div class="submit-container">
+          <ion-button (click)="presentRejectAlert()" expand="block">Submit</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+  
+
+
+
+</ion-content>
+
+<app-footer></app-footer>
+

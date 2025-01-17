@@ -1,0 +1,214 @@
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuController, ModalController, AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
+import {
+  CAListResponseModel,
+  PermitListArray,
+} from './../../services/Interfaces';
+import { Network } from '@capacitor/network';
+import { LocalStorageService } from 'src/app/services/localstorage.service';
+import { MyLoader } from './../../shared/MyLoader';
+import { ToastService } from './../../services/toast.service';
+import { DropdownService } from './../../services/dropdown.service';
+import { SearchableDropdownComponent } from './../../utils/searchable-dropdown/searchable-dropdown.component';
+import { CoreService } from 'src/app/services/core.service';
+
+@Component({
+  selector: 'app-permit-topup-approval',
+  templateUrl: './permit-topup-approval.page.html',
+  styleUrls: ['./permit-topup-approval.page.scss'],
+})
+export class PermitTopupApprovalPage implements OnInit {
+  hasNetwork: boolean = true;
+  userDetails: any = {};
+  roleType: string = '';
+  locId: string = '';
+  agentId: string = '';
+  topupListArray:any=[]
+  nodatafound:boolean=null
+  dataForApproveReject:any
+  constructor(
+    private menuController: MenuController,
+    private router: Router,
+    private platform: Platform,
+    private location: Location,
+    private storage: LocalStorageService,
+    private loader: MyLoader,
+    private toast: ToastService,
+    private dropdownServices: DropdownService,
+    private coreServices: CoreService,
+    private modalController: ModalController,
+    private alertCtrl:AlertController
+  ) {}
+
+  async ngOnInit() {
+    const status = await Network.getStatus();
+    if (status.connected) {
+      this.hasNetwork = true;
+    } else {
+      this.hasNetwork = false;
+    }
+    this.storage.getItem('NSUDloginDetail').then((u) => {
+      if (u) {
+        this.userDetails = JSON.parse(u);
+        this.roleType = this.userDetails.roletype;
+        this.locId = this.userDetails.Loc_ID;
+        this.getList();
+      }
+    });
+  }
+
+  toggleMenu() {
+    this.menuController.toggle();
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
+  ionViewDidEnter() {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.goBack();
+    });
+  }
+
+  getList() {
+    this.loader.showLoader('fetching records...');
+    this.coreServices.GetTopUpsForClientApprovalList().subscribe((res) => {
+      this.topupListArray = res.permitList;
+      // this.topupListArray = [
+      //   {
+      //     LastDateOfPermitTopUp: '2025-01-10',
+      //     TopUpTime: '12:30 PM',
+      //     CAName: 'CA Point 1',
+      //     AgentName: 'John Doe',
+      //     PermitTopUpApplied: 100,
+      //     productName: 'Product A',
+      //     CustomerName: 'Alice Johnson',
+      //     Customer_Code: 'C12345',
+      //     IndustryType: 'Retail'
+      //   },
+      //   {
+      //     LastDateOfPermitTopUp: '2025-01-12',
+      //     TopUpTime: '09:00 AM',
+      //     CAName: 'CA Point 2',
+      //     AgentName: 'Jane Smith',
+      //     PermitTopUpApplied: 50,
+      //     productName: 'Product B',
+      //     CustomerName: 'Bob Brown',
+      //     Customer_Code: 'C67890',
+      //     IndustryType: 'Technology'
+      //   },
+      //   {
+      //     LastDateOfPermitTopUp: '2025-01-14',
+      //     TopUpTime: '03:45 PM',
+      //     CAName: 'CA Point 3',
+      //     AgentName: 'Michael Johnson',
+      //     PermitTopUpApplied: 200,
+      //     productName: 'Product C',
+      //     CustomerName: 'Charlie Davis',
+      //     Customer_Code: 'C11223',
+      //     IndustryType: 'Healthcare'
+      //   }
+      // ];
+      if (this.topupListArray.length > 0) {
+        this.nodatafound = false;
+        this.loader.stopLoader()
+      } else {
+        this.nodatafound = true;
+        this.loader.stopLoader()
+      }
+    });
+  }
+
+
+  btnApproverejectModal(type, data) {
+    console.log("type---->" + type);
+    this.showPrompt(type, data);
+  }
+
+
+  async showPrompt(type: string, item: any) {
+    const alert = await this.alertCtrl.create({
+      header: type,
+      inputs: [
+        {
+          name: 'reason',
+          type: 'text',
+          placeholder: 'Enter Reason',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {          
+          },
+        },
+        {
+          text: type,
+          handler: async (data) => {
+            let status = type === 'Approve' ? 'A' : 'R';
+
+            console.log('Type: ', type);
+            console.log('Reason: ', data.reason);
+
+            if (data.reason === '' && type === 'Reject') {
+              this.toast.presentToast('Please enter reason','error')
+              return;
+            }
+
+            try {
+              console.log(this.userDetails);
+              
+              this.dataForApproveReject = {
+                TopUp_ID: item.TopUp_ID,
+                Limit_ID: item.Limit_ID,
+                Customer_Code: item.Customer_Code,
+                PermitTopUpApplied: item.PermitTopUpApplied,
+                TopUpStatus: status,
+                CreatedBy: this.userDetails.name,
+                Remarks: data.reason,
+                CustomerName: item.CustomerName,
+                CAName: item.CAName,
+              };
+
+              console.log(this.dataForApproveReject);
+              
+              this.loader.showLoader()
+              this.coreServices.TopUpApproveReject(this.dataForApproveReject).subscribe(res=>{
+                console.log(res);
+                this.toast.presentToast(res.message)
+                this.loader.stopLoader()
+                setTimeout(() => {
+                  this.getList()
+                }, 1000);
+              },err=>{
+                console.log(err);
+                this.loader.stopLoader()                
+              })
+
+
+              
+             
+
+
+
+            } catch (error) {
+              console.error('Error: ', error);
+              
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present(); // Show the alert
+  }
+
+
+
+  
+}

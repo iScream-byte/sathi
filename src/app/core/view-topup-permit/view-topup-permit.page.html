@@ -1,43 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">View Top Up Permit</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
 <ion-content [fullscreen]="true">
-  <div class="header">
-    <div class="top-header">
-      <div style="align-items: center; display: flex; gap: 15px;">
-        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
-        <img src="assets/images/tatalogo.png" alt="">
-      </div>
-      <div>
-        <img src="assets/images/ibmdlogo.png" alt="">
-      </div>    </div>
-    <div class='bottom-header'>
-      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">View & Top Up Permit</div>
-      <div>      
-        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
-      </div>
-    </div>
-  </div>
-
-
-
   <div class="flex-container">  
-    
-    <div class="inner-container">
 
-      <div class="inputContainer">
-        <div style="display: inline-flex">Select Customer <div style="color: red;"> *</div></div>
-        <ion-select class="input" placeholder="Select one">
-          <ion-select-option value="option1">Option 1</ion-select-option>
-          <ion-select-option value="option2">Option 2</ion-select-option>
-          <ion-select-option value="option3">Option 3</ion-select-option>
+      <div class="inputContainer" *ngIf="roleType == 'TSL' && boolHasCAResponseYes">
+        <div style="display: inline-flex; gap: 5px;">Select CA</div>
+        <ion-select (ionChange)="getCaId($event)" okText="select" class="input" placeholder="select CA" [(ngModel)]="ca">
+          <ion-select-option *ngFor="let ca of caListResponse" [value]="ca">{{ca.CA_Name}}</ion-select-option>
         </ion-select>
       </div>
-  
+    
+
       <div class="inputContainer">
-        <div style="display: inline-flex">Product Type <div style="color: red;"> *</div></div>
-        <ion-select class="input" placeholder="Select one">
-          <ion-select-option value="option1">Option 1</ion-select-option>
-          <ion-select-option value="option2">Option 2</ion-select-option>
-          <ion-select-option value="option3">Option 3</ion-select-option>
+        <div style="display: inline-flex; gap: 5px;">Customer</div>
+        <ion-input readonly [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSelectModal()"  class="input" type="text" ></ion-input>
+      </div>
+  
+      <div class="inputContainer" [ngClass]="{'inactive': productData.length==0}">
+        <div style="display: inline-flex">Product</div>
+        <ion-select [(ngModel)]="selectedProductId" class="input" placeholder="Select product">
+          <ion-select-option *ngFor="let item of productData" [value]="item.ProductID">{{item.ProductName}}</ion-select-option>
         </ion-select>
       </div>
   
@@ -45,20 +47,63 @@
   
   
      
-        <div style="padding-left: 20px; padding-right: 20px;">
-          <ion-button class="submit-button" expand="block" type="submit">APPLY PERMIT TOPUP</ion-button>
+        <div style="padding-left: 20px; padding-right: 20px;" [ngClass]="{'inactive': !selectedProductId}">
+          <ion-button (click)="applyOrViewPermit()" class="submit-button" expand="block" type="submit">{{roleType=='TSL'?'VIEW':'APPLY'}} PERMIT TOPUP</ion-button>
+        </div>
+
+
+
+        <div class="product-price" *ngFor="let topup of topupListArray;let i= index">
+          <div class="row">
+            <div>Customer Name:</div>
+            <div>{{topup.CustomerName}}</div>
+          </div>
+          <div  class="row">
+            <div>Current Permit Limit (MT):</div>
+            <div>{{topup.PermitQuantity}}</div>
+          </div>
+          <div  class="row">
+            <div>Permit Date:</div>
+            <div>{{topup.PermitDate}}</div>
+          </div>
+          <div  class="row">
+            <div>Current Balance Quantity (MT):</div>
+            <div>{{topup.BalanceQuantity}}</div>
+          </div>          
+          <div  class="row">
+            <div>Last Top Up Applied (MT):</div>
+            <div>{{topup.PermitTopUpApplied}}</div>
+          </div>          
+          <div  class="row">
+            <div>Last Top Up Application Date:</div>
+            <div>{{topup.LastDateOfPermitTopUp}}</div>
+          </div>          
+          <div  class="row">
+            <div>Last Top Applied By (Agent Name):</div>
+            <div>{{topup.AgentName}}</div>
+          </div>          
+          <div  class="row" *ngIf="roleType != 'TSL'" style="margin-top: 10px;">
+            <div>Top-Up Quantity(MT):</div>
+            <ion-input style="width:220px; background-color: rgb(223, 240, 255); border-radius: 5px;" type="number" placeholder="Enter top-up value"
+            (ionInput)="valueChange(i, topup)"
+            [(ngModel)]="topupValue"></ion-input>
+          </div>
+          <div class="row" style="margin-top: 10px;" *ngIf="showSubmitBtn">
+            <div></div>
+            <div style="display: flex; flex-direction: row; gap: 10px;">
+              <div class="buttons" (click)="save()">Save</div>
+            </div>
+          </div>
         </div>
      
   
 
     </div>
 
-    <div class="centered-container">
-      <span>Powered by &copy; MJunction Services LTD.</span>
-    </div>
 
 
-  </div>
-
-  <app-footer></app-footer>
 </ion-content>
+
+
+<app-footer></app-footer>
+

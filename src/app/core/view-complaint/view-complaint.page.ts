@@ -163,6 +163,7 @@ export class ViewComplaintPage implements OnInit {
     this.source = '';
     this.status = '';
     this.complaintsSearchList=[]
+    this.PageNumber=1
   }
 
 
@@ -212,6 +213,7 @@ export class ViewComplaintPage implements OnInit {
   }
 
   search() {
+    this.PageNumber=1
     this.complaintsSearchList=[]
     if(!this.source){
       this.toast.presentToast('Please select source','error')

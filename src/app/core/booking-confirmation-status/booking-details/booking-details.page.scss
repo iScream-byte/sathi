@@ -1,104 +1,88 @@
+.submit-button {
+  border-radius: 5px;
+  --background: #5a7cdb;
+  --color: rgb(252, 252, 252);
+  --border-radius: 5px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+}
 
-  .flex-container {
-    display: flex;           
-    flex-direction: column; 
-    gap: 16px;              
-    // padding: 15px; 
-    margin-top: 22%; 
-    padding-bottom: 20%;         
-  }
-  
-  .submit-button{
-    border-radius: 5px;
-    --background: #5a7cdb;
-    --color: rgb(252, 252, 252);
-    --border-radius: 5px;
-    --padding-top: 10px;
-    --padding-bottom: 10px;
-  }
-  
-  ion-input {
-    --padding-start: 12px;
-  }
-  ion-select {
-    --padding-start: 12px;
-  }
+ion-input {
+  --padding-start: 12px;
+}
+ion-select {
+  --padding-start: 12px;
+}
 
-  
-  .datetime-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%; 
-    padding: 16px;
-  }
-  
-  ion-datetime {    
-    width: 100%;
-  }
-  
+.datetime-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  padding: 16px;
+}
 
-  .product-price{
-    background-color: rgb(255, 255, 255);
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 15px;
+ion-datetime {
+  width: 100%;
+}
 
-  }
-  .row{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+.product-price {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
+.inactive {
+  opacity: 0.5;
+  pointer-events: none;
+}
 
-  .inactive{
-    opacity: 0.5; 
-    pointer-events: none; 
-  }
-  
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: rgb(48, 48, 48);
+}
 
+th,
+td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid rgb(94, 94, 94);
+}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    color: rgb(48, 48, 48);
-  }
-  
-  th, td {
-    padding: 8px;
-    text-align: center;
-    border: 1px solid rgb(94, 94, 94);
-  }
-  
-  th {
-    background-color: #cbd9ff;
-    font-size: small;
-  }
-  
-  td {
-    text-align: center;
-    font-size: smaller;
-  }
+th {
+  background-color: #cbd9ff;
+  font-size: small;
+}
 
-  tr:nth-child(odd) {
-    background-color: #f0f0f0;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #d8d8d8;
-  }
-  
+td {
+  text-align: center;
+  font-size: smaller;
+}
 
-  ion-card-header {
-    text-align: center; 
-  }
-  
-  ion-card-title {
-    display: inline-block; 
-    margin: 0 auto;
-  }
+tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+tr:nth-child(even) {
+  background-color: #d8d8d8;
+}
+
+ion-card-header {
+  text-align: center;
+}
+
+ion-card-title {
+  display: inline-block;
+  margin: 0 auto;
+}

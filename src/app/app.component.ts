@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, MenuController } from '@ionic/angular';
+import { AlertController, MenuController, NavController } from '@ionic/angular';
 import { LocalStorageService } from './services/localstorage.service';
 import { Router } from '@angular/router';
 import { MyLoader } from './shared/MyLoader';
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
     private storage: LocalStorageService,
     private router: Router,
     private loader: MyLoader,
+    private navCtrl:NavController
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +52,8 @@ export class AppComponent implements OnInit {
               setTimeout(() => {
                 this.appPages=[]
                 this.loader.dismissLoader();
-                this.router.navigate(['auth/login'], { replaceUrl: true });
+                // this.router.navigate(['auth/login'], { replaceUrl: true });
+                this.navCtrl.navigateRoot('auth/login');
               }, 1000);
             });
           },
@@ -83,7 +85,7 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'Update 27C Form Status',
-              url: 'customer-dashboard',
+              url: 'update27c',
               icon: 'book',
             },
             {
@@ -108,26 +110,26 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'New Cust. Reg. Summary (Today)',
-              url: '/folder/spam',
+              url: 'new-customer-reg-summary',
               icon: 'document-text',
             },
             {
               title: 'Customer Reg. Summary',
-              url: '/folder/spam',
+              url: 'customer-reg-summary',
               icon: 'create',
             },
             {
               title: 'Booking Summary (Today)',
-              url: '/folder/spam',
+              url: 'booking-confirmation-status',
               icon: 'create',
             },
             {
               title: 'Truck No. Change Approval',
-              url: '/folder/spam',
+              url: 'truck-no-change-approval',
               icon: 'document-text',
             },
-            { title: 'Feedback', url: '/folder/spam', icon: 'thumbs-up' },
-            { title: 'Notifications', url: '/folder/spam', icon: 'alarm' },
+            { title: 'Feedback', url: 'feedbacks', icon: 'thumbs-up' },
+            { title: 'Notifications', url: 'notifications', icon: 'alarm' },
             {
               title: 'Change Password',
               url: '/folder/spam',
@@ -165,26 +167,26 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'New Cust. Reg. Summary (Today)',
-              url: '/folder/spam',
+              url: 'new-customer-reg-summary',
               icon: 'document-text',
             },
             {
               title: 'Customer Reg. Summary',
-              url: '/folder/spam',
+              url: 'customer-reg-summary',
               icon: 'create',
             },
             {
               title: 'Booking Summary (Today)',
-              url: '/folder/spam',
+              url: 'booking-confirmation-status',
               icon: 'create',
             },
             {
               title: 'Truck No. Change Approval',
-              url: '/folder/spam',
+              url: 'truck-no-change-approval',
               icon: 'document-text',
             },
-            { title: 'Feedback', url: '/folder/spam', icon: 'thumbs-up' },
-            { title: 'Notifications', url: '/folder/spam', icon: 'alarm' },
+            { title: 'Feedback', url: 'feedbacks', icon: 'thumbs-up' },
+            { title: 'Notifications', url: 'notifications', icon: 'alarm' },
             {
               title: 'Change Password',
               url: '/folder/spam',
@@ -207,7 +209,7 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'Permit Top Up Approval',
-              url: 'view-topup-permit',
+              url: 'permit-topup-approval',
               icon: 'calendar',
             },
             {
@@ -227,26 +229,25 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'New Cust. Reg. Summary (Today)',
-              url: '/folder/spam',
+              url: 'new-customer-reg-summary',
               icon: 'document-text',
             },
             {
               title: 'Customer Reg. Summary',
-              url: '/folder/spam',
+              url: 'customer-reg-summary',
               icon: 'create',
             },
             {
               title: 'Booking Summary (Today)',
-              url: '/folder/spam',
+              url: 'booking-confirmation-status',
               icon: 'create',
             },
             {
               title: 'Truck No. Change Approval',
-              url: '/folder/spam',
+              url: 'truck-no-change-approval',
               icon: 'document-text',
             },
-            { title: 'Feedback', url: '/folder/spam', icon: 'thumbs-up' },
-            { title: 'Notifications', url: '/folder/spam', icon: 'alarm' },
+            { title: 'Notifications', url: 'notifications', icon: 'alarm' },
             {
               title: 'Change Password',
               url: '/folder/spam',

@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">New Cust. Reg. Summary</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content [fullscreen]="true">
+  <div class="flex-container">
+    <div class="inputContainer" *ngIf="roleType == 'TSL' && boolHasCAResponseYes">
+      <div style="display: inline-flex; gap: 5px;">Select CA</div>
+      <ion-select (ionChange)="getCaId($event)" okText="select" class="input" placeholder="select CA" [(ngModel)]="ca">
+        <ion-select-option *ngFor="let ca of caListResponse" [value]="ca">{{ca.CA_Name}}</ion-select-option>
+      </ion-select>
+    </div>
+    
+    <div class="inputContainer">
+      <div style="display: inline-flex; gap: 5px;">District Name</div>
+      <ion-input readonly [(ngModel)]="districtName" placeholder="Press to select district" (click)="openDistrictSelectModal()" class="input" type="text" ></ion-input>
+    </div>
+
+
+
+    <div style="display: inline-flex; align-items: center; align-self: center;">
+      <div>
+        <ion-button (click)="resetFilter()" expand="block" fill="outline" type="submit">RESET</ion-button>
+      </div>
+      <div>
+        <ion-button (click)="search()" class="submit-button" expand="block" type="submit">SEARCH</ion-button>
+      </div>
+    </div>
+
+
+
+    <div class="product-price" *ngFor="let item of searchModel">
+
+      <div class="row">
+        <div>Date of Visit:</div>
+        <div class="text-right">{{item?.Visit_Date}}</div>
+      </div>      
+      <div class="row">
+        <div>Agent Name:</div>
+        <div class="text-right">{{item?.AgentName}}</div>
+      </div>
+      <div  class="row">
+        <div>Customer Name:</div>
+        <div class="text-right">{{item?.Visit_Customer_Name}}</div>
+      </div>
+      <div  class="row">
+        <div>Customer Type:</div>
+        <div class="text-right">{{item?.CategoryName}}</div>
+      </div>          
+      <div  class="row">
+        <div>Location:</div>
+        <div class="text-right">{{item?.Location}}</div>
+      </div>         
+      <div  class="row">
+        <div>District:</div>
+        <div class="text-right">{{item?.DistrictName}}</div>
+      </div>
+      <div  class="row">
+        <div>Industry Type:</div>
+        <div class="text-right">{{item?.Product_Manufactured}}</div>
+      </div>      
+      <div class="row">
+        <div></div>
+        <div (click)="goToDetails(item)" style="color: rgb(6, 78, 138); font-size: large; text-decoration: underline;">Check Summary</div>
+      </div>
+    </div>
+
+
+  </div>
+
+</ion-content>
+
+<app-footer></app-footer>

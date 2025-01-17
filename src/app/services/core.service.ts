@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { configs } from './../../environments/configs';
-import { BookingSummaryDetailsResponse, PaymentResponseModel, VisitReportResponseModel, VisitReportSaveModel } from './Interfaces';
+import { BookingSummaryDetailsResponse, CustDashResposneModel, PaymentResponseModel, VisitReportResponseModel, VisitReportSaveModel, CustomerRegSearchResponse, NewRegisteredCustomerForTodayResponseModel, Update27cFormResponseModel, TruckChangeListModel, TruckApproveRejectModel, TopupResponseModel, TopupQuantityResponse, ViewApprovalPermitListModel, ApproveRejectResponseModel, DailyVisitResponseModel } from './Interfaces';
 import { BookingSummaryResponseModel } from 'src/app/services/Interfaces';
 
 @Injectable({
@@ -180,8 +180,81 @@ export class CoreService {
 
   GetBookingSummaryDetails(queries:string){
     return this.http.get<BookingSummaryDetailsResponse>(configs.apiBase+'GetBookingStatusType?'+queries)
+  }  
+  
+  GetCustomerDashboardDetails(queries:string){
+    return this.http.get<CustDashResposneModel>(configs.apiBase+'GetCustomerDashBoard?'+queries)
+  }  
+  
+  GetCustomerRegistrationSummary(queries:string){
+    return this.http.get<CustomerRegSearchResponse>(configs.apiBase+'GetUnregisteredCustomerDatewiseVisit?'+queries)
+  }  
+  
+  GetNewCustomerRegistrationSummary(queries:string){
+    return this.http.get<NewRegisteredCustomerForTodayResponseModel>(configs.apiBase+'GetTodayUnregisteredVisitCustomer?'+queries)
+  }  
+  
+  Update27CForm(queries:any){
+    return this.http.get<Update27cFormResponseModel>(configs.apiBase+'Update27cForm?'+queries)
+  }
+  
+  GetTruckChangeList(queries:any){
+    return this.http.get<TruckChangeListModel>(configs.apiBase+'GetTruckChangeList?'+queries)
+  }  
+
+  ApproveRejectTruck(queries:any){
+    return this.http.get<TruckApproveRejectModel>(configs.apiBase+'ApproveRejectTruck?'+queries)
+  }  
+  
+  GetTopUpPermitList(queries:any){
+    return this.http.get<TopupResponseModel>(configs.apiBase+'GetPermitLimitByCustomer?'+queries)
+  }
+
+  UpdateTopUpQuantity(queries:any){
+    return this.http.get<TopupQuantityResponse>(configs.apiBase+'UpdateTopUpQuantity?'+queries)
   }
 
 
+  GetTopUpsForClientApprovalList(){
+    return this.http.get<ViewApprovalPermitListModel>(configs.apiBase+'GetTopupLimitByCAForClientApproval')
+  }
+
+
+  GetNotificationList(body){
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append("ca_id", body.CaId);
+    urlSearchParams.append("fromDate", body.fromDate);
+    urlSearchParams.append("toDate", body.toDate);
+    return this.http.get(configs.apiBase+'notification?'+urlSearchParams)
+  }
+
+
+  TopUpApproveReject(body){
+    let params = {
+      TopUp_ID: body.TopUp_ID,
+      Limit_ID: body.Limit_ID,
+      Customer_Code: body.Customer_Code,
+      PermitTopUpApplied: body.PermitTopUpApplied,
+      TopUpStatus: body.TopUpStatus,
+      CreatedBy: body.CreatedBy,
+      Remarks: body.Remarks,
+      CustomerName: body.CustomerName,
+      CAName: body.CAName,
+    };
+    let headers = {
+      "Content-Type": "application/json",
+    };    
+    return this.http.post<ApproveRejectResponseModel>(configs.apiBase+'TopUpApplyApproved',params,{headers:headers})
+  }
+
+
+
+  SendFeedback(body){
+    return this.http.post(configs.apiBase+'postFeedbackApi',body)
+  }
+
+  MyFeedbacks(queries){
+    return this.http.get(configs.apiBase+'GetFeedbackList?'+queries)
+  }
   
 }

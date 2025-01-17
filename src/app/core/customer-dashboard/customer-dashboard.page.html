@@ -1,74 +1,82 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Customer Dashboard</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
 <ion-content [fullscreen]="true">
-  <div class="header">
-    <div class="top-header">
-      <div style="align-items: center; display: flex; gap: 15px;">
-        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
-        <img src="assets/images/tatalogo.png" alt="">
-      </div>
-      <div>
-        <img src="assets/images/ibmdlogo.png" alt="">
-      </div>    </div>
-    <div class='bottom-header'>
-      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Customer Dashboard</div>
-      <div>      
-        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
-      </div>
-    </div>
-  </div>
-
-
-  <div class="flex-container">    
-
-    <div class="inputContainer">
-      <div style="display: inline-flex">Select Customer <div style="color: red;">*</div></div>
-      <ion-select class="input" placeholder="Select one" (ionChange)="onOptionSelected($event)">
-        <ion-select-option value="option1">Option 1</ion-select-option>
-        <ion-select-option value="option2">Option 2</ion-select-option>
-        <ion-select-option value="option3">Option 3</ion-select-option>
+  <div class="flex-container">
+    
+    <div class="inputContainer" *ngIf="roleType == 'TSL' && boolHasCAResponseYes">
+      <div style="display: inline-flex; gap: 5px;">Select CA <div style="color: red;padding-left: 5px;">*</div></div>
+      <ion-select (ionChange)="getCaId($event)" okText="select" class="input" placeholder="select CA" [(ngModel)]="ca">
+        <ion-select-option *ngFor="let ca of caListResponse" [value]="ca">{{ca.CA_Name}}</ion-select-option>
       </ion-select>
     </div>
-    <div class="inputContainer">
+
+
+    <div class="inputContainer" [ngClass]="selectedCaId?'':'inactive'">
+      <div style="display: inline-flex; gap: 5px;">Customer <div style="color: red; padding-left: 5px;">*</div></div>
+      <ion-input readonly [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSelectModal()"  class="input" type="text" ></ion-input>
+    </div>
+
+    <div class="inputContainer" [ngClass]="customerCode?'':'inactive'">
       <div style="display: inline-flex">Source <div style="color: red; padding-left: 5px;">*</div></div>
-      <ion-select class="input" placeholder="Select one" (ionChange)="onOptionSelected($event)">
-        <ion-select-option value="option1">Option 1</ion-select-option>
-        <ion-select-option value="option2">Option 2</ion-select-option>
-        <ion-select-option value="option3">Option 3</ion-select-option>
+      <ion-select [(ngModel)]="selectedSourceId" class="input" placeholder="Select source" (ionChange)="onSourceSelected($event)">
+        <ion-select-option *ngFor="let item of sourceListResponse" value={{item.SourceID}}>{{item.SourceName}}</ion-select-option>
       </ion-select>
     </div>
-    <div class="inputContainer">
+
+    <div class="inputContainer" [ngClass]="selectedSourceId?'':'inactive'">
       <div style="display: inline-flex">Product <div style="color: red; padding-left: 5px;">*</div></div>
-      <ion-select class="input" placeholder="Select one" (ionChange)="onOptionSelected($event)">
-        <ion-select-option value="option1">Option 1</ion-select-option>
-        <ion-select-option value="option2">Option 2</ion-select-option>
-        <ion-select-option value="option3">Option 3</ion-select-option>
+      <ion-select [(ngModel)]="selectedProductId"  class="input" placeholder="Select product" (ionChange)="onProductSelected($event)">
+        <ion-select-option *ngFor="let items of productListResponse" value={{items.ProductID}}>{{items.ProductName}}</ion-select-option>
+
       </ion-select>
     </div>
 
 
-    <div class="product-price">
-      <span style="font-size: 22px; color: #000; font-weight: 600;">Product Price</span>
+    <span *ngIf="productPriceResponse" style="font-size: 22px; color: #000; font-weight: 600; text-align: center; margin-top: 15px; font-style: italic;">PRODUCT PRICE</span>
+
+
+    <div class="product-price" *ngFor="let priceList of productPriceResponse">
       <div class="row">
-        <div>Base Price:</div>
-        <div>5056</div>
+        <div>Base Price/ MT (INR):</div>
+        <div>{{priceList.Rate}}</div>
       </div>
       <div  class="row">
         <div>GST:</div>
-        <div>25%</div>
+        <div>{{priceList.GST}}</div>
       </div>
       <div  class="row">
         <div>CESS:</div>
-        <div>10%</div>
+        <div>{{priceList.CESS}}</div>
       </div>
       <div  class="row">
         <div>Total Amount:</div>
-        <div>28443</div>
+        <div>{{priceList.TotalAmount}}</div>
       </div>
     </div>
 
 
     <div>
-      <ion-button class="submit-button" expand="block" type="submit">PROCEED</ion-button>
+      <ion-button (click)="proceed()" *ngIf="productPriceResponse" class="submit-button" expand="block" type="submit">PROCEED</ion-button>
     </div>
   
 
@@ -77,5 +85,6 @@
 
    
   </div>
-  <app-footer></app-footer>
 </ion-content>
+
+<app-footer></app-footer>

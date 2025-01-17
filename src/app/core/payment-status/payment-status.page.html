@@ -1,24 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Payment Status</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+
+
+
 <ion-content [fullscreen]="true">
-  <div class="header">
-    <div class="top-header">
-      <div style="align-items: center; display: flex; gap: 15px;">
-        <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
-        <img src="assets/images/tatalogo.png" alt="">
-      </div>
-      <div>
-        <img src="assets/images/ibmdlogo.png" alt="">
-      </div>    </div>
-    <div class='bottom-header'>
-      <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Customer Payment Status</div>
-      <div>      
-        <!-- <ion-icon name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon> -->
-      </div>
-    </div>
-  </div>
-
-
-
   <div class="flex-container">
     
     <div class="inputContainer" *ngIf="roleType == 'TSL' && boolHasCAResponseYes">
@@ -157,5 +162,6 @@
     </ng-template>
   </ion-modal>
 
-<app-footer></app-footer>
 </ion-content>
+
+<app-footer></app-footer>

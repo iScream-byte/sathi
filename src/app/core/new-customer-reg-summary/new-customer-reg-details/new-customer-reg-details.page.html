@@ -1,0 +1,179 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>    
+      <div class="top-header">
+        <div style="align-items: center; display: flex; gap: 15px;">
+          <ion-icon (click)="toggleMenu()" name="menu" style="color: rgb(0, 0, 0); font-size: 25px;"></ion-icon>
+          <img src="assets/images/tatalogo.png" alt="">
+        </div>
+        <div>
+          <img src="assets/images/ibmdlogo.png" alt="">
+        </div>    </div>
+      <div class='bottom-header'>
+        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
+        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">New Customer Details</div>
+        <div>      
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+
+
+<ion-content [fullscreen]="true">
+ 
+  
+    <div class="flex-container"> 
+      <div class="details">
+        <div class="row">
+          <div>Agent Name:</div>
+          <div class="text-right">{{dataForSummary?.AgentName}}</div>
+        </div>
+        <div class="row">
+          <div>District Name:</div>
+          <div class="text-right">{{dataForSummary?.DistrictName}}</div>
+        </div>
+        <div class="row">
+          <div>Customer Name:</div>
+          <div class="text-right">{{dataForSummary?.Visit_Customer_Name}}</div>
+        </div>
+        <div class="row">
+          <div>Customer Type:</div>
+          <div class="text-right">{{dataForSummary?.CategoryName}}</div>
+        </div>
+        <div class="row">
+          <div>Visit Date:</div>
+          <div class="text-right">{{dataForSummary?.Visit_Date}}</div>
+        </div>
+        <div class="row">
+          <div>Location:</div>
+          <div class="text-right">{{dataForSummary?.Location}}</div>
+        </div>
+        <div class="row">
+          <div>Product Manufactured:</div>
+          <div class="text-right">{{dataForSummary?.Product_Manufactured}}</div>
+        </div>
+        <div class="row">
+          <div>Current Year Brick Kiln Firing Plan (Monthly Avg.):</div>
+          <div class="text-right">{{dataForSummary?.Current_Firing_Plan_monthly_avg}}</div>
+        </div>
+        <div class="row">
+          <div>Last Year Brick Kiln Firing Plan (Monthly Avg.):</div>
+          <div class="text-right">{{dataForSummary?.Last_Year_Firing_Plan_monthly_avg}}</div>
+        </div>
+        <div class="row">
+          <div>Firing Month:</div>
+          <div class="text-right">{{dataForSummary?.Firing_Month}}</div>
+        </div>
+        <div class="row">
+          <div>Closing Month:</div>
+          <div class="text-right">{{dataForSummary?.Closing_Month}}</div>
+        </div>
+        <div class="row">
+          <div>Rounds In Season (No.):</div>
+          <div class="text-right">{{dataForSummary?.noOfRoundsInSeason}}</div>
+        </div>
+        <div class="row">
+          <div>Paya:</div>
+          <div class="text-right">{{dataForSummary?.Paya}}</div>
+        </div>
+        <div class="row">
+          <div>Bricks Per Round (No.):</div>
+          <div class="text-right">{{dataForSummary?.NoOfBircksPerRound}}</div>
+        </div>
+        <div class="row">
+          <div>Coal Requirement In Season (MT):</div>
+          <div class="text-right">{{dataForSummary?.CoalRequirementInSeason}}</div>
+        </div>
+        <div class="row">
+          <div>Quantity Manufactured Annually (MT):</div>
+          <div class="text-right">{{dataForSummary?.QuantityManufacturedAnnual}}</div>
+        </div>
+        <div class="row">
+          <div>Quantity Required Annually (MT):</div>
+          <div class="text-right">{{dataForSummary?.QuantityRequiredAnnual}}</div>
+        </div>
+        <div class="row">
+          <div>Inventory Of Coal (MT):</div>
+          <div class="text-right">{{dataForSummary?.InventoryOfCoal}}</div>
+        </div>
+        <div class="row">
+          <div>Requirements (MT):</div>
+          <div class="text-right">{{dataForSummary?.Requirements}}</div>
+        </div>
+        <div class="row">
+          <div>Ghato Usage (MT):</div>
+          <div class="text-right">{{dataForSummary?.Ghato_Usage}}</div>
+        </div>
+        <div class="row">
+          <div>Other Competitors:</div>
+          <div class="text-right">{{dataForSummary?.Competition}}</div>
+        </div>
+        <div class="row">
+          <div>Landed Price Of Competition Coal (₹):</div>
+          <div class="text-right">{{dataForSummary?.LandedPriceCompetitionCoal}}</div>
+        </div>
+        <div class="row">
+          <div>Avg. Price / 1000 Bricks (₹):</div>
+          <div class="text-right">{{dataForSummary?.Avg_price_perThousand_bricks}}</div>
+        </div>
+        <div class="row">
+          <div>Kilns In Vicinity (No.):</div>
+          <div class="text-right">{{dataForSummary?.Number_of_kilns_in_Visinity}}</div>
+        </div>
+        <div class="row">
+          <div>Inventory Of Prepared Bricks (No.):</div>
+          <div class="text-right">{{dataForSummary?.Inventory_Prepared_Bricks}}</div>
+        </div>
+        <div class="row">
+          <div>Remarks:</div>
+          <div class="text-right">{{dataForSummary?.Remarks}}</div>
+        </div>
+        <div class="row">
+          <div>Location Captured:</div>
+          <div class="text-right" (click)="openInApp()" style="color:blue;">{{dataForSummary?.LAT}} , {{dataForSummary?.LONG}}</div>
+        </div>
+        <div class="row">
+          <div>PAN Card:</div>
+          <div class="text-right">
+            <img (click)="presentPopover(dataForSummary?.FilePANPath)" [src]="dataForSummary?.FilePANPath" width="150" height="170" />
+          </div>
+        </div>
+        <div class="row">
+          <div>Aadhar Card:</div>
+          <div class="text-right">
+            <img (click)="presentPopover(dataForSummary?.FileADHARPath)" [src]="dataForSummary?.FileADHARPath" width="150" height="170"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>GST:</div>
+          <div class="text-right">
+            <img (click)="presentPopover(dataForSummary?.FileTRLICENSEPath)" [src]="dataForSummary?.FileTRLICENSEPath" width="150" height="170" />
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  
+  
+  
+  <ion-modal #modal [isOpen]="isModalOpen" [backdropDismiss]="false">
+    <ng-template>
+      <div class="wrapper">
+        <!-- <img class='image' src='https://upload.wikimedia.org/wikipedia/en/7/73/Trollface.png' alt="image" srcset=""> -->
+        <img class='image' src={{imageSrc}} alt="image" srcset="">
+        
+      </div>
+      <button (click)="closeModal()">Close</button>
+  
+    </ng-template>
+  </ion-modal>
+  
+    
+  </ion-content>
+
+
+  <app-footer></app-footer>
+  

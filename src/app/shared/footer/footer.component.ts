@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { MyLoader } from '../MyLoader';
 import { LocalStorageService } from './../../services/localstorage.service';
 
@@ -20,6 +20,7 @@ export class FooterComponent  implements OnInit {
     private alertController: AlertController,
     private storage: LocalStorageService,
     private loader: MyLoader,
+    private  navCtrl:NavController
     
     ) { }
 
@@ -56,7 +57,8 @@ export class FooterComponent  implements OnInit {
             this.storage.clearItem('NSUDloginDetail').then((res) => {
               setTimeout(() => {
                 this.loader.dismissLoader();
-                this.router.navigate(['auth/login'], { replaceUrl: true });
+                // this.router.navigate(['auth/login'], { replaceUrl: true });
+                this.navCtrl.navigateRoot('auth/login');
               }, 1000);
             });
           },
