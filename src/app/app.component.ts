@@ -4,6 +4,7 @@ import { LocalStorageService } from './services/localstorage.service';
 import { Router } from '@angular/router';
 import { MyLoader } from './shared/MyLoader';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { Platform } from '@ionic/angular';
 
 
 @Component({
@@ -20,8 +21,17 @@ export class AppComponent implements OnInit {
     private storage: LocalStorageService,
     private router: Router,
     private loader: MyLoader,
-    private navCtrl:NavController
-  ) {}
+    private navCtrl:NavController,
+    private platform: Platform
+  ) {
+    this.platform.ready().then(() => {
+      // Disable the back button
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        // Prevent the default action (going back)
+        console.log('Back button pressed, but disabled.');
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.initApp();
