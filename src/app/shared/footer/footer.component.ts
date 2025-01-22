@@ -54,7 +54,7 @@ export class FooterComponent  implements OnInit {
           text: 'Yes',
           handler: () => {
             this.loader.showLoader('Logging out...');
-            this.storage.clearItem('NSUDloginDetail').then((res) => {
+            this.storage.clearItem('rememberMe').then((res) => {
               setTimeout(() => {
                 this.loader.dismissLoader();
                 // this.router.navigate(['auth/login'], { replaceUrl: true });

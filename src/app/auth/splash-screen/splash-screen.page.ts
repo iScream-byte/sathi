@@ -23,7 +23,7 @@ export class SplashScreenPage implements OnInit {
   ionViewWillEnter() {
     this.menuCtrl.enable(false);    
     setTimeout(() => {
-      this.storage.getItem('NSUDloginDetail').then(res=>{
+      this.storage.getItem('rememberMe').then(res=>{
         if(res){
           this.router.navigate(['/landing-page'], { replaceUrl: true });
         }else{

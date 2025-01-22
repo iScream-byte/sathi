@@ -323,6 +323,8 @@ export class VisitReportPage implements OnInit {
     this.dropdownServices.GetIndustryList().subscribe(res=>{
       this.industryTypes=res      
     })
+    this.storageService.getItem('offlineData').then(res=>{console.log(res)})
+    
   }
 
 
@@ -337,6 +339,7 @@ export class VisitReportPage implements OnInit {
       this.CA_ID = val.ca_id;
       this.agentID_id = val.agent_id;
       this.org_id = val.Org_ID;
+      
     }).catch((error) => {
       console.log(error);
       
@@ -834,7 +837,7 @@ export class VisitReportPage implements OnInit {
           if(this.hasNetwork && this.visitMode == "Online"){
              this.saveCustomerData();
           }else {
-            // this.saveOfflineCustomerData();
+            this.saveOfflineCustomerData();
           } 
         }       
         
@@ -857,7 +860,7 @@ export class VisitReportPage implements OnInit {
           if(this.hasNetwork && this.visitMode == "Online"){
             this.saveCustomerData();
           } else {
-            // this.saveOfflineCustomerData();
+            this.saveOfflineCustomerData();
           }                     
         }
       }
@@ -1393,6 +1396,30 @@ export class VisitReportPage implements OnInit {
     })
   }
 
+
+
+
+  saveOfflineCustomerData(){ 
+    this.getNativeStorageData()
+    console.log(this.data);
+
+    this.storageService.getItem('offlineData').then(res=>{
+      let previousData=[]
+      previousData = res
+      if(!previousData){
+        previousData = []
+        previousData.push(this.data)
+      }else{        
+        previousData.push(this.data)
+      }
+      this.storageService.setItem('offlineData',previousData).then(res=>{
+        this.toast.presentToast('Offline visit report saved','success')
+      }
+      )
+    })    
+    
+    
+  }
 
 
 

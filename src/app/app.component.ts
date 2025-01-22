@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
           handler: () => {
             this.loader.showLoader('Logging out...');
             this.menuController.toggle();
-            this.storage.clearItem('NSUDloginDetail').then((res) => {
+            this.storage.clearItem('rememberMe').then((res) => {
               setTimeout(() => {
                 this.appPages=[]
                 this.loader.dismissLoader();
@@ -132,7 +132,7 @@ export class AppComponent implements OnInit {
             { title: 'Notifications', url: 'notifications', icon: 'alarm' },
             {
               title: 'Change Password',
-              url: '/folder/spam',
+              url: 'change-password',
               icon: 'lock-open',
             },
           ];
@@ -189,7 +189,7 @@ export class AppComponent implements OnInit {
             { title: 'Notifications', url: 'notifications', icon: 'alarm' },
             {
               title: 'Change Password',
-              url: '/folder/spam',
+              url: 'change-password',
               icon: 'lock-open',
             },
           ];
@@ -250,7 +250,7 @@ export class AppComponent implements OnInit {
             { title: 'Notifications', url: 'notifications', icon: 'alarm' },
             {
               title: 'Change Password',
-              url: '/folder/spam',
+              url: 'change-password',
               icon: 'lock-open',
             },
           ];

@@ -1,13 +1,90 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>offline-report</ion-title>
+    <div class="top-header">
+      <div style="align-items: center; display: flex; gap: 15px">
+        <ion-icon
+          (click)="toggleMenu()"
+          name="menu"
+          style="color: rgb(0, 0, 0); font-size: 25px"
+        ></ion-icon>
+        <img src="assets/images/tatalogo.png" alt="" />
+      </div>
+      <div>
+        <img src="assets/images/ibmdlogo.png" alt="" />
+      </div>
+    </div>
+    <div class="bottom-header">
+      <ion-icon
+        (click)="goBack()"
+        name="chevron-back"
+        style="color: white; padding-left: 5px; font-size: 20px"
+      ></ion-icon>
+      <div
+        style="
+          color: white;
+          font-weight: 600;
+          font-size: 18px;
+          padding-left: 10px;
+        "
+      >
+        Offline Report
+      </div>
+      <div></div>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">offline-report</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="flex-container">
+    <ng-container *ngFor="let item of AllReports; let i = index">
+      <div
+        *ngIf="item.CreatedBY == userId"
+        style="
+          width: 100%;
+          background-color: rgb(165, 194, 238);
+          padding: 15px;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <div>
+          <div>Offline report for:</div>
+          <div>{{item.Visit_Customer_Name}}</div>
+        </div>
+        <div style="display: flex; flex-direction: row; align-items: center">
+          <ion-icon
+            (click)="syncWithServer(item, i)"
+            name="refresh"
+            style="
+              color: rgb(255, 255, 255);
+              font-size: 20px;
+              font-weight: 600;
+              background-color: rgb(40, 65, 87);
+              padding: 9px;
+              border-radius: 8px;
+            "
+          ></ion-icon>
+          <div
+            style="
+              background-color: rgb(40, 65, 87);
+              color: white;
+              font-weight: 600;
+              padding: 10px;
+              border-radius: 8px;
+              margin-left: 10px;
+            "
+            (click)="goToDetails(item)"
+          >
+            check summary
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  
 </ion-content>
+
+<app-footer></app-footer>

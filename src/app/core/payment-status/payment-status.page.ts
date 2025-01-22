@@ -235,6 +235,9 @@ export class PaymentStatusPage implements OnInit {
     this.customerCode=''
     this.minimumEndDate=''
     this.maximumEndDate=''
+    this.paymentListArray=[]
+    this.totalPayment = ''
+    this.isPaymentListExist = false
   }
 
 

@@ -23,8 +23,8 @@
 
 
     <div style="display: inline-flex; align-items: center; justify-content: space-between;">      
-      <ion-checkbox labelPlacement="end"><p style="font-size: 17px;">Remember me?</p></ion-checkbox>
-      <div style="font-size: 17px; color: rgb(29, 79, 126); text-decoration: underline;">Forgot password</div>
+      <ion-checkbox formControlName="rememberMe" labelPlacement="end"><p style="font-size: 17px;">Remember me?</p></ion-checkbox>
+      <div (click)="gotoForgotPass()" style="font-size: 17px; color: rgb(29, 79, 126); text-decoration: underline;">Forgot password</div>
     </div>
 
 

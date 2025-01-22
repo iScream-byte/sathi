@@ -7,7 +7,6 @@ import { AuthServicesService } from './../../services/auth-services.service';
 import { MyLoader } from './../../shared/MyLoader';
 import { LocalStorageService } from './../../services/localstorage.service';
 import { AlertService } from './../../services/alert.service';
-import { Subscription } from 'rxjs';
 import { AppComponent } from './../../app.component';
 import { ToastService } from './../../services/toast.service';
 
@@ -17,34 +16,29 @@ import { ToastService } from './../../services/toast.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  private subscription: Subscription = new Subscription();
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private menuCtrl: MenuController,
     private authService: AuthServicesService,
-    private loader:MyLoader,
-    private storage:LocalStorageService,
-    private alert:AlertService,
-    private app:AppComponent,
-    private toast:ToastService
+    private loader: MyLoader,
+    private storage: LocalStorageService,
+    private alert: AlertService,
+    private app: AppComponent,
+    private toast: ToastService
   ) {}
   loginForm: FormGroup;
 
-  ngOnInit() { 
-
-
+  ngOnInit() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
+      rememberMe: [false],
     });
   }
 
-
-
   ionViewWillEnter() {
-    this.menuCtrl.enable(false);    
+    this.menuCtrl.enable(false);
   }
 
   ionViewWillLeave() {
@@ -55,26 +49,39 @@ export class LoginPage implements OnInit {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
 
-    this.loader.showLoader('Logging in...')
+    this.loader.showLoader('Logging in...');
 
     this.authService.LoginRequest(username, password).subscribe((res) => {
       // console.log('loginressssssssssssssss=======', res);
-      if(res.status=='Success'){
-        this.storage.setItem('NSUDloginDetail',JSON.stringify(res)).then(res=>{
-            this.loader.dismissLoader()
-            this.callAppFunction()
-            this.toast.presentToast('Successfully logged in','success')
-            this.router.navigate(['/landing-page'],{replaceUrl:true})          
-        })
-      }else{
-        this.toast.presentToast('Invalid Credential','error')
-        this.loader.dismissLoader()
+      if (res.status == 'Success') {
+        this.storage
+          .setItem('NSUDloginDetail', JSON.stringify(res))
+          .then((res) => {
+            this.loader.dismissLoader();
+            this.callAppFunction();
+            this.toast.presentToast('Successfully logged in', 'success');
+            if (this.loginForm.value.rememberMe) {
+              this.storage.setItem('rememberMe', true).then((res2) => {
+                this.router.navigate(['/landing-page'], { replaceUrl: true });
+              });
+            } else {
+              this.storage.clearItem('rememberMe').then((res2) => {
+                this.router.navigate(['/landing-page'], { replaceUrl: true });
+              });
+            }
+          });
+      } else {
+        this.toast.presentToast('Invalid Credential', 'error');
+        this.loader.dismissLoader();
       }
     });
   }
 
-    callAppFunction() {
-      this.app.triggerThisFunctionFromLogin()
-    }
+  callAppFunction() {
+    this.app.triggerThisFunctionFromLogin();
+  }
 
+  gotoForgotPass(){
+    this.router.navigate(['forgot-password'])
+  }
 }

@@ -79,6 +79,14 @@ const routes: Routes = [
     path: 'feedbacks',
     loadChildren: () => import('./core/feedbacks/feedbacks.module').then( m => m.FeedbacksPageModule)
   },
+  {
+    path: 'change-password',
+    loadChildren: () => import('./core/change-password/change-password.module').then( m => m.ChangePasswordPageModule)
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./auth/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  },
 
 
 

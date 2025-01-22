@@ -15,5 +15,23 @@ export class AuthServicesService {
     return this.http.get<LoginResponseModel>(
       configs.apiBase + `userLogin?username=${username}&password=${password}`      
     );
+  }  
+  
+  ChangePassword(queries){
+    return this.http.get(
+      configs.apiBase + `ChangePassword?`+queries      
+    );
+  }  
+  
+  ValidateUser(queries){
+    return this.http.get(
+      configs.apiBase + `ValidateUser?`+queries      
+    );
+  }  
+  
+  ValidateOTP(queries){
+    return this.http.get(
+      configs.apiBase + `ValidateOTP?`+queries      
+    );
   }
 }
