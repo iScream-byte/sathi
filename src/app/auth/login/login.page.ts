@@ -9,6 +9,7 @@ import { LocalStorageService } from './../../services/localstorage.service';
 import { AlertService } from './../../services/alert.service';
 import { AppComponent } from './../../app.component';
 import { ToastService } from './../../services/toast.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -25,8 +26,20 @@ export class LoginPage implements OnInit {
     private storage: LocalStorageService,
     private alert: AlertService,
     private app: AppComponent,
-    private toast: ToastService
-  ) {}
+    private toast: ToastService,
+    private platform: Platform
+
+  ) {
+    
+    this.platform.ready().then(() => {
+      // Disable the back button
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        // Prevent the default action (going back)
+        console.log('Back button pressed, but disabled.');
+      });
+    });
+ 
+  }
   loginForm: FormGroup;
 
   ngOnInit() {

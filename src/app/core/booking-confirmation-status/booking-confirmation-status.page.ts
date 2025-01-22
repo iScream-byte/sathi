@@ -88,6 +88,13 @@ export class BookingConfirmationStatusPage implements OnInit {
     this.location.back();
   }
 
+  ionViewDidEnter() {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.goBack();
+    });
+  }
+
+
   getBookingSummaryDetails() {
     const queries =
       '&LocId=' +

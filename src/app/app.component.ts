@@ -22,16 +22,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private loader: MyLoader,
     private navCtrl:NavController,
-    private platform: Platform
-  ) {
-    this.platform.ready().then(() => {
-      // Disable the back button
-      this.platform.backButton.subscribeWithPriority(10, () => {
-        // Prevent the default action (going back)
-        console.log('Back button pressed, but disabled.');
-      });
-    });
-  }
+  ) { }
 
   ngOnInit(): void {
     this.initApp();
