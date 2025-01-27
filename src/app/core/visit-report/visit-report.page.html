@@ -96,7 +96,7 @@
         
         <div class="inputContainer" *ngIf="selectedCustomerType=='existing'">
           <div style="display: inline-flex; gap: 5px;">Select Customer<div style="color: red;">*</div></div>
-          <ion-input [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSearchModal()" class="input" type="text" ></ion-input>
+          <ion-input readonly [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSearchModal()" class="input" type="text" ></ion-input>
         </div>
 
 

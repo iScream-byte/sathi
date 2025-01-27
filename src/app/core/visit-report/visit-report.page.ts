@@ -13,6 +13,8 @@ import { SearchableDropdownComponent } from './../../utils/searchable-dropdown/s
 import { LocalStorageService } from './../../services/localstorage.service';
 import { CoreService } from './../../services/core.service';
 import { Geolocation } from '@capacitor/geolocation';
+import { timeout } from 'rxjs';
+import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
 
 @Component({
   selector: 'app-visit-report',
@@ -322,9 +324,7 @@ export class VisitReportPage implements OnInit {
   ngOnInit() {
     this.dropdownServices.GetIndustryList().subscribe(res=>{
       this.industryTypes=res      
-    })
-    this.storageService.getItem('offlineData').then(res=>{console.log(res)})
-    
+    })    
   }
 
 
@@ -789,6 +789,7 @@ export class VisitReportPage implements OnInit {
     }else{     
       if(!this.data.LAT){
         this.toast.presentToast('Please enable your GPS', 'error')
+        // this.getCurrentLocation()
         return
       }
 
@@ -1129,25 +1130,67 @@ export class VisitReportPage implements OnInit {
   }
 
 
+  async askToTurnLocationOn(app=false){
+    return NativeSettings.open({
+      optionAndroid: AndroidSettings.Location, 
+      optionIOS: IOSSettings.App
+    })
+  }  
+  
+  async askToOpenAppSetting(app=false){
+    return NativeSettings.open({
+      optionAndroid: AndroidSettings.ApplicationDetails, 
+      optionIOS: IOSSettings.App
+    })
+  }
+
 
 
   async getCurrentLocation() {
-    try {
-      // Request the current position
-      const position = await Geolocation.getCurrentPosition();
+      try{
+        const permissionStatus = await Geolocation.checkPermissions()
+        console.log(permissionStatus,'meow');
+        if(permissionStatus.location!='granted'){
+          const requestStatus = await Geolocation.requestPermissions()
+          console.log(requestStatus,'poop');
+          
+          if(requestStatus.location!='granted'){
+            this.toast.presentToast('Location permission required','error')
+            setTimeout(() => {
+              this.askToOpenAppSetting()
+            }, 2000);
+            return
+          }
+        }
+  
+        let options:PositionOptions = {
+          maximumAge:3000,
+          timeout:10000,
+          enableHighAccuracy:true
+        }
+        this.loader.showLoader('fetching location...')
+        
+        const position = await Geolocation.getCurrentPosition(options);
+  
+        // Access the latitude and longitude
+        this.lat = position.coords.latitude;
+        this.long = position.coords.longitude;
+  
+        this.data.LAT=position.coords.latitude.toString()
+        this.data.LONG=position.coords.longitude.toString()
+  
+        console.log('Latitude:', this.lat);
+        console.log('Longitude:', this.long);
+        this.loader.stopLoader()
+      }catch{
+        this.toast.presentToast('Please enable device location','error')
+        setTimeout(() => {
+          this.askToTurnLocationOn()
+        }, 2000);
+        
+      }
 
-      // Access the latitude and longitude
-      this.lat = position.coords.latitude;
-      this.long = position.coords.longitude;
-
-      this.data.LAT=position.coords.latitude.toString()
-      this.data.LONG=position.coords.longitude.toString()
-
-      console.log('Latitude:', this.lat);
-      console.log('Longitude:', this.long);
-    } catch (error) {
-      console.error('Error getting location', error);
-    }
+    
   }
 
 
@@ -1369,7 +1412,6 @@ export class VisitReportPage implements OnInit {
 
   saveCustomerData(){
     this.getNativeStorageData()
-    
     this.data.VisitType=this.visitType
     this.data.CreatedBY =this.creater_id;
     this.data.CA_ID = this.CA_ID;

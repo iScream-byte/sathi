@@ -2,8 +2,8 @@ import type { CapacitorConfig } from '@capacitor/cli';
 import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'MJCustomerAgent',
+  appId: 'com.BCS.MJCustomerAgent',
+  appName: 'IBMD Saathi',
   webDir: 'www',
   server: {
     androidScheme: 'https'

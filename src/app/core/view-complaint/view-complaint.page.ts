@@ -301,7 +301,7 @@ export class ViewComplaintPage implements OnInit {
     if(this.source=='sahaj'){
       this.coreServices.GetComplaintList('sahaj',queries).subscribe((res: ComplaintSearchList)=>{
         if(res.Status == "Success"){
-          if(res.comps.length==0){
+          if(res.comps.length<this.PageSize){
             this.hasMoreRecords = false;
           }else{
             this.complaintsSearchList = this.complaintsSearchList.concat(res.comps);
@@ -319,7 +319,7 @@ export class ViewComplaintPage implements OnInit {
       this.coreServices.GetComplaintList('helpdesk',queries).subscribe((res: ComplaintSearchList)=>{
         if(res.Status == "Success"){     
           if(res.Status == "Success"){
-            if(res.comps.length==0){
+            if(res.comps.length<this.PageSize){
               this.hasMoreRecords = false;
             }else{
               this.complaintsSearchList = this.complaintsSearchList.concat(res.comps);

@@ -48,7 +48,7 @@
     <div class="inputContainer">
       <div style="display: inline-flex; gap: 5px;">Status</div>
       <ion-select (ionChange)="changeStatus($event)" [(ngModel)]="status" okText="select" class="input" placeholder="select status" >
-        <ion-select-option value="All">All</ion-select-option>
+        <ion-select-option value="">All</ion-select-option>
         <ion-select-option value="Responded">Responded</ion-select-option>
         <ion-select-option value="Open">Open</ion-select-option>
       </ion-select>
