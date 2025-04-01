@@ -199,7 +199,7 @@ export class ViewTopupPermitPage implements OnInit {
       this.showSubmitBtn = false;
       return;
     }
-    const PermitQuantity = Number(val.PermitQuantity);
+    const PermitQuantity = Number(val.BalanceQuantity);
     const topval = Number(this.topupValue);
 
     if(topval<0){
