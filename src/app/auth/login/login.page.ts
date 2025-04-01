@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
     this.loader.showLoader('Logging in...');
 
     this.authService.LoginRequest(username, password).subscribe((res) => {
-      // console.log('loginressssssssssssssss=======', res);
+      console.log('loginressssssssssssssss=======', res);
       if (res.status == 'Success') {
         this.storage
           .setItem('NSUDloginDetail', JSON.stringify(res))

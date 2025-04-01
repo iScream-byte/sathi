@@ -100,6 +100,8 @@ export class CustomerDashboardPage implements OnInit {
       return;
     }
     this.dropdownService.GetCAList().subscribe((res) => {
+      console.log(res);
+      
       if (res == null || res.length < 1) {
         this.toast.presentToast('No CA found', 'error');
         this.loader.stopLoader();

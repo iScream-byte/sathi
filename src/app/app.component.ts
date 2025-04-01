@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     this.storage.getItem('NSUDloginDetail').then((res) => {
       if (res) {
         const userRole = JSON.parse(res).roletype;
-        console.log(userRole);
+
         if (userRole == 'AGENT') {
           this.appPages = [
             { title: 'Home', url: 'landing-page', icon: 'home' },
