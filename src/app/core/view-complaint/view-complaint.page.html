@@ -10,7 +10,7 @@
         </div>    </div>
       <div class='bottom-header'>
         <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">View Complaint</div>
+        <div style="color: white; font-weight: 550; font-size: 18px; font-family: Montserrat; margin-left: -10px;">View Complaint</div>
         <div>      
         </div>
       </div>
@@ -73,12 +73,12 @@
     </div>
 
 
-    <div style="display: inline-flex; align-items: center; align-self: center;">
-      <div>
-        <ion-button  expand="block" fill="outline" type="submit" (click)="resetFilter()">RESET</ion-button>
+    <div  style="display: inline-flex; align-items: center; align-self: center; width: 100%; gap: 10px;">
+      <div (click)="resetFilter()" class="reset">
+        RESET
       </div>
-      <div>
-        <ion-button class="submit-button" expand="block" type="submit" (click)="search()">SEARCH</ion-button>
+      <div (click)="search()" class="search">
+        SEARCH
       </div>
     </div>
 

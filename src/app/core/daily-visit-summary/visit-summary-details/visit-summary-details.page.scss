@@ -1,18 +1,21 @@
 .details {
   background-color: rgb(255, 255, 255);
-  box-shadow: 0px -4px 10px rgba(80, 80, 80, 0.2);
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 10px;
-  font-size: 18px;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 10px;
+  font-family: Montserrat;
 }
-.row {
+.row{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 5px;
+  font-family: Montserrat;
+  font-size: 15px;
+  color: rgb(102, 102, 102);
+  margin-top: 10px;
 }
 
 .text-right {

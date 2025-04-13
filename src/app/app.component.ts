@@ -82,12 +82,12 @@ export class AppComponent implements OnInit {
             {
               title: 'Enter Visit Report',
               url: 'visit-report',
-              icon: 'book',
+              icon: 'report',
             },
             {
               title: 'Update 27C Form Status',
               url: 'update27c',
-              icon: 'book',
+              icon: 'form',
             },
             {
               title: 'View & Top Up Permit',
@@ -101,8 +101,8 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'View Customer Complaints',
-              url: '/folder/trash',
-              icon: 'alert-circle',
+              url: 'view-complaint',
+              icon: 'complaints',
             },
             {
               title: 'Daily Visit Summary (Agent)',
@@ -112,32 +112,34 @@ export class AppComponent implements OnInit {
             {
               title: 'New Cust. Reg. Summary (Today)',
               url: 'new-customer-reg-summary',
-              icon: 'document-text',
+              icon: 'document',
             },
             {
               title: 'Customer Reg. Summary',
               url: 'customer-reg-summary',
-              icon: 'create',
+              icon: 'audit',
             },
             {
               title: 'Booking Summary (Today)',
               url: 'booking-confirmation-status',
-              icon: 'create',
+              icon: 'audit',
             },
             {
               title: 'Truck No. Change Approval',
               url: 'truck-no-change-approval',
-              icon: 'document-text',
+              icon: 'document',
             },
-            { title: 'Feedback', url: 'feedbacks', icon: 'thumbs-up' },
-            { title: 'Notifications', url: 'notifications', icon: 'alarm' },
+            { title: 'Feedback', url: 'feedbacks', icon: 'thumbs' },
+            { title: 'Notifications', url: 'notifications', icon: 'bell' },
             {
               title: 'Change Password',
               url: 'change-password',
-              icon: 'lock-open',
+              icon: 'unlock',
             },
           ];
-        }        
+        } 
+        
+        
         else if (userRole == 'CA') {
           this.appPages = [
             { title: 'Home', url: 'landing-page', icon: 'home' },
@@ -158,8 +160,8 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'View Customer Complaints',
-              url: '/folder/trash',
-              icon: 'alert-circle',
+              url: 'view-complaint',
+              icon: 'complaints',
             },
             {
               title: 'Daily Visit Summary (Agent)',
@@ -169,32 +171,34 @@ export class AppComponent implements OnInit {
             {
               title: 'New Cust. Reg. Summary (Today)',
               url: 'new-customer-reg-summary',
-              icon: 'document-text',
+              icon: 'document',
             },
             {
               title: 'Customer Reg. Summary',
               url: 'customer-reg-summary',
-              icon: 'create',
+              icon: 'audit',
             },
             {
               title: 'Booking Summary (Today)',
               url: 'booking-confirmation-status',
-              icon: 'create',
+              icon: 'audit',
             },
             {
               title: 'Truck No. Change Approval',
               url: 'truck-no-change-approval',
-              icon: 'document-text',
+              icon: 'document',
             },
-            { title: 'Feedback', url: 'feedbacks', icon: 'thumbs-up' },
-            { title: 'Notifications', url: 'notifications', icon: 'alarm' },
+            { title: 'Feedback', url: 'feedbacks', icon: 'thumbs' },
+            { title: 'Notifications', url: 'notifications', icon: 'bell' },
             {
               title: 'Change Password',
               url: 'change-password',
-              icon: 'lock-open',
+              icon: 'unlock',
             },
           ];
         }
+
+
         else  if(userRole == 'TSL'){
           this.appPages = [
             { title: 'Home', url: 'landing-page', icon: 'home' },
@@ -220,8 +224,8 @@ export class AppComponent implements OnInit {
             },
             {
               title: 'View Customer Complaints',
-              url: '/folder/trash',
-              icon: 'alert-circle',
+              url: 'view-complaint',
+              icon: 'complaints',
             },
             {
               title: 'Daily Visit Summary (Agent)',
@@ -231,28 +235,28 @@ export class AppComponent implements OnInit {
             {
               title: 'New Cust. Reg. Summary (Today)',
               url: 'new-customer-reg-summary',
-              icon: 'document-text',
+              icon: 'document',
             },
             {
               title: 'Customer Reg. Summary',
               url: 'customer-reg-summary',
-              icon: 'create',
+              icon: 'audit',
             },
             {
               title: 'Booking Summary (Today)',
               url: 'booking-confirmation-status',
-              icon: 'create',
+              icon: 'audit',
             },
             {
               title: 'Truck No. Change Approval',
               url: 'truck-no-change-approval',
-              icon: 'document-text',
+              icon: 'document',
             },
-            { title: 'Notifications', url: 'notifications', icon: 'alarm' },
+            { title: 'Notifications', url: 'notifications', icon: 'bell' },
             {
               title: 'Change Password',
               url: 'change-password',
-              icon: 'lock-open',
+              icon: 'unlock',
             },
           ];
         }

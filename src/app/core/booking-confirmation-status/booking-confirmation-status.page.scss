@@ -78,3 +78,16 @@ ion-datetime {
   opacity: 0.5;
   pointer-events: none;
 }
+
+
+.centered-container {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;     
+  text-align: center; 
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-family: Montserrat;
+  color: #7e7e7e;
+  font-size: 15px;
+}

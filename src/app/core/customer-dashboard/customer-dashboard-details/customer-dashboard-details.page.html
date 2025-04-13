@@ -8,12 +8,12 @@
         <div>
           <img src="assets/images/ibmdlogo.png" alt="">
         </div>    </div>
-      <div class='bottom-header'>
-        <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Customer Dashboard</div>
-        <div>      
+        <div class='bottom-header'>
+          <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 15px; font-size: 20px;"></ion-icon>
+          <div style="color: white; font-weight: 550; font-size: 15px; margin-left: -25px;">Customer Dashboard</div>
+          <div>      
+          </div>
         </div>
-      </div>
   </ion-toolbar>
 </ion-header>
 
@@ -23,7 +23,7 @@
 <ion-content [fullscreen]="true">
   <div class="flex-container">
 
-    <div style="
+    <!-- <div style="
       background-color: rgb(201, 230, 255); 
       padding-top: 20px; 
       padding-bottom: 20px;
@@ -35,14 +35,32 @@
     <div><span style="font-weight: bold;">Tin No: </span><span style="font-style: italic;">{{custDashJsonResponse.TIN_NO}}</span></div>
     <div><span style="font-weight: bold;">GST No: </span><span style="font-style: italic;">{{custDashJsonResponse.GST_NO}}</span></div>
     <div><span style="font-weight: bold;">Address: </span><span style="font-style: italic;">{{custDashJsonResponse.CustAdd}}</span></div>
+    </div> -->
+    <div class="product-price" style="margin-top: -25px;">
+      <span style="font-size: 18px; color: #414141; font-weight: 600; text-align: left; margin-top: 5px; font-family: Montserrat; margin-bottom: 15px;">Customer Details</span>
+      <div class="row">
+        <div>Customer Id:</div>
+        <div>{{paramsFromPreviousPage.CustomerCode}}</div>
+      </div>
+      <div  class="row">
+        <div>Tin No:</div>
+        <div>{{custDashJsonResponse.TIN_NO?custDashJsonResponse.TIN_NO:'-'}}</div>
+      </div>
+      <div  class="row">
+        <div>GST No:</div>
+        <div>{{custDashJsonResponse.GST_NO?custDashJsonResponse.GST_NO:'-'}}</div>
+      </div>
+      <div  class="row">
+        <div>Address:</div>
+        <div>{{custDashJsonResponse.CustAdd?custDashJsonResponse.CustAdd:'-'}}</div>
+      </div>
     </div>
-
     
 
     <div class="content-section-center" *ngFor="let dashDetails of custDashArrayResponse">
       
 
-      <table>
+      <!-- <table>
         <thead>
           <tr>
             <th>27C<br>Availability</th>
@@ -63,9 +81,37 @@
             <td>As per current<br>rate of<span style="display: block;">{{dashDetails.Rate}}</span></td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
 
-      <table>
+
+      <div class="product-price" style="margin-top: 10px;">
+        <div class="row">
+          <div>27C Availability:</div>
+          <div>{{dashDetails.DocValid}}</div>
+        </div>
+        <div  class="row">
+          <div>DO No.</div>
+          <div>{{dashDetails.DoNumber}}</div>
+        </div>
+        <div  class="row">
+          <div>Balance Amount (INR)</div>
+          <div>{{"₹"+dashDetails.Balance}}</div>
+        </div>
+        <div  class="row">
+          <div>Last reconciliation date</div>
+          <div>{{dashDetails.ReconciledDate}}</div>
+        </div>
+        <div  class="row">
+          <div>Balance Quantity (MT):</div>
+          <div>{{dashDetails.Quantity}}</div>
+        </div>
+        <div  class="row">
+          <div>As per currentrate of:</div>
+          <div>{{dashDetails.Rate}}</div>
+        </div>
+      </div>
+
+      <!-- <table>
         <thead>
           <tr>
             <th>Current Permit<br>Limit(MT)</th>
@@ -80,14 +126,33 @@
             <td>{{dashDetails.LicenseValidity}}</td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
 
-      <div style="margin-top: 10px; color:red; font-style: italic; font-size: smaller;">
+      <div class="product-price" style="margin-top: 15px;">
+        <div class="row">
+          <div>Current Permit Limit(MT): </div>
+          <div>{{dashDetails.permitLimit}}</div>
+        </div>
+        <div  class="row">
+          <div>Dealer License Number: </div>
+          <div>{{dashDetails.LicenseNo}}</div>
+        </div>
+        <div  class="row">
+          <div>Dealer License Exp Date:</div>
+          <div>{{dashDetails.LicenseValidity}}</div>
+        </div>        
+      </div>
+
+      <div style="margin-top: 20px; color:red; font-size: smaller; font-family: Montserrat;">
         <span>* Balance Amt and Qty is subject to change basis reconciliation</span>
       </div>
+
+      <!-- <div class="centered-container">
+        <span>Powered by &copy; MJunction Services LTD.</span>
+      </div> -->
     
 
-</div>
+    </div>
 
   </div>
     

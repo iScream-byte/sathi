@@ -1,19 +1,31 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+  <ion-split-pane contentId="main-content"  >
     <ion-menu contentId="main-content" type="overlay">
-      <ion-content >
-        <ion-list style="background-color: #518ada;">
-          <img src="assets/images/sidebar.png" style="margin-top: -10px;" />
+      <ion-content>
+        <img src="assets/images/sidebar.png" 
+          style="margin-top: -10px;                  
+          width: 410px;" 
+          />
+        <ion-list style="background-color: #518ada; padding-left: 15px; padding-right: 15px;">          
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item style="border-bottom: 1px solid white;" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon style="color: rgb(255, 255, 255);" aria-hidden="true" slot="start" [ios]="p.icon + ''" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+              <img 
+              [src]="'assets/images/' + p.icon+'.png'" 
+              alt="{{ p.title }}" 
+              style="width: 24px; height: 24px; margin-right: 12px; filter: brightness(0) invert(1);" 
+              slot="start"
+            />              
+              <ion-label style="font-family: Montserrat;">{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
         
           <ion-item (click)="requestLogOut()" style="border-bottom: 1px solid white;">
-            <ion-icon style="color: rgb(255, 255, 255);" aria-hidden="true" slot="start" name="log-out"></ion-icon>
-            <ion-label>Log Out</ion-label>
+            <img 
+            [src]="'assets/images/' + 'logout'+'.png'"           
+            style="width: 24px; height: 24px; margin-right: 12px; filter: brightness(0) invert(1);" 
+            slot="start"
+            /> 
+            <ion-label style="font-family: Montserrat">Log Out</ion-label>
           </ion-item>
         
         </ion-list>

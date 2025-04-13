@@ -10,12 +10,22 @@
       </div>
     </div>
     <div class='bottom-header'>
-      <ion-icon  name="chevron-back" style="color: #518ada; padding-left: 5px; font-size: 20px;"></ion-icon>
-      <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">Welcome {{userData?.name}}</div>
-      <div>      
-        <ion-icon (click)="navigateTo('offline-report')" name="refresh" style="color: white; font-size: 20px;"></ion-icon>
-        <ion-icon (click)="navigateTo('notifications')" name="notifications" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-        </div>
+      <ion-icon  name="chevron-back" style="color: #ffffff; padding-left: 15px; font-size: 20px; "></ion-icon>
+      <div style="color: white; font-weight: 550; font-size: 15px; padding-left: 10px; font-family: Montserrat;">Welcome {{userData?.name}}</div>
+      <div style="display: inline-flex; align-items: center;">      
+        <img 
+          src="assets/images/refresh.png" 
+          alt="Refresh" 
+          (click)="navigateTo('offline-report')" 
+          style="width: 16px; height: 16px; cursor: pointer; filter: brightness(0) invert(1);" 
+        />
+        
+        <ion-icon 
+          (click)="navigateTo('notifications')" 
+          name="notifications" 
+          style="color: white; padding-left: 5px; font-size: 20px;">
+        </ion-icon>
+      </div>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -32,44 +42,44 @@
 
   <div class="icon-container" *ngIf="userData?.roletype=='AGENT'">
     <div class="inner-icon-container" (click)="navigateTo('visit-report')">
-      <ion-icon class="icons" name="people"></ion-icon>
+      <img src="assets/images/usr.png" alt="report" class="icons-image" />
       <span class="icon-text">Enter Visit Report</span>
     </div>
   </div>
 
 
-  <div class="icon-container" style="margin-top: 25px;">
+  <div class="icon-container" style="margin-top: 10px;">
     <div class="inner-icon-container" (click)="navigateTo('daily-visit-summary')">
-      <ion-icon class="icons" name="calendar"></ion-icon>
+      <img src="assets/images/calendar.png" alt="calendar" class="icons-image" />
       <span class="icon-text">View Daily Visit Summary</span>
     </div>
     <div class="inner-icon-container" (click)="navigateTo('view-complaint')">
-      <ion-icon class="icons" name="create"></ion-icon>
+      <img src="assets/images/feedback.png" alt="feedback" class="icons-image" />
       <span class="icon-text">View Complaints</span>
     </div>
-    <div class="inner-icon-container">
-      <ion-icon class="icons" name="wallet" (click)="navigateTo('payment-status')"></ion-icon>
+    <div class="inner-icon-container" (click)="navigateTo('payment-status')">
+      <img src="assets/images/wallet.png" alt="wallet" class="icons-image" />
       <span class="icon-text">Payment Status</span>
     </div>
   </div>
-  <div class="icon-container" style="margin-top: 25px;">
-    <div class="inner-icon-container">
-      <ion-icon class="icons" name="document-text" (click)="navigateTo('new-customer-reg-summary')"></ion-icon>
+  <div class="icon-container" style="margin-top: 10px; margin-bottom: 100px;">
+    <div class="inner-icon-container" (click)="navigateTo('new-customer-reg-summary')">
+      <img src="assets/images/file.png" alt="file" class="icons-image" />
       <span class="icon-text">New Cust. Reg. Summary</span>
     </div>
-    <div class="inner-icon-container">
-      <ion-icon class="icons" name="clipboard" (click)="navigateTo('booking-confirmation-status')"></ion-icon>
+    <div class="inner-icon-container" (click)="navigateTo('booking-confirmation-status')">
+      <img src="assets/images/check.png" alt="check" class="icons-image" />
       <span class="icon-text">Booking Confirmation Status</span>
     </div>
     <div class="inner-icon-container" (click)="navigateTo('customer-dashboard')">
-      <ion-icon class="icons" name="speedometer"></ion-icon>
+      <img src="assets/images/dashboard_2.png" alt="dashboard_2" class="icons-image" />
       <span class="icon-text">View Customer Dashboard</span>
     </div>
   </div>
 
-  <div class="centered-container">
+  <!-- <div class="centered-container">
     <span>Powered by &copy; MJunction Services LTD.</span>
-  </div>
+  </div> -->
 
 </ion-content>
 

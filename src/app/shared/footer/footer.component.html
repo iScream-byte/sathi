@@ -1,24 +1,56 @@
-<ion-footer>
+<ion-footer>  
+  <div>
+  
+    <div class="centered-container">
+      <span>Powered by &copy; MJunction Services LTD.</span>
+    </div>
+  </div>
   <ion-toolbar>
+
   <div class="footer">
+    
     <div class="icon-with-text" (click)="navigateTo('landing-page')">
       <ion-icon name="home-outline"></ion-icon>
       <span>Home</span>
     </div>
-    <div class="icon-with-text">
-      <ion-icon name="calendar-outline"></ion-icon>
-      <span>Send Booking</span>
+    <div class="icon-with-text" (click)="navigateTo('daily-visit-summary')">
+      <img 
+      src="assets/images/reports2.png"           
+      style="width: 22px; height: 22px;" 
+      slot="start"
+      />      
+      <span>Visit Reports</span>
     </div>
-    <div class="icon-with-text">
-      <ion-icon name="checkmark-done-outline"></ion-icon>
-      <span>Booking Status</span>
+    <div  *ngIf="roleType=='CA'" class="icon-with-text" (click)="navigateTo('payment-status')">
+      <img 
+      src="assets/images/wallet2.png"           
+      style="width: 22px; height: 22px;" 
+      slot="start"
+      />
+      <span>Payments</span>
     </div>
-    <div class="icon-with-text" (click)="requestLogOut()">
-      <ion-icon name="log-out-outline"></ion-icon>
-      <span>Log Out</span>
+    <div *ngIf="roleType!='CA'" class="icon-with-text" (click)="navigateTo('truck-no-change-approval')">
+      <img 
+        src="assets/images/lorry.png"           
+        style="width: 24px; height: 24px;" 
+        slot="start"
+      /> 
+      <span>Truck Change</span>
+    </div>
+    <div class="icon-with-text" (click)="navigateTo('view-complaint')">
+      <img 
+      src="assets/images/complain.png"           
+      style="width: 24px; height: 24px;" 
+      slot="start"
+      />
+      <span>Complaints</span>
     </div>
   </div>
   </ion-toolbar>
+  <div class="pseudo-footer">
+    <div style="height: 8px; width: 70%; background-color: #518ada;"></div>
+    <div style="height: 8px; width: 30%; background-color: #83c328;"></div>
+  </div>
 </ion-footer>
 
 

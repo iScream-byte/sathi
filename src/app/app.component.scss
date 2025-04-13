@@ -15,9 +15,11 @@ ion-menu ion-icon {
   --color: #fff;
 }
 
-.selected{
-font-weight: 800;
+ion-menu{
+  --width: 90%;
 }
 
-
-
+.selected{
+font-weight: 700;
+font-family: Montserrat
+}

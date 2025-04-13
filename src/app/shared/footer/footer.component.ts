@@ -14,7 +14,8 @@ import { LocalStorageService } from './../../services/localstorage.service';
 })
 
 export class FooterComponent  implements OnInit {
-
+  userDetails: any = {};
+  roleType: string = '';
   constructor(
     private router:Router,
     private alertController: AlertController,
@@ -26,6 +27,12 @@ export class FooterComponent  implements OnInit {
 
   ngOnInit() {
     // console.log(this.router.getCurrentNavigation());
+    this.storage.getItem('NSUDloginDetail').then((u) => {
+      if (u) {
+        this.userDetails = JSON.parse(u);
+        this.roleType = this.userDetails.roletype;        
+      }
+    });
     
   }
 

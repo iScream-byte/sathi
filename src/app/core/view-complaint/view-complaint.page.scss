@@ -26,19 +26,25 @@ ion-datetime {
   width: 100%;
 }
 
-.product-price {
+.product-price{
   background-color: rgb(255, 255, 255);
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-direction: column;
   margin-top: 15px;
+  font-family: Montserrat;
+
 }
-.row {
+.row{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  font-family: Montserrat;
+  font-size: 12px;
+  color: rgb(102, 102, 102);
+  margin-top: 5px;
 }
 
 .inactive {

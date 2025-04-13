@@ -3,6 +3,7 @@ import { MenuController } from '@ionic/angular';
 import { ToastService } from './../../services/toast.service';
 import { AuthServicesService } from './../../services/auth-services.service';
 import { MyLoader } from './../../shared/MyLoader';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-forgot-password',
@@ -27,7 +28,8 @@ export class ForgotPasswordPage implements OnInit {
     private menuCtrl: MenuController,
     private toast:ToastService,
     private authService:AuthServicesService,
-    private loader:MyLoader
+    private loader:MyLoader,
+    private location: Location,
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,10 @@ export class ForgotPasswordPage implements OnInit {
 
   ionViewWillLeave() {
     this.menuCtrl.enable(true);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 

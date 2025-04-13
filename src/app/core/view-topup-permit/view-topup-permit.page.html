@@ -10,7 +10,7 @@
         </div>    </div>
       <div class='bottom-header'>
         <ion-icon (click)="goBack()" name="chevron-back" style="color: white; padding-left: 5px; font-size: 20px;"></ion-icon>
-        <div style="color: white; font-weight: 600; font-size: 18px; padding-left: 10px;">View Top Up Permit</div>
+        <div style="color: white; font-weight: 500; font-size: 18px; font-family: Montserrat; margin-left: -10px;">View Top Up Permit</div>
         <div>      
         </div>
       </div>
@@ -24,7 +24,7 @@
   <div class="flex-container">  
 
       <div class="inputContainer" *ngIf="roleType == 'TSL' && boolHasCAResponseYes">
-        <div style="display: inline-flex; gap: 5px;">Select CA</div>
+        <div style="display: inline-flex; gap: 5px;">Select CA <div style="color: red; padding-left: 5px;">*</div></div>
         <ion-select (ionChange)="getCaId($event)" okText="select" class="input" placeholder="select CA" [(ngModel)]="ca">
           <ion-select-option *ngFor="let ca of caListResponse" [value]="ca">{{ca.CA_Name}}</ion-select-option>
         </ion-select>
@@ -32,12 +32,12 @@
     
 
       <div class="inputContainer">
-        <div style="display: inline-flex; gap: 5px;">Customer</div>
+        <div style="display: inline-flex; gap: 5px;">Customer <div style="color: red; padding-left: 5px;">*</div></div>
         <ion-input readonly [(ngModel)]="customerName" placeholder="Press to select customer" (click)="openCustomerSelectModal()"  class="input" type="text" ></ion-input>
       </div>
   
       <div class="inputContainer" [ngClass]="{'inactive': productData.length==0}">
-        <div style="display: inline-flex">Product</div>
+        <div style="display: inline-flex">Product <div style="color: red; padding-left: 5px;">*</div></div>
         <ion-select [(ngModel)]="selectedProductId" class="input" placeholder="Select product">
           <ion-select-option *ngFor="let item of productData" [value]="item.ProductID">{{item.ProductName}}</ion-select-option>
         </ion-select>
@@ -97,6 +97,11 @@
         </div>
      
   
+
+        <!-- <div class="centered-container">
+          <span>Powered by &copy; MJunction Services LTD.</span>
+        </div> -->
+    
 
     </div>
 

@@ -30,7 +30,7 @@ export class SplashScreenPage implements OnInit {
           this.router.navigate(['auth/login'], { replaceUrl: true });
         }
       })
-    }, 2000);
+    }, 4000);
   }
 
   

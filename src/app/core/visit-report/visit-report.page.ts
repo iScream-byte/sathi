@@ -1429,11 +1429,16 @@ export class VisitReportPage implements OnInit {
 
     this.coreServices.SaveCustomerReport(this.data).subscribe(res=>{
       console.log(res);
-      alert(res)
+      if(res){
+        this.toast.presentToast('Visit report successfully created','success')
+        this.router.navigate(['landing-page'])
+      }
+      // alert(res)
       
     },err=>{
       console.log('errorr================',err);
-      alert(err.statusText)
+      // alert(err.statusText)
+      this.toast.presentToast('Something went wrong','error')
       
     })
   }

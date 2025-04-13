@@ -37,9 +37,10 @@
 // @import "@ionic/angular/css/palettes/dark.system.css";
 
 .inputContainer{
-    color: rgb(75, 75, 75);
-    font-size: 15px; 
-    font-weight: 600;    
+    color: #616161;
+    font-size: 14px; 
+    font-weight: 500;
+    font-family: Montserrat;    
 }
 .inputContainer small{
   color:red;
@@ -47,13 +48,15 @@
   padding-left: 10px;
 }
 .input{
-    border: 2px solid rgb(138, 138, 138);
+    border: 1px solid rgb(214, 214, 214);
     border-radius: 5px;
     margin-top: 7px;
     font-size: 18px;
     font-weight: 500;
-    color: rgb(56, 56, 56);
+    color: rgb(80, 80, 80);
     background-color: #ffffff; 
+    font-size: 14px;
+    font-family: Montserrat;
 }
 
 
@@ -83,10 +86,12 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  padding-left: 10px;
+  // padding-left: 10px;
   padding-right: 10px;
   padding-top: 15px;
   padding-bottom: 15px;
+  font-family: Montserrat;
+
 }
 
 
@@ -107,19 +112,22 @@ ion-toast.custom-toast_success {
   --background: #308126;
   --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
   --color: #ffffff;
-  font-size: 20px;
+  font-size: 15px;
+  font-family: Montserrat
 }
 ion-toast.custom-toast_error {
   --background: #9e1010;
   --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
   --color: #ffffff;
-  font-size: 20px;
+  font-size: 15px;
+  font-family: Montserrat
 }
 ion-toast.custom-toast {
   --background: #d3d3d3;
   --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
   --color: #000000;
-  font-size: 20px;
+  font-size: 15px;
+  font-family: Montserrat
 }
 
 
@@ -129,4 +137,31 @@ ion-toast.custom-toast {
 
 
 
-  
+
+
+
+.reset {
+  color: #518ada;
+  border: 1px solid #518ada;
+  height: 50px;
+  border-radius: 5px;
+  width: 50%;
+  display: flex;
+  align-items: center;     /* vertical center */
+  justify-content: center; /* horizontal center */
+  font-weight: 500;
+}
+
+.search {
+  background-color: #518ada;
+  color: white;
+  height: 50px;
+  border-radius: 5px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+
+}
+

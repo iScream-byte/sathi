@@ -11,11 +11,11 @@
 
 .submit-button {
   border-radius: 5px;
-  --background: #5a7cdb;
+  --background: #518ada;
   --color: rgb(252, 252, 252);
   --border-radius: 5px;
-  --padding-top: 15px;
-  --padding-bottom: 15px;
+  --padding-top: 18px;
+  --padding-bottom: 18px;
 }
 
 ion-input {
@@ -68,4 +68,17 @@ ion-datetime {
   font-weight: 600;
   font-size: small;
   background-color: #253553;
+}
+
+
+.centered-container {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;     
+  text-align: center; 
+  margin-top: 80%;
+  margin-bottom: 0px;
+  font-family: Montserrat;
+  color: #7e7e7e;
+  font-size: 15px;
 }

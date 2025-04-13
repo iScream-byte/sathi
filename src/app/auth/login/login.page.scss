@@ -9,7 +9,7 @@
 }
 
 .image-container img {
-  width: 70%;
+  width: 80%;
   height: 40%;
 }
 
@@ -22,6 +22,8 @@
 
 .submit-button{
   border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 ion-input {
@@ -29,13 +31,34 @@ ion-input {
 }
 
 ion-button {
-  --background: #5a7cdb;
+  --background: #518ada;
   --color: rgb(252, 252, 252);
   --border-radius: 5px;
-  --padding-top: 10px;
-  --padding-bottom: 10px;
+  --padding-top: 18px;
+  --padding-bottom: 18px;
 }
 
 ion-checkbox::part(container) {
   border-radius: 2px;  
+}
+
+.pseudo-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  z-index: 1000; /* Make sure it stays above content */
+}
+
+.centered-container {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;     
+  text-align: center; 
+  // margin-top: 70%;
+  margin-bottom: 0px;
+  font-family: Montserrat;
+  color: #7e7e7e;
+  font-size: 15px;
 }

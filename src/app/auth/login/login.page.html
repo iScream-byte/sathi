@@ -3,7 +3,7 @@
   <div class="image-container">
     <img src="/assets/images/loginimage.png" alt="App Logo" />
   </div>
-<div style="text-align: center;font-size: 25px; font-weight: 600; font-family: Verdana, Geneva, Tahoma, sans-serif; color: rgb(65, 65, 65);">
+<div style="text-align: left; font-size: 20px; font-weight: 700; font-family: Montserrat; color: rgb(48, 48, 48); padding-left: 18px;">
   Login To Your Account
 </div>
   <form [formGroup]="loginForm" (ngSubmit)="loginPress()">
@@ -23,16 +23,27 @@
 
 
     <div style="display: inline-flex; align-items: center; justify-content: space-between;">      
-      <ion-checkbox formControlName="rememberMe" labelPlacement="end"><p style="font-size: 17px;">Remember me?</p></ion-checkbox>
-      <div (click)="gotoForgotPass()" style="font-size: 17px; color: rgb(29, 79, 126); text-decoration: underline;">Forgot password</div>
+      <ion-checkbox formControlName="rememberMe" labelPlacement="end"><p style="font-size: 15px; font-family: Montserrat; color: #616161;">Remember me?</p></ion-checkbox>
+      <div (click)="gotoForgotPass()" style="font-size: 15px; color: #518ada; text-decoration: underline; font-family: Montserrat">Forgot Password</div>
     </div>
 
 
     <div>
-      <ion-button [disabled]="loginForm.invalid" class="submit-button" expand="block" type="submit">LOGIN</ion-button>
+      <ion-button [disabled]="loginForm.invalid" class="submit-button" expand="block" type="submit">SUBMIT</ion-button>
     </div>
+
+
+    <div class="centered-container">
+      <span>Powered by &copy; MJunction Services LTD.</span>
+    </div>
+
+
   </div>
   </form>
 
+<div class="pseudo-footer">
+  <div style="height: 10px; width: 70%; background-color: #518ada;"></div>
+  <div style="height: 10px; width: 30%; background-color: #83c328;"></div>
+</div>
   
 </ion-content>
