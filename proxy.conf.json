@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "https://uatcapointapp.mjunction.in",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": "/api"
+    }
+  }
+}

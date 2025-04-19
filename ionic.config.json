@@ -1,7 +1,13 @@
 {
-  "name": "sathi",
+  "name": "IBMD-sathi",
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular"
+  "type": "angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "https://uatcapointapp.mjunction.in/api"
+    }
+  ]
 }
