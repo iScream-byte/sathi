@@ -16,6 +16,8 @@ import { SearchableDropdownComponent } from 'src/app/utils/searchable-dropdown/s
 import { Network } from '@capacitor/network';
 import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
+import { CapacitorHttp } from '@capacitor/core';
+import { configs } from 'src/environments/configs';
 
 @Component({
   selector: 'app-feedbacks',
@@ -90,22 +92,46 @@ export class FeedbacksPage implements OnInit {
     };
 
     console.log(body);
-    this.coreServices.SendFeedback(body).subscribe(
-      (res: any) => {
-        console.log(res);
-        if (res.status == 'Success') {
-          this.toast.presentToast(res.message, 'success');
-          this.loader.stopLoader();
-        } else {
-          this.toast.presentToast(res.message, 'error');
-          this.loader.stopLoader();
-        }
+
+
+    // this.coreServices.SendFeedback(body).subscribe(
+    //   (res: any) => {
+    //     console.log(res);
+    //     if (res.status == 'Success') {
+    //       this.toast.presentToast(res.message, 'success');
+    //       this.loader.stopLoader();
+    //     } else {
+    //       this.toast.presentToast(res.message, 'error');
+    //       this.loader.stopLoader();
+    //     }
+    //   },
+    //   (err) => {
+    //     console.log(err);
+    //     this.loader.stopLoader();
+    //   }
+    // );
+
+
+    CapacitorHttp.request({
+      method: 'POST',
+      url: configs.apiBase+'SendFeedback',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      (err) => {
-        console.log(err);
+      data: body,
+    }).then(res=>{
+      if (res.status == 200) {
+        this.toast.presentToast("Feedback successfully saved", 'success');
         this.loader.stopLoader();
-      }
-    );
+      } else {
+        this.toast.presentToast(res.data.message, 'error');
+        this.loader.stopLoader();
+      }      
+    }).catch(err=>{
+      this.toast.presentToast('something went wrong', 'error');
+      this.loader.stopLoader();
+    })
+
   }
 
   goToMyFeedbacks() {

@@ -70,10 +70,7 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
-          "options": {
-            "proxyConfig": "proxy.conf.json"
-          },
+        "serve": {          
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {

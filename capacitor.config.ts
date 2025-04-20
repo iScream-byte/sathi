@@ -3,7 +3,7 @@ import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
   appId: 'com.BCS.MJCustomerAgent',
-  appName: 'IBMD Saathi',
+  appName: 'IBMD-sathi',
   webDir: 'www',
   server: {
     androidScheme: 'https'

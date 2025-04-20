@@ -15,7 +15,9 @@ import { CoreService } from './../../services/core.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { timeout } from 'rxjs';
 import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
+import { CapacitorHttp } from '@capacitor/core';
+import { configs } from 'src/environments/configs';
 
 @Component({
   selector: 'app-visit-report',
@@ -35,7 +37,7 @@ export class VisitReportPage implements OnInit {
     private modalController: ModalController,
     private storageService:LocalStorageService,
     private coreServices:CoreService,
-    private myhttp:HttpClient
+    // private myhttp:HttpClient
   ) {
     this.getNativeStorageData()
   }
@@ -1555,19 +1557,32 @@ export class VisitReportPage implements OnInit {
       'filebyteOthers1': body.filebyteOthers1
   }
 
-  
-  this.myhttp.post('/api/CAMobileWebApi/CustomerVisitWithFileUploadEntry', params)
-  .subscribe({
-    next: (response) => {
-      if (response) {
-        this.toast.presentToast('Visit report successfully created', 'success');
-        this.router.navigate(['landing-page']);
-      }
+  this.loader.showLoader("saving...")
+
+  CapacitorHttp.request({
+    method: 'POST',
+    url: configs.apiBase+'CustomerVisitWithFileUploadEntry',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    error: (err) => {
-      this.toast.presentToast('Something went wrong', 'error');
+    data: params,
+  }).then(res=>{
+    if (res) {
+          this.loader.stopLoader()
+          this.toast.presentToast('Visit report successfully created', 'success');
+          this.router.navigate(['landing-page']);
+    }else{
+      this.toast.presentToast('something went wrong', 'error');
+      this.loader.stopLoader()
     }
-  });
+    
+  }).catch(err=>{
+    this.toast.presentToast('something went wrong', 'error');
+    this.loader.stopLoader()
+  })
+
+
+
 
 
 
@@ -1593,6 +1608,7 @@ export class VisitReportPage implements OnInit {
       }
       this.storageService.setItem('offlineData',previousData).then(res=>{
         this.toast.presentToast('Offline visit report saved','success')
+        this.router.navigate(['landing-page']);
       }
       )
     })    

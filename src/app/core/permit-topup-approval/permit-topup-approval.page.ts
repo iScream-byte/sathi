@@ -14,6 +14,8 @@ import { ToastService } from './../../services/toast.service';
 import { DropdownService } from './../../services/dropdown.service';
 import { SearchableDropdownComponent } from './../../utils/searchable-dropdown/searchable-dropdown.component';
 import { CoreService } from 'src/app/services/core.service';
+import { CapacitorHttp } from '@capacitor/core';
+import { configs } from 'src/environments/configs';
 
 @Component({
   selector: 'app-permit-topup-approval',
@@ -178,16 +180,53 @@ export class PermitTopupApprovalPage implements OnInit {
               console.log(this.dataForApproveReject);
               
               this.loader.showLoader()
-              this.coreServices.TopUpApproveReject(this.dataForApproveReject).subscribe(res=>{
-                console.log(res);
-                this.toast.presentToast(res.message)
-                this.loader.stopLoader()
-                setTimeout(() => {
-                  this.getList()
-                }, 1000);
-              },err=>{
-                console.log(err);
-                this.loader.stopLoader()                
+              
+              // this.coreServices.TopUpApproveReject(this.dataForApproveReject).subscribe(res=>{
+              //   console.log(res);
+              //   this.toast.presentToast(res.message)
+              //   this.loader.stopLoader()
+              //   setTimeout(() => {
+              //     this.getList()
+              //   }, 1000);
+              // },err=>{
+              //   console.log(err);
+              //   this.loader.stopLoader()                
+              // })
+
+              let params = {
+                TopUp_ID: this.dataForApproveReject.TopUp_ID,
+                Limit_ID: this.dataForApproveReject.Limit_ID,
+                Customer_Code: this.dataForApproveReject.Customer_Code,
+                PermitTopUpApplied: this.dataForApproveReject.PermitTopUpApplied,
+                TopUpStatus: this.dataForApproveReject.TopUpStatus,
+                CreatedBy: this.dataForApproveReject.CreatedBy,
+                Remarks: this.dataForApproveReject.Remarks,
+                CustomerName: this.dataForApproveReject.CustomerName,
+                CAName: this.dataForApproveReject.CAName,
+              };
+
+
+              CapacitorHttp.request({
+                method: 'POST',
+                url: configs.apiBase+'TopUpApplyApproved',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                data: params,
+              }).then(res=>{
+                if (res) {
+                      this.toast.presentToast(res.data.message,'success')
+                      this.loader.stopLoader()
+                      setTimeout(() => {
+                        this.getList()
+                      }, 1000);                      
+                }else{
+                  this.toast.presentToast('something went wrong', 'error');
+                  this.loader.stopLoader()  
+                }                
+              }).catch(err=>{
+                this.toast.presentToast('something went wrong', 'error');
+                this.loader.stopLoader()  
               })
 
 

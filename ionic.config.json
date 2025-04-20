@@ -3,11 +3,5 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular",
-  "proxies": [
-    {
-      "path": "/api",
-      "proxyUrl": "https://uatcapointapp.mjunction.in/api"
-    }
-  ]
+  "type": "angular"
 }
