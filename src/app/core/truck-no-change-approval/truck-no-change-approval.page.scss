@@ -58,9 +58,9 @@
 }
 
 .popover-header h3 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
-  color: rgb(20, 66, 97);
+  color: #2f507e;
 }
 
 .input-item {
@@ -79,15 +79,16 @@ ion-item {
 }
 
 ion-button {
-  --background: rgb(30, 65, 112);
+  --background: #518ada;
   --color: white;
-  --border-radius: 10px;
-  font-weight: 600;
+  --border-radius: 5px;
+  font-weight: 500;
+  font-family: Montserrat;
 }
 
 
 .small-modal {
-  --width: 200px;      
+  --width: 250px;      
   --height: 200px;    
   --border-radius: 10px; 
   

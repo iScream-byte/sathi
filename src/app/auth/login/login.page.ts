@@ -10,7 +10,8 @@ import { AlertService } from './../../services/alert.service';
 import { AppComponent } from './../../app.component';
 import { ToastService } from './../../services/toast.service';
 import { Platform } from '@ionic/angular';
-
+import { decryptDES_ECB_PKCS5, encryptDES_ECB_PKCS5 } from 'src/app/utils/myencrypt';
+import { CapacitorHttp } from '@capacitor/core';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -61,10 +62,16 @@ export class LoginPage implements OnInit {
   loginPress() {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
+      
+    const body= {
+      sysuser_id:username,
+      sysuser_pwd:password
+    }       
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
 
     this.loader.showLoader('Logging in...');
-
-    this.authService.LoginRequest(username, password).subscribe((res) => {
+    
+    this.authService.LoginRequest(`"${encrypted}"`).subscribe((res:any) => {
       console.log('loginressssssssssssssss=======', res);
       if (res.status == 'Success') {
         this.storage
@@ -74,7 +81,7 @@ export class LoginPage implements OnInit {
             this.callAppFunction();
             this.toast.presentToast('Successfully logged in', 'success');
             if (this.loginForm.value.rememberMe) {
-              this.storage.setItem('rememberMe', true).then((res2) => {
+              this.storage.setItem('rememberMe', 'true').then((res2) => {
                 this.router.navigate(['/landing-page'], { replaceUrl: true });
               });
             } else {
@@ -87,7 +94,10 @@ export class LoginPage implements OnInit {
         this.toast.presentToast('Invalid Credential', 'error');
         this.loader.dismissLoader();
       }
-    });
+    },(err:any)=>{
+        this.toast.presentToast('Invalid Credential', 'error');
+        this.loader.dismissLoader();
+    })
   }
 
   callAppFunction() {

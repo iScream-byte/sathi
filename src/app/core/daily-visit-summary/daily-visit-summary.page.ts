@@ -35,6 +35,8 @@ export class DailyVisitSummaryPage implements OnInit {
   boolHasCAResponseYes: boolean = false;
   boolHasCAResponseNo: boolean = true;
   ca?: string;
+  disableEndDate:boolean=true
+  minDate=''
 
   userDetails: any = {};
   selectedDistrictId: string = '';
@@ -63,6 +65,8 @@ export class DailyVisitSummaryPage implements OnInit {
   ) {}
 
   async ngOnInit() {
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0]; 
     const status = await Network.getStatus();
     if (status.connected) {
       this.hasNetwork = true;
@@ -156,10 +160,19 @@ export class DailyVisitSummaryPage implements OnInit {
 
   onDateTimeChange(event: any, modalName: string) {
     const formattedDate = moment(event.detail.value).format('DD MMM YYYY');
-    modalName == 'startDate'
-      ? (this.selectedStartDateTime = formattedDate)
-      : (this.selectedEndDateTime = formattedDate);
+  
+    if (modalName === 'startDate') {
+      this.selectedStartDateTime = formattedDate;
+      this.minDate = new Date(event.detail.value).toISOString().split('T')[0];
+    } else {
+      this.selectedEndDateTime = formattedDate;
+    }
+  
+    if (this.selectedStartDateTime) {
+      this.disableEndDate = false;
+    }
   }
+  
 
   closeDatetimeModal() {
     this.isStartDateModalOpen = false;
@@ -173,15 +186,20 @@ export class DailyVisitSummaryPage implements OnInit {
     this.selectedEndDateTime = '';
     this.searchResults = [];
     this.noData = null;
-    this.ca = '';
-    this.dataForSearch.CaId = '';
+    if(this.roleType=='TSL'){
+      this.ca = '';
+      this.dataForSearch.CaId = '';
+    }
+    this.disableEndDate=true
   }
 
   search() {
     this.loader.showLoader('searching for records...');
     this.dataForSearch.DistrictID = this.selectedDistrictId;
-    this.dataForSearch.fromDate = this.selectedStartDateTime;
-    this.dataForSearch.toDate = this.selectedEndDateTime;
+    this.dataForSearch.fromDate = moment(this.selectedStartDateTime, "DD MMM YYYY").format("YYYY/MM/DD")=='Invalid date'?'':moment(this.selectedStartDateTime, "DD MMM YYYY").format("YYYY/MM/DD")
+    this.dataForSearch.toDate = moment(this.selectedEndDateTime, "DD MMM YYYY").format("YYYY/MM/DD")=='Invalid date'?'':moment(this.selectedEndDateTime, "DD MMM YYYY").format("YYYY/MM/DD")
+    console.log(this.dataForSearch);
+    
     this.coreServices
       .GetVisitReportSummary(this.dataForSearch)
       .subscribe((res: any) => {

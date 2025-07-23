@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { configs } from './../../environments/configs';
 import { CAListResponseModel, ComplaintsCustomerList, SourceResponseModel, VisitReportDistrictResponseModel, ProductResponseModel, ProductPriceResponseModel } from './Interfaces';
-
+import { encryptDES_ECB_PKCS5 } from '../utils/myencrypt';
+const headers = new HttpHeaders({
+  'Content-Type': 'application/json',
+}); 
 @Injectable({
   providedIn: 'root'
 })
@@ -19,11 +22,15 @@ export class DropdownService {
   }  
   
   GetDistrictList(caId){
-    return this.http.get<[VisitReportDistrictResponseModel]>(configs.apiBase+'GetDistrictByCAID?'+ 'CA_Id=' + caId)
+    const body = {
+      caId:caId
+    }
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    return this.http.post<[VisitReportDistrictResponseModel]>(configs.apiBase+'GetDistrictByCAID',`"${encrypted}"`,{ headers: headers })
   }
 
   GetCAList(){
-    return this.http.get<[CAListResponseModel]>(configs.apiBase+'GetCAList')
+    return this.http.post<[CAListResponseModel]>(configs.apiBase+'GetCAList',{})
   }
 
   GetSourceListByCustomerCode(queries:string){

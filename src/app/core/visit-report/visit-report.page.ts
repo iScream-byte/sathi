@@ -1597,21 +1597,21 @@ export class VisitReportPage implements OnInit {
     this.getNativeStorageData()
     console.log(this.data);
 
-    this.storageService.getItem('offlineData').then(res=>{
-      let previousData=[]
-      previousData = res
-      if(!previousData){
-        previousData = []
-        previousData.push(this.data)
-      }else{        
-        previousData.push(this.data)
-      }
-      this.storageService.setItem('offlineData',previousData).then(res=>{
-        this.toast.presentToast('Offline visit report saved','success')
-        this.router.navigate(['landing-page']);
-      }
-      )
-    })    
+    // this.storageService.getItem('offlineData').then(res=>{
+    //   let previousData=[]
+    //   previousData = res
+    //   if(!previousData){
+    //     previousData = []
+    //     previousData.push(this.data)
+    //   }else{        
+    //     previousData.push(this.data)
+    //   }
+    //   this.storageService.setItem('offlineData',previousData).then(res=>{
+    //     this.toast.presentToast('Offline visit report saved','success')
+    //     this.router.navigate(['landing-page']);
+    //   }
+    //   )
+    // })    
     
     
   }

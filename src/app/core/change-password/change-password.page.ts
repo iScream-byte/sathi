@@ -10,6 +10,7 @@ import { Network } from '@capacitor/network';
 import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { AuthServicesService } from './../../services/auth-services.service';
+import { encryptDES_ECB_PKCS5 } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-change-password',
@@ -78,12 +79,18 @@ export class ChangePasswordPage implements OnInit {
     }
 
     this.loader.showLoader('changing password...')
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append("username", this.userId);
-    urlSearchParams.append("oldpassword", this.oldPassword);
-    urlSearchParams.append("newpassword", this.newPassword);
+    // let urlSearchParams = new URLSearchParams();
+    // urlSearchParams.append("username", this.userId);
+    // urlSearchParams.append("oldpassword", this.oldPassword);
+    // urlSearchParams.append("newpassword", this.newPassword);
+    const body = {
+      sysuser_id:this.userId,
+      sysuser_pwd:this.oldPassword,
+      new_pwd:this.newPassword
+    }
 
-    this.authServices.ChangePassword(urlSearchParams).subscribe((res:any)=>{
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    this.authServices.ChangePassword(`"${encrypted}"`).subscribe((res:any)=>{      
       if(res.status == "Success"){
         this.toast.presentToast(res.message,'success')
         this.loader.stopLoader()
@@ -98,6 +105,9 @@ export class ChangePasswordPage implements OnInit {
         this.toast.presentToast(res.message,'error')
         this.loader.stopLoader()
       }
+    },(err:any)=>{
+        this.toast.presentToast(err.error.message,'error')
+        this.loader.stopLoader()      
     })
 
   }

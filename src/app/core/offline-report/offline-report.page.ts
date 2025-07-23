@@ -59,17 +59,17 @@ export class OfflineReportPage implements OnInit {
       }
     });
 
-    this.storage.getItem('offlineData').then((res) => {
-      let records = [];
-      for (let i of res) {
-        if (i.CreatedBY == this.userDetails.userId) {
-          records.push(i);
-        }
-      }
-      this.offlineReports = records;
-      this.AllReports = res;
-      console.log(this.offlineReports);
-    });
+    // this.storage.getItem('offlineData').then((res) => {
+    //   let records = [];
+    //   for (let i of res) {
+    //     if (i.CreatedBY == this.userDetails.userId) {
+    //       records.push(i);
+    //     }
+    //   }
+    //   this.offlineReports = records;
+    //   this.AllReports = res;
+    //   console.log(this.offlineReports);
+    // });
   }
 
   toggleMenu() {

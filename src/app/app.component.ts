@@ -124,11 +124,11 @@ export class AppComponent implements OnInit {
               url: 'booking-confirmation-status',
               icon: 'audit',
             },
-            {
-              title: 'Truck No. Change Approval',
-              url: 'truck-no-change-approval',
-              icon: 'document',
-            },
+            // {
+            //   title: 'Truck No. Change Approval',
+            //   url: 'truck-no-change-approval',
+            //   icon: 'document',
+            // },
             { title: 'Feedback', url: 'feedbacks', icon: 'thumbs' },
             { title: 'Notifications', url: 'notifications', icon: 'bell' },
             {

@@ -24,6 +24,8 @@ export class SplashScreenPage implements OnInit {
     this.menuCtrl.enable(false);    
     setTimeout(() => {
       this.storage.getItem('rememberMe').then(res=>{
+        console.log(res);
+                
         if(res){
           this.router.navigate(['/landing-page'], { replaceUrl: true });
         }else{

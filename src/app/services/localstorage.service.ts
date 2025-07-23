@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { encryptDES_ECB_PKCS5 } from '../utils/myencrypt';
+import { decryptDES_ECB_PKCS5 } from 'src/app/utils/myencrypt';
+
 @Injectable()
 export class LocalStorageService {
   storageValue: any;
@@ -8,12 +11,20 @@ export class LocalStorageService {
   }
 
   async setItem(keyItem: any, valueItem: any) {
-    await this.storage?.set(keyItem, valueItem);
+    const encrypted = encryptDES_ECB_PKCS5(valueItem)
+    await this.storage?.set(keyItem, encrypted);
     return true;
   }
 
   async getItem(keyItem: string) {
-    return await this.storage.get(keyItem);
+    const stored = await this.storage.get(keyItem);
+
+    if (!stored) {
+      return null;
+    }
+
+    const decrypted = decryptDES_ECB_PKCS5(stored);
+    return decrypted;
   }
 
   async clearItem(keyItem: string) {

@@ -21,7 +21,7 @@
       />      
       <span>Visit Reports</span>
     </div>
-    <div  *ngIf="roleType=='CA'" class="icon-with-text" (click)="navigateTo('payment-status')">
+    <div  *ngIf="roleType=='AGENT'" class="icon-with-text" (click)="navigateTo('payment-status')">
       <img 
       src="assets/images/wallet2.png"           
       style="width: 22px; height: 22px;" 
@@ -29,7 +29,7 @@
       />
       <span>Payments</span>
     </div>
-    <div *ngIf="roleType!='CA'" class="icon-with-text" (click)="navigateTo('truck-no-change-approval')">
+    <div *ngIf="roleType!='AGENT'" class="icon-with-text" (click)="navigateTo('truck-no-change-approval')">
       <img 
         src="assets/images/lorry.png"           
         style="width: 24px; height: 24px;" 

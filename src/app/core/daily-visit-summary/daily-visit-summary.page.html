@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class="inputContainer">
+    <div class="inputContainer" [ngClass]="disableEndDate ? 'inactive' : 'active'">
       <div style="display: inline-flex">End Date</div>
       <div class="input" style="display: flex; flex-direction: row;"><ion-input [(ngModel)]="selectedEndDateTime" type="text" readonly></ion-input>
         <div style="background-color: #fff; align-self: center; padding-right: 10px;" (click)="openDatetimeModal('endDate')">
@@ -148,7 +148,8 @@
           <ion-datetime
             [(ngModel)]="selectedEndDateTime"
             presentation="date"
-            (ionChange)="onDateTimeChange($event,'endDate')"
+            (ionChange)="onDateTimeChange($event,'endDate')" 
+            [min]="minDate"           
           ></ion-datetime>
         </div>
   
