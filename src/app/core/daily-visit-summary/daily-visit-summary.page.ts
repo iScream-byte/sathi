@@ -194,16 +194,20 @@ export class DailyVisitSummaryPage implements OnInit {
   }
 
   search() {
+    if (!this.dataForSearch.CaId){
+      this.toast.presentToast('Please select a CA', 'error');
+      return
+    }
     this.loader.showLoader('searching for records...');
     this.dataForSearch.DistrictID = this.selectedDistrictId;
     this.dataForSearch.fromDate = moment(this.selectedStartDateTime, "DD MMM YYYY").format("YYYY/MM/DD")=='Invalid date'?'':moment(this.selectedStartDateTime, "DD MMM YYYY").format("YYYY/MM/DD")
     this.dataForSearch.toDate = moment(this.selectedEndDateTime, "DD MMM YYYY").format("YYYY/MM/DD")=='Invalid date'?'':moment(this.selectedEndDateTime, "DD MMM YYYY").format("YYYY/MM/DD")
-    console.log(this.dataForSearch);
     
     this.coreServices
       .GetVisitReportSummary(this.dataForSearch)
       .subscribe((res: any) => {
-        if (res.status == 'Success') {
+        console.log(res.status);        
+        if (res) {
           this.searchResults = res.visitLst;
           this.loader.stopLoader();
           this.noData = false;
@@ -211,6 +215,9 @@ export class DailyVisitSummaryPage implements OnInit {
           this.loader.stopLoader();
           this.noData = true;
         }
+      },(err:any)=>{
+          this.loader.stopLoader();
+          this.noData = true;
       });
   }
 

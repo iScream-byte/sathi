@@ -13,6 +13,7 @@ import { CoreService } from 'src/app/services/core.service';
 import * as moment from 'moment';
 import { TruckChange_List } from 'src/app/services/Interfaces';
 import { Device } from '@capacitor/device';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-truck-no-change-approval',
@@ -55,7 +56,7 @@ export class TruckNoChangeApprovalPage implements OnInit {
     }
     this.storage.getItem('NSUDloginDetail').then((u) => {
       if (u) {
-        this.userDetails = JSON.parse(u);
+        this.userDetails = JSON.parse(u);        
         this.userId = this.userDetails.userId;
         this.userId_CA = this.userDetails.ca_id;
         this.roleType = this.userDetails.roletype;
@@ -85,12 +86,23 @@ export class TruckNoChangeApprovalPage implements OnInit {
   }
 
   getList(){
-    const queries = "UserID=" +
-    this.userId_CA +
-    "&role=" +
-    this.roleType +
-    "&CustID=&ProdID="
-    this.coreServices.GetTruckChangeList(queries).subscribe(res=>{
+    // const queries = "UserID=" +
+    // this.userId_CA +
+    // "&role=" +
+    // this.roleType +
+    // "&CustID=&ProdID="
+    const body = {
+      UserID:this.userId_CA,
+      role:this.roleType,
+      CustID:null,
+      ProdID:null,
+      DateTime:getCurrentDateTime()
+    }
+    console.log(body);
+    
+    this.coreServices.GetTruckChangeList(body).subscribe(res=>{
+      console.log(res);
+      
       if (res.StatusCode == "001") {
         this.chageRequestList = res.TruckChange_List.reverse();
         this.loader.stopLoader()
@@ -99,6 +111,10 @@ export class TruckNoChangeApprovalPage implements OnInit {
         this.loader.stopLoader()
         this.toast.presentToast('No Data Found','error')
       }
+    },(err:any)=>{
+        this.chageRequestList = null;
+        this.loader.stopLoader()
+        this.toast.presentToast('No Data Found','error')
     })
   }
 
@@ -167,22 +183,34 @@ export class TruckNoChangeApprovalPage implements OnInit {
 
   approve(item){
     this.loader.showLoader()
-    const queries = 
-          "BookingID=" +
-          item.BookingID +
-          "&Status=" +
-          'Approved' +
-          "&truckno=" +
-          item.ChangedTrukno +
-          "&RoleFlag=" +
-          this.roleType +
-          "&UserID=" +
-          this.userId +
-          "&CADeviceID=" +
-          this.imei +
-          "&Reason=" +
-          ''
-    this.coreServices.ApproveRejectTruck(queries).subscribe(res=>{
+    // const queries = 
+    //       "BookingID=" +
+    //       item.BookingID +
+    //       "&Status=" +
+    //       'Approved' +
+    //       "&truckno=" +
+    //       item.ChangedTrukno +
+    //       "&RoleFlag=" +
+    //       this.roleType +
+    //       "&UserID=" +
+    //       this.userId +
+    //       "&CADeviceID=" +
+    //       this.imei +
+    //       "&Reason=" +
+    //       ''
+    const body = {
+      BookingID: item.BookingID,
+      status:'Approved',
+      ChangedTrukno: item.ChangedTrukno,
+      Role:this.roleType,   
+      UserID:this.userId,
+      Reason:'',
+      ImeiNo:this.imei,
+      DateTime:getCurrentDateTime()
+    }
+    console.log(body);
+    
+    this.coreServices.ApproveRejectTruck(body).subscribe(res=>{
       if (res.StatusCode == "001"){
         this.toast.presentToast("Truck no. successfully approved",'success')
         this.loader.stopLoader()
@@ -194,29 +222,41 @@ export class TruckNoChangeApprovalPage implements OnInit {
         this.toast.presentToast("Something went wrong, please try again later!",'error')
         this.loader.stopLoader()
       }      
+    },(err:any)=>{
+        this.toast.presentToast("Something went wrong, please try again later!",'error')
+        this.loader.stopLoader()
     })
   }
 
   reject(){
     this.isOpen=false
     this.loader.showLoader()
-    const queries = 
-          "BookingID=" +
-          this.rejectThisItem.BookingID +
-          "&Status=" +
-          'Rejected' +
-          "&truckno=" +
-          this.rejectThisItem.ChangedTrukno +
-          "&RoleFlag=" +
-          this.roleType +
-          "&UserID=" +
-          this.userId +
-          "&CADeviceID=" +
-          this.imei +
-          "&Reason=" +
-          this.rejectReason
-    
-    this.coreServices.ApproveRejectTruck(queries).subscribe(res=>{
+    // const queries = 
+    //       "BookingID=" +
+    //       this.rejectThisItem.BookingID +
+    //       "&Status=" +
+    //       'Rejected' +
+    //       "&truckno=" +
+    //       this.rejectThisItem.ChangedTrukno +
+    //       "&RoleFlag=" +
+    //       this.roleType +
+    //       "&UserID=" +
+    //       this.userId +
+    //       "&CADeviceID=" +
+    //       this.imei +
+    //       "&Reason=" +
+    //       this.rejectReason
+    const body = {
+      BookingID: this.rejectThisItem.BookingID,
+      status:'Rejected',
+      ChangedTrukno: this.rejectThisItem.ChangedTrukno,
+      Role:this.roleType,   
+      UserID:this.userId,
+      Reason:this.rejectReason,
+      ImeiNo:this.imei,
+      DateTime:getCurrentDateTime()
+    }
+    this.coreServices.ApproveRejectTruck(body).subscribe(res=>{
       if (res.StatusCode == "001"){
         this.toast.presentToast("Truck no. rejected",'success')
         this.loader.stopLoader()
@@ -228,6 +268,9 @@ export class TruckNoChangeApprovalPage implements OnInit {
         this.toast.presentToast("Something went wrong, please try again later!",'error')
         this.loader.stopLoader()
       }      
+    },(err:any)=>{
+        this.toast.presentToast("Something went wrong, please try again later!",'error')
+        this.loader.stopLoader()
     })
 
     

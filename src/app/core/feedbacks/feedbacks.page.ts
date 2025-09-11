@@ -18,6 +18,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { CapacitorHttp } from '@capacitor/core';
 import { configs } from 'src/environments/configs';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-feedbacks',
@@ -89,48 +90,50 @@ export class FeedbacksPage implements OnInit {
       userId: this.userId,
       roletype: this.roleType,
       Feedback: this.message,
+      DateTime:getCurrentDateTime()
     };
 
     console.log(body);
 
 
-    // this.coreServices.SendFeedback(body).subscribe(
-    //   (res: any) => {
-    //     console.log(res);
-    //     if (res.status == 'Success') {
-    //       this.toast.presentToast(res.message, 'success');
-    //       this.loader.stopLoader();
-    //     } else {
-    //       this.toast.presentToast(res.message, 'error');
-    //       this.loader.stopLoader();
-    //     }
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //     this.loader.stopLoader();
-    //   }
-    // );
-
-
-    CapacitorHttp.request({
-      method: 'POST',
-      url: configs.apiBase+'SendFeedback',
-      headers: {
-        'Content-Type': 'application/json',
+    this.coreServices.SendFeedback(body).subscribe(
+      (res: any) => {
+        console.log(res);
+        if (res.status == 'Success') {
+          this.toast.presentToast(res.message, 'success');
+          this.loader.stopLoader();
+        } else {
+          this.toast.presentToast(res.message, 'error');
+          this.loader.stopLoader();
+        }
       },
-      data: body,
-    }).then(res=>{
-      if (res.status == 200) {
-        this.toast.presentToast("Feedback successfully saved", 'success');
+      (err) => {    
+        console.log(err);
+            
         this.loader.stopLoader();
-      } else {
-        this.toast.presentToast(res.data.message, 'error');
-        this.loader.stopLoader();
-      }      
-    }).catch(err=>{
-      this.toast.presentToast('something went wrong', 'error');
-      this.loader.stopLoader();
-    })
+      }
+    );
+
+
+  //   CapacitorHttp.request({
+  //     method: 'POST',
+  //     url: configs.apiBase+'SendFeedback',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     data: body,
+  //   }).then(res=>{
+  //     if (res.status == 200) {
+  //       this.toast.presentToast("Feedback successfully saved", 'success');
+  //       this.loader.stopLoader();
+  //     } else {
+  //       this.toast.presentToast(res.data.message, 'error');
+  //       this.loader.stopLoader();
+  //     }      
+  //   }).catch(err=>{
+  //     this.toast.presentToast('something went wrong', 'error');
+  //     this.loader.stopLoader();
+  //   })
 
   }
 

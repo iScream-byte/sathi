@@ -16,6 +16,7 @@ import { SearchableDropdownComponent } from 'src/app/utils/searchable-dropdown/s
 import { Network } from '@capacitor/network';
 import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-notifications',
@@ -169,9 +170,11 @@ export class NotificationsPage implements OnInit {
     }
     this.loader.showLoader()
     const body = {
-      CaId:this.selectedCaId,
+      ca_id:this.selectedCaId,
       fromDate:this.selectedStartDateTime,
-      toDate:this.selectedEndDateTime
+      toDate:this.selectedEndDateTime,
+      DateTime:getCurrentDateTime() 
+
     }
     
     this.coreServices.GetNotificationList(body).subscribe((res:any)=>{      
@@ -183,6 +186,10 @@ export class NotificationsPage implements OnInit {
         this.loader.stopLoader()
         this.toast.presentToast('No new notifications','error')
       }      
+    },(err:any)=>{
+        this.nofificationData = []
+        this.loader.stopLoader()
+        this.toast.presentToast('No new notifications','error')
     })
 
 

@@ -12,6 +12,7 @@ import { MenuController } from '@ionic/angular';
 import { CoreService } from 'src/app/services/core.service';
 import * as moment from 'moment';
 import { BookOrdLst } from 'src/app/services/Interfaces';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-booking-details',
@@ -60,14 +61,13 @@ export class BookingDetailsPage implements OnInit {
   }
 
   getBookingSummaryDetails() {
-    const queries =
-      'bookStatus=' +
-      this.queryParams.endParam +
-      '&LocId=' +
-      this.queryParams.loggedInUserLocationId +
-      '&CaId=' +
-      this.queryParams.loggedInUserCaId;
-    this.coreServices.GetBookingSummaryDetails(queries).subscribe((res) => {
+    const body={
+      BookStatus:this.queryParams.endParam,
+      Loc_ID:this.queryParams.loggedInUserLocationId,
+      ca_id:this.queryParams.loggedInUserCaId,
+      DateTime:getCurrentDateTime()
+    }
+    this.coreServices.GetBookingSummaryDetails(body).subscribe((res) => {
       console.log(res.BookOrdLst);
       if (res.Status == 'Success') {
         this.noData=false
@@ -79,6 +79,11 @@ export class BookingDetailsPage implements OnInit {
         this.toast.presentToast('No data found','error')
         this.loader.stopLoader()
       }
+    },(err:any)=>{
+        this.noData=true
+        this.bookingSummaryDetailsData=[]
+        this.toast.presentToast('No data found','error')
+        this.loader.stopLoader()
     });
   }
 }

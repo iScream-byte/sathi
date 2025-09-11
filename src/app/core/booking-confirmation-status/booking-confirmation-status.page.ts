@@ -15,6 +15,7 @@ import {
   BookingSummaryResponseModel,
   LoginResponseModel,
 } from 'src/app/services/Interfaces';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-booking-confirmation-status',
@@ -96,12 +97,12 @@ export class BookingConfirmationStatusPage implements OnInit {
 
 
   getBookingSummaryDetails() {
-    const queries =
-      '&LocId=' +
-      this.loggedInUserLocationId +
-      '&CaId=' +
-      this.loggedInUserCaId;
-    this.coreServices.GetBookingSummary(queries).subscribe((res) => {
+    const body = {
+      Loc_ID :this.loggedInUserLocationId,
+      ca_id :this.loggedInUserCaId,
+      DateTime:getCurrentDateTime()
+    }    
+    this.coreServices.GetBookingSummary(body).subscribe((res) => {
       if (res.Status == 'Success') {
         this.bookingSummaryDetails = res;
         this.loader.stopLoader();

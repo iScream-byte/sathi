@@ -10,7 +10,7 @@ import { AlertService } from './../../services/alert.service';
 import { AppComponent } from './../../app.component';
 import { ToastService } from './../../services/toast.service';
 import { Platform } from '@ionic/angular';
-import { decryptDES_ECB_PKCS5, encryptDES_ECB_PKCS5 } from 'src/app/utils/myencrypt';
+import { decryptDES_ECB_PKCS5, encryptDES_ECB_PKCS5, getCurrentDateTime } from 'src/app/utils/myencrypt';
 import { CapacitorHttp } from '@capacitor/core';
 @Component({
   selector: 'app-login',
@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
   }
   loginForm: FormGroup;
 
-  ngOnInit() {
+  ngOnInit() {    
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -65,7 +65,8 @@ export class LoginPage implements OnInit {
       
     const body= {
       sysuser_id:username,
-      sysuser_pwd:password
+      sysuser_pwd:password,
+      DateTime:getCurrentDateTime()
     }       
     const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
 
@@ -73,7 +74,8 @@ export class LoginPage implements OnInit {
     
     this.authService.LoginRequest(`"${encrypted}"`).subscribe((res:any) => {
       console.log('loginressssssssssssssss=======', res);
-      if (res.status == 'Success') {
+      if (res) {
+        res.userId=username
         this.storage
           .setItem('NSUDloginDetail', JSON.stringify(res))
           .then((res) => {

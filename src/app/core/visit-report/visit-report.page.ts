@@ -18,6 +18,8 @@ import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-s
 // import { HttpClient } from '@angular/common/http';
 import { CapacitorHttp } from '@capacitor/core';
 import { configs } from 'src/environments/configs';
+import { LocalStorageService2 } from 'src/app/services/localstorage.service_2';
+import { decryptDES_ECB_PKCS5, encryptDES_ECB_PKCS5 } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-visit-report',
@@ -36,6 +38,7 @@ export class VisitReportPage implements OnInit {
     public loader:MyLoader,
     private modalController: ModalController,
     private storageService:LocalStorageService,
+    private storageService2:LocalStorageService2,
     private coreServices:CoreService,
     // private myhttp:HttpClient
   ) {
@@ -575,7 +578,7 @@ export class VisitReportPage implements OnInit {
       const photo = await Camera.getPhoto({
         resultType: CameraResultType.Base64,
         source: source=='camera'? CameraSource.Camera:CameraSource.Photos, 
-        quality: 100, 
+        quality: 30, 
       });
       
 
@@ -788,6 +791,8 @@ export class VisitReportPage implements OnInit {
 
 
   saveNow(){
+    this.data.LAT='1212'
+    this.data.LONG='3222'
     if(this.visitMode =='Online' && this.hasNetwork == false) {
       this.toast.presentToast('You are not connected to the network now, Please select offline in visit mode.','error')
     }else{     
@@ -797,6 +802,7 @@ export class VisitReportPage implements OnInit {
         return
       }
 
+      console.log(this.data.VisitType);
       
       if(!this.data.VisitType || this.data.VisitType.length == 0){
         this.toast.presentToast('Please select visit type', 'error')
@@ -816,10 +822,10 @@ export class VisitReportPage implements OnInit {
       }
 
 
-      if (!this.data.CategoryID || this.data.CategoryID.length == 0) {
-        this.toast.presentToast('Please enter company type', 'error')
-        return
-      }
+      // if (!this.data.CategoryID || this.data.CategoryID.length == 0) {
+      //   this.toast.presentToast('Please enter company type', 'error')
+      //   return
+      // }
 
 
       if (!this.data.Location) {
@@ -943,10 +949,18 @@ export class VisitReportPage implements OnInit {
 
   getExistingCustomerReportDetails(customerId:string){
     this.coreServices.GetCustomerDetails(customerId).subscribe(res=>{
-      console.log(res);
-      if(res.status=='Success'){
+      // console.log(res.length);
+      if (res.length>0){
+        res=res[0]
+        const temp = this.data.CA_ID
+        const temp2 = this.data.VisitType
+        res.CA_ID=temp
         this.data=res
+        this.data.VisitType = temp2
+        console.log(res);
+        
         if (res.LAT!=null || res.LAT!='' || res.LAT!=undefined) {
+          console.log('dfdfd');
           this.lat = res.LAT;
           this.long = res.LONG;
           this.geotag=true;
@@ -1092,25 +1106,29 @@ export class VisitReportPage implements OnInit {
           this.completed3 = false;
           this.completed4 = true;
         }
+      }
+      
 
-      }else{
+      
+      
+    },(err:any)=>{
         this.coreServices.GetCustomerDetailsAgain(customerId).subscribe(res2=>{
-            this.data.Location = res2.Location;
-            this.data.Alternatephonenumber = res2.Alternatephonenumber;
-            this.data.Ownerphonenumber = res2.Ownerphonenumber;          
+          this.data.Location = res2.Location;
+          this.data.Alternatephonenumber = res2.Alternatephonenumber;
+          this.data.Ownerphonenumber = res2.Ownerphonenumber;          
         })
 
-        if (res.LAT==null || res.LAT=='' || res.LAT!=undefined) {
-          this.geoTagChkBox=false;
-          this.geotag= false;
-          console.log("LAT & Long", res.LAT, res.LONG);
-          console.log("GeoCheckBox Value ---------->>>", this.geoTagChkBox);
-        }
-        else{
-          this.geoTagChkBox=true;
-          this.geotag=true;
-          console.log("GeoCheckBox Value ---------->>>", this.geoTagChkBox);
-        }
+        // if (res.LAT==null || res.LAT=='' || res.LAT!=undefined) {
+        //   this.geoTagChkBox=false;
+        //   this.geotag= false;
+        //   console.log("LAT & Long", res.LAT, res.LONG);
+        //   console.log("GeoCheckBox Value ---------->>>", this.geoTagChkBox);
+        // }
+        // else{
+        //   this.geoTagChkBox=true;
+        //   this.geotag=true;
+        //   console.log("GeoCheckBox Value ---------->>>", this.geoTagChkBox);
+        // }
 
         this.getCurrentLocation();
           
@@ -1127,8 +1145,6 @@ export class VisitReportPage implements OnInit {
         this.selectedImagePan = null;
         this.selectedImageAadhaar = null;
         this.selectedImageTrade = null;
-      }
-      
     })
     this.getNativeStorageData();
   }
@@ -1223,10 +1239,12 @@ export class VisitReportPage implements OnInit {
     } else if (!this.data.Visit_Customer_Name || this.data.Visit_Customer_Name.length < 1) {
       this.toast.presentToast("Please enter customer name.", 'error');
       return false;
-    } else if (!this.data.CategoryID || this.data.CategoryID.length < 1) {
-      this.toast.presentToast("Please select a type of customer.", 'error');
-      return false;
-    } else if (!this.data.Location || this.data.Location.length < 1) {
+    } 
+    // else if (!this.data.CategoryID || this.data.CategoryID.length < 1) {
+    //   this.toast.presentToast("Please select a type of customer.", 'error');
+    //   return false;
+    // } 
+    else if (!this.data.Location || this.data.Location.length < 1) {
       this.toast.presentToast("Please enter location name.", 'error');
       return false;
     } else if (!this.data.Product_Manufactured || this.data.Product_Manufactured.length < 1) {
@@ -1235,7 +1253,7 @@ export class VisitReportPage implements OnInit {
     } else if (this.data.BrickKiln.length < 1) {
       this.toast.presentToast("Please select Brick Kiln.", 'error');
       return false;
-    } else if ((this.data.BrickKiln == 'FCBT' && !this.data.Paya.trim()) || (this.data.BrickKiln == 'FCBT' && this.data.Paya.length < 1)) {
+    } else if ((this.data.BrickKiln == 'FCBT' && !this.data.Paya) || (this.data.BrickKiln == 'FCBT' && this.data.Paya.length < 1)) {
       this.toast.presentToast("Please enter paya value.", 'error');
       return false;
     } else if (this.data.BrickKiln == 'FCBT' && !this.validateDecimal(this.data.Paya)) {
@@ -1262,37 +1280,37 @@ export class VisitReportPage implements OnInit {
     } else if (!this.data.LastYearFiringPlanCloseMonthAndYear || this.data.LastYearFiringPlanCloseMonthAndYear.length < 1) {
       this.toast.presentToast("Please enter Last Year Firing Plan: CLOSE.", 'error');
       return false;
-    } else if (!this.data.noOfRoundsInSeason.trim() || this.data.noOfRoundsInSeason.length < 1) {
+    } else if (!this.data.noOfRoundsInSeason || this.data.noOfRoundsInSeason.length < 1) {
       this.toast.presentToast("Please enter no of rounds in season.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.noOfRoundsInSeason)) {
       this.toast.presentToast("No of rounds in season must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.NoOfBircksPerRound.trim() || this.data.NoOfBircksPerRound.length < 1) {
+    } else if (!this.data.NoOfBircksPerRound || this.data.NoOfBircksPerRound.length < 1) {
       this.toast.presentToast("Please enter no of bricks per round.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.NoOfBircksPerRound)) {
       this.toast.presentToast("No of bricks per round must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.CoalRequirementInSeason.trim() || this.data.CoalRequirementInSeason.length < 1) {
+    } else if (!this.data.CoalRequirementInSeason || this.data.CoalRequirementInSeason.length < 1) {
       this.toast.presentToast("Please enter coal requirement in season.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.CoalRequirementInSeason)) {
       this.toast.presentToast("Coal requirement in season must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.InventoryOfCoal.trim() || this.data.InventoryOfCoal.length < 1) {
+    } else if (!this.data.InventoryOfCoal || this.data.InventoryOfCoal.length < 1) {
       this.toast.presentToast("Please enter inventory of coal.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.InventoryOfCoal)) {
       this.toast.presentToast("Inventory of coal must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.Requirements.trim() || this.data.Requirements.length < 1) {
+    } else if (!this.data.Requirements || this.data.Requirements.length < 1) {
       this.toast.presentToast("Please enter requirements.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Requirements)) {
       this.toast.presentToast("Requirements must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.Ghato_Usage.trim() || this.data.Ghato_Usage.length < 1) {
+    } else if (!this.data.Ghato_Usage || this.data.Ghato_Usage.length < 1) {
       this.toast.presentToast("Please enter ghato usage.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Ghato_Usage)) {
@@ -1307,7 +1325,7 @@ export class VisitReportPage implements OnInit {
     } else if (!this.data.Avg_price_perThousand_bricks || this.data.Avg_price_perThousand_bricks.length < 1) {
       this.toast.presentToast("Please enter average price per thousand bricks.", 'error');
       return false;
-    } else if (!this.data.Number_of_kilns_in_Visinity.trim() || this.data.Number_of_kilns_in_Visinity.length < 1) {
+    } else if (!this.data.Number_of_kilns_in_Visinity || this.data.Number_of_kilns_in_Visinity.length < 1) {
       this.toast.presentToast("Please enter Number of kilns in Visinity.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Number_of_kilns_in_Visinity)) {
@@ -1316,7 +1334,7 @@ export class VisitReportPage implements OnInit {
     } else if (!this.data.Inventory_Raw_Bricks || this.data.Inventory_Raw_Bricks.length < 1) {
       this.toast.presentToast("Please enter Inventory Raw Bricks.", 'error');
       return false;
-    } else if (!this.data.Inventory_Prepared_Bricks.trim() || this.data.Inventory_Prepared_Bricks.length < 1) {
+    } else if (!this.data.Inventory_Prepared_Bricks || this.data.Inventory_Prepared_Bricks.length < 1) {
       this.toast.presentToast("Please enter Inventory Prepared Bricks.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Inventory_Prepared_Bricks)) {
@@ -1339,40 +1357,42 @@ export class VisitReportPage implements OnInit {
     } else if (!this.data.Visit_Customer_Name || this.data.Visit_Customer_Name.length < 1) {
       this.toast.presentToast("Please enter customer name.", 'error');
       return false;
-    } else if (!this.data.CategoryID || this.data.CategoryID.length < 1) {
-      this.toast.presentToast("Please select a type of customer.", 'error');
-      return false;
-    } else if (!this.data.Location || this.data.Location.length < 1) {
+    } 
+    // else if (!this.data.CategoryID || this.data.CategoryID.length < 1) {
+    //   this.toast.presentToast("Please select a type of customer.", 'error');
+    //   return false;
+    // } 
+    else if (!this.data.Location || this.data.Location.length < 1) {
       this.toast.presentToast("Please enter location name.", 'error');
       return false;
     } else if (!this.data.Product_Manufactured || this.data.Product_Manufactured.length < 1) {
       this.toast.presentToast("Please select manufactured product type.", 'error');
       return false;
-    } else if (!this.data.QuantityManufacturedAnnual.trim() || this.data.QuantityManufacturedAnnual.length < 1) {
+    } else if (!this.data.QuantityManufacturedAnnual || this.data.QuantityManufacturedAnnual.length < 1) {
       this.toast.presentToast("Please enter quantity manufactured annually.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.QuantityManufacturedAnnual)) {
       this.toast.presentToast("Quantity manufactured annually must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.QuantityRequiredAnnual.trim() || this.data.QuantityRequiredAnnual.length < 1) {
+    } else if (!this.data.QuantityRequiredAnnual || this.data.QuantityRequiredAnnual.length < 1) {
       this.toast.presentToast("Please enter quantity required annually.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.QuantityRequiredAnnual)) {
       this.toast.presentToast("Quantity required annually must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.InventoryOfCoal.trim() || this.data.InventoryOfCoal.length < 1) {
+    } else if (!this.data.InventoryOfCoal || this.data.InventoryOfCoal.length < 1) {
       this.toast.presentToast("Please enter inventory of coal.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.InventoryOfCoal)) {
       this.toast.presentToast("Inventory of coal must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.Requirements.trim() || this.data.Requirements.length < 1) {
+    } else if (!this.data.Requirements || this.data.Requirements.length < 1) {
       this.toast.presentToast("Please enter requirements.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Requirements)) {
       this.toast.presentToast("Requirements must be non-decimal.", 'error');
       return false;
-    } else if (!this.data.Ghato_Usage.trim() || this.data.Ghato_Usage.length < 1) {
+    } else if (!this.data.Ghato_Usage || this.data.Ghato_Usage.length < 1) {
       this.toast.presentToast("Please enter ghato usage.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Ghato_Usage)) {
@@ -1387,7 +1407,7 @@ export class VisitReportPage implements OnInit {
     } else if (!this.data.Avg_price_perThousand_bricks || this.data.Avg_price_perThousand_bricks.length < 1) {
       this.toast.presentToast("Please enter average price per thousand bricks.", 'error');
       return false;
-    } else if (!this.data.Number_of_kilns_in_Visinity.trim() || this.data.Number_of_kilns_in_Visinity.length < 1) {
+    } else if (!this.data.Number_of_kilns_in_Visinity || this.data.Number_of_kilns_in_Visinity.length < 1) {
       this.toast.presentToast("Please enter Number of kilns in Visinity.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Number_of_kilns_in_Visinity)) {
@@ -1396,7 +1416,7 @@ export class VisitReportPage implements OnInit {
     } else if (!this.data.Inventory_Raw_Bricks || this.data.Inventory_Raw_Bricks.length < 1) {
       this.toast.presentToast("Please enter Inventory Raw Bricks.", 'error');
       return false;
-    } else if (!this.data.Inventory_Prepared_Bricks.trim() || this.data.Inventory_Prepared_Bricks.length < 1) {
+    } else if (!this.data.Inventory_Prepared_Bricks || this.data.Inventory_Prepared_Bricks.length < 1) {
       this.toast.presentToast("Please enter Inventory Prepared Bricks.", 'error');
       return false;
     } else if (!this.validateDecimal(this.data.Inventory_Prepared_Bricks)) {
@@ -1415,6 +1435,7 @@ export class VisitReportPage implements OnInit {
 
 
   saveCustomerData(){
+    this.loader.showLoader('saving...')
     this.getNativeStorageData()
     this.data.VisitType=this.visitType
     this.data.CreatedBY =this.creater_id;
@@ -1423,170 +1444,22 @@ export class VisitReportPage implements OnInit {
     this.data.ORG_ID = this.org_id;
     this.data.VisitMode=this.visitMode
 
-    console.log('******Creator ID',this.data.CreatedBY );
-    console.log('******CA ID', this.data.CA_ID );
-    console.log('******Agent ID',this.data.Agent_ID );
-    console.log('******ORG ID', this.data.ORG_ID);
-    console.log('****** visit type',this.data.VisitType);
-    console.log('****** visit moode',this.data.VisitMode);
-
-
-    // this.coreServices.SaveCustomerReport(this.data).subscribe(res=>{
-    //   console.log(res);
-    //   if(res){
-    //     this.toast.presentToast('Visit report successfully created','success')
-    //     this.router.navigate(['landing-page'])
-    //   }
-    //   // alert(res)
+    this.coreServices.SaveCustomerReport(this.data).subscribe(res=>{
+      console.log(res);
+      if(res){
+        this.loader.stopLoader()
+        this.toast.presentToast('Visit report successfully created','success')
+        this.router.navigate(['landing-page'])
+      }
+      // alert(res)
       
-    // },err=>{
-    //   console.log('errorr================',err);
-    //   // alert(err.statusText)
-    //   this.toast.presentToast('Something went wrong','error')
-      
-    // })
-
-    const body  = this.data
-
-    let params = {
-      'Visit_ID': body.Visit_ID,
-      'sysuser_id': body.sysuser_id,
-      'sysuser_pwd': body.sysuser_pwd,
-      'CA_ID': body.CA_ID,
-      'AgencyName': body.AgencyName,
-      'Agent_ID': body.Agent_ID,
-      'AgentName': body.AgentName,
-      'ORG_ID': body.ORG_ID,
-      'District_ID': body.District_ID,
-      'DistrictName': body.DistrictName,
-      'Visit_Date': body.Visit_Date,
-      //'Visit_Date': "",
-      'Visit_Customer_Name': body.Visit_Customer_Name,
-      'Customer_Code': body.Customer_Code,
-      'Location': body.Location,
-      'Product_Manufactured': body.Product_Manufactured,
-      'Current_Firing_Plan_monthly_avg': body.Current_Firing_Plan_monthly_avg,
-      'Last_Year_Firing_Plan_monthly_avg': body.Last_Year_Firing_Plan_monthly_avg,
-
-      /* 'Closing_Month': body.Closing_Month, */
-      'noOfRoundsInSeason': body.noOfRoundsInSeason,
-      'CategoryID': body.CategoryID,
-      'CategoryName': body.CategoryName,
-      /* 'Firing_Month': body.Firing_Month, */
-      'Paya': body.Paya,
-      'PayaChamber': body.PayaChamber,
-      'NoOfBircksPerRound': body.NoOfBircksPerRound,
-      'CoalRequirementInSeason': body.CoalRequirementInSeason,
-      'QuantityManufacturedAnnual': body.QuantityManufacturedAnnual,
-      'QuantityRequiredAnnual': body.QuantityRequiredAnnual,
-      'InventoryOfCoal': body.InventoryOfCoal,
-      'Requirements': body.Requirements,
-      'Ghato_Usage': body.Ghato_Usage,
-      'Competition': body.Competition,
-      'LandedPriceCompetitionCoal': body.LandedPriceCompetitionCoal,
-      'Avg_price_perThousand_bricks': body.Avg_price_perThousand_bricks,
-
-      'Number_of_kilns_in_Visinity': body.Number_of_kilns_in_Visinity,
-      'Inventory_Prepared_Bricks': body.Inventory_Prepared_Bricks,
-      'Inventory_Raw_Bricks': body.Inventory_Raw_Bricks,
-      'Remarks': body.Remarks,
-      'LAT': body.LAT,
-      'LONG': body.LONG,
-      'CreatedDate': body.CreatedDate,
-      //'CreatedBY': (body.CreatedBY == null) ? "" : body.CreatedBY,
-      'CreatedBY': body.AgentName,
-      'UpdateDate': body.UpdateDate,
-      'UpdatedBY': body.UpdatedBY,
-      // 'status': (body.status == null) ? "" : body.status,
-      'status': "",
-      'message': body.message,
-      'fromDate': body.fromDate,
-      'toDate': body.toDate,
-
-
-      'FileNamePAN': body.FileNamePAN,
-      'FilePANPath': body.FilePANPath,
-      'filebytePAN': body.filebytePAN,
-
-      'FileNameADHAR': body.FileNameADHAR,
-      'FileADHARPath': body.FileADHARPath,
-      'filebyteADHAR': body.filebyteADHAR,
-
-      'FileNameTRLICENSE': body.FileNameTRLICENSE,
-      'FileTRLICENSEPath': body.FileTRLICENSEPath,
-      'filebyteTRLICENSE': body.filebyteTRLICENSE,
-
-      //New Addition 28-11-2022 Raman
-      'BrickKiln': body.BrickKiln,
-      'BlockName': body.BlockName,
-      'OwnerName': body.OwnerName,
-      'CHAMBER': body.CHAMBER,
-      'Alternatephonenumber': body.Alternatephonenumber,
-      'Registerednumber': body.Registerednumber,
-      'ProprietorName': body.ProprietorName,
-      'PropritorPhoneNo': body.PropritorPhoneNo,
-      'YearOfEstablishment': body.YearOfEstablishment,
-      'IndustryType': body.IndustryType,
-      'ExpectedDateForConversion': body.ExpectedDateForConversion,
-      'CoalRequirementPerRoundMT': body.CoalRequirementPerRoundMT,
-      'RequirementOfCoalinBalanceDaysOfSessionMT': body.RequirementOfCoalinBalanceDaysOfSessionMT,
-      'VisitType': body.VisitType,
-      'VisitMode': body.VisitMode,
-      'VisitTypeOthers': body.VisitTypeOthers,
-      'CurrentYearFiringPlanStartMonthAndYear': body.CurrentYearFiringPlanStartMonthAndYear,
-      'CurrentYearFiringPlanCloseMonthAndYear': body.CurrentYearFiringPlanCloseMonthAndYear,
-      'LastYearFiringPlanStartMonthAndYear': body.LastYearFiringPlanStartMonthAndYear,
-      'LastYearFiringPlanCloseMonthAndYear': body.LastYearFiringPlanCloseMonthAndYear,
-
-      'FileNameCTO': body.FileNameCTO,
-      'FileCTOPath': body.FileCTOPath,
-      'filebyteCTO': body.filebyteCTO,
-
-      'FileNameJIMMS': body.FileNameJIMMS,
-      'FileJIMMSPath': body.FileJIMMSPath,
-      'filebyteJIMMS': body.filebyteJIMMS,
-
-      'OtherName': body.OtherName,
-      'FileNameOthers': body.FileNameOthers,
-      'FileOthersPath': body.FileOthersPath,
-      'filebyteOthers': body.filebyteOthers,
-
-      'OtherName1': body.OtherName1,
-      'FileNameOthers1': body.FileNameOthers1,
-      'FileOthersPath1': body.FileOthersPath1,
-      'filebyteOthers1': body.filebyteOthers1
-  }
-
-  this.loader.showLoader("saving...")
-
-  CapacitorHttp.request({
-    method: 'POST',
-    url: configs.apiBase+'CustomerVisitWithFileUploadEntry',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: params,
-  }).then(res=>{
-    if (res) {
-          this.loader.stopLoader()
-          this.toast.presentToast('Visit report successfully created', 'success');
-          this.router.navigate(['landing-page']);
-    }else{
-      this.toast.presentToast('something went wrong', 'error');
+    },err=>{
+      console.log('errorr================',err);
       this.loader.stopLoader()
-    }
-    
-  }).catch(err=>{
-    this.toast.presentToast('something went wrong', 'error');
-    this.loader.stopLoader()
-  })
-
-
-
-
-
-
-
+      // alert(err.statusText)
+      this.toast.presentToast('Something went wrong','error')
+      
+    })
 
   }
 
@@ -1597,31 +1470,23 @@ export class VisitReportPage implements OnInit {
     this.getNativeStorageData()
     console.log(this.data);
 
-    // this.storageService.getItem('offlineData').then(res=>{
-    //   let previousData=[]
-    //   previousData = res
-    //   if(!previousData){
-    //     previousData = []
-    //     previousData.push(this.data)
-    //   }else{        
-    //     previousData.push(this.data)
-    //   }
-    //   this.storageService.setItem('offlineData',previousData).then(res=>{
-    //     this.toast.presentToast('Offline visit report saved','success')
-    //     this.router.navigate(['landing-page']);
-    //   }
-    //   )
-    // })    
+    this.storageService2.getItem('offlineData').then((res:any)=>{
+      let previousData=[]
+      previousData = res
+      if(!previousData){
+        previousData = []
+        previousData.push(this.data)
+      }else{        
+        previousData.push(this.data)
+      }
+      this.storageService2.setItem('offlineData',previousData).then(res=>{
+        this.toast.presentToast('Offline visit report saved','success')
+        this.router.navigate(['landing-page']);
+      }
+      )
+    })   
     
     
   }
-
-
-
-
-  
-  
-
-
 
 }

@@ -12,6 +12,7 @@ import { MenuController } from '@ionic/angular';
 import { CoreService } from 'src/app/services/core.service';
 import { CAListResponseModel, PaymentDataSend, PaymentListArray } from './../../services/Interfaces';
 import * as moment from 'moment';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-payment-status',
@@ -251,13 +252,19 @@ export class PaymentStatusPage implements OnInit {
       return
     }
     const searchQuery = 
-    'caid=' + this.dataForPaymentStatus.caid + '&LocId=' + this.dataForPaymentStatus.LocId + '&CustomerCode=' + this.dataForPaymentStatus.CustomerCode + '&formDate=' + this.dataForPaymentStatus.formDate + '&toDate=' + this.dataForPaymentStatus.toDate
-  
+    {
+      CA_ID : this.dataForPaymentStatus.caid,
+      Loc_ID: this.dataForPaymentStatus.LocId,
+      Customer_Code:this.dataForPaymentStatus.CustomerCode,
+      frmDate: this.dataForPaymentStatus.formDate,
+      toDate:this.dataForPaymentStatus.toDate,
+      DateTime:getCurrentDateTime()
+    }
     console.log(searchQuery);
 
     this.loader.showLoader('Fetching payment records...')
     this.coreServices.GetPaymentStatus(searchQuery).subscribe(res=>{
-      if (res.Status == "Success") {
+      if (res) {
         this.loader.stopLoader();
         this.totalPayment = res.TotalPayment;
         this.paymentListArray = res.paymentLst;
@@ -272,6 +279,10 @@ export class PaymentStatusPage implements OnInit {
         this.loader.stopLoader();
       }
       
+    },(err:any)=>{
+        this.isPaymentListExist = false;
+        this.toast.presentToast("Data not found",'error')
+        this.loader.stopLoader();
     })
     
   

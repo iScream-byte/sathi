@@ -41,7 +41,7 @@
     <img src="assets/images/dashboard.png">
   </div>
 
-  <div class="icon-container" *ngIf="userData?.roletype=='AGENT'">
+  <div class="icon-container" *ngIf="userData?.roletype=='AGENT'" style="margin-bottom: 20px;">
     <div class="inner-icon-container" (click)="navigateTo('visit-report')">
       <img src="assets/images/usr.png" alt="report" class="icons-image" />
       <span class="icon-text">Enter Visit Report</span>

@@ -6,6 +6,7 @@ import { CoreService } from 'src/app/services/core.service';
 import { MyLoader } from 'src/app/shared/MyLoader';
 import { CustDashArrayModel, CustDashResposneModel } from 'src/app/services/Interfaces';
 import { ToastService } from 'src/app/services/toast.service';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-customer-dashboard-details',
@@ -39,16 +40,14 @@ export class CustomerDashboardDetailsPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    const queries =
-      'CustomerCode=' +
-      this.paramsFromPreviousPage.CustomerCode +
-      '&SourceId=' +
-      this.paramsFromPreviousPage.SourceId +
-      '&LocId=' +
-      this.paramsFromPreviousPage.LocId +
-      '&ProdId=' +
-      this.paramsFromPreviousPage.ProdId;
-    this.coreServices.GetCustomerDashboardDetails(queries).subscribe(res=>{
+    const body = {
+      Customer_Code:this.paramsFromPreviousPage.CustomerCode,
+      SourceID: this.paramsFromPreviousPage.SourceId,
+      Loc_ID:this.paramsFromPreviousPage.LocId,
+      ProductID:this.paramsFromPreviousPage.ProdId,
+      DateTime:getCurrentDateTime()
+    }
+    this.coreServices.GetCustomerDashboardDetails(body).subscribe(res=>{
       if(res.Status=='Success'){
         this.custDashArrayResponse = res.CustDashList;
         this.custDashJsonResponse = res;
@@ -57,8 +56,11 @@ export class CustomerDashboardDetailsPage implements OnInit {
         this.custDashArrayResponse = null;
         this.loader.stopLoader()
         this.toaster.presentToast('No Data found','error')
-      }
-      
+      }      
+    },(err:any)=>{
+        this.custDashArrayResponse = null;
+        this.loader.stopLoader()
+        this.toaster.presentToast('No Data found','error')
     })
   }
 

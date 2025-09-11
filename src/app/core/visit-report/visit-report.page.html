@@ -119,19 +119,19 @@
 
         <div class="inputContainer">
           <div style="display: inline-flex">Owner/ Contact Person Phone No.</div>      
-          <ion-input placeholder="Enter owner/ contact person phone number" type="tel" [(ngModel)]="data.Ownerphonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter owner/ contact person phone number" type="tel" [(ngModel)]="data.Ownerphonenumber" [readonly]="selectedCustomerType=='existing'" class="input" ></ion-input>
         </div>        
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Alternate Phone No.</div>      
-          <ion-input placeholder="Enter alternate phone number" type="tel" [(ngModel)]="data.Alternatephonenumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter alternate phone number" type="tel" [(ngModel)]="data.Alternatephonenumber" [readonly]="selectedCustomerType=='existing'" class="input" ></ion-input>
         </div>        
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Registered Phone No.</div>      
-          <ion-input placeholder="Enter registered phone number" type="tel" [(ngModel)]="data.Registerednumber" [readonly]="selectedCustomerType=='existing'" class="input" type="text" ></ion-input>
+          <ion-input placeholder="Enter registered phone number" type="tel" [(ngModel)]="data.Registerednumber" [readonly]="selectedCustomerType=='existing'" class="input" ></ion-input>
         </div>        
         
 
@@ -195,7 +195,7 @@
         
         <div class="inputContainer" *ngIf="brickKiln=='HawaBhatta'">
           <div style="display: inline-flex">Paya/ Chamber </div>      
-          <ion-input placeholder="Enter paya/ chamber" type="tel" [(ngModel)]="data.PayaChamber" class="input" type="text" maxlength="4" maxlength="4"></ion-input>
+          <ion-input placeholder="Enter paya/ chamber" type="tel" [(ngModel)]="data.PayaChamber" class="input" maxlength="4" maxlength="4"></ion-input>
         </div>
 
 
@@ -248,29 +248,29 @@
 
         <div class="inputContainer">
           <div style="display: inline-flex">Rounds In Season (No.) </div>      
-          <ion-input placeholder="Enter rounds in season" type="tel"  [(ngModel)]="data.noOfRoundsInSeason"  class="input" type="text" maxlength="6"></ion-input>
+          <ion-input placeholder="Enter rounds in season" type="tel"  [(ngModel)]="data.noOfRoundsInSeason"  class="input" maxlength="6"></ion-input>
         </div>
 
 
         <div class="inputContainer">
           <div style="display: inline-flex">Bricks Per Round (No.) </div>      
-          <ion-input placeholder="Enter bricks per round" type="tel"  [(ngModel)]="data.NoOfBircksPerRound"  class="input" type="text" maxlength="7"></ion-input>
+          <ion-input placeholder="Enter bricks per round" type="tel"  [(ngModel)]="data.NoOfBircksPerRound"  class="input" maxlength="7"></ion-input>
         </div>  
         
 
         <div class="inputContainer">
           <div style="display: inline-flex">Coal Requirement In Season (MT) </div>      
-          <ion-input placeholder="Enter coal requirement in season" type="tel"  [(ngModel)]="data.CoalRequirementInSeason"  class="input" type="text" maxlength="5"></ion-input>
+          <ion-input placeholder="Enter coal requirement in season" type="tel"  [(ngModel)]="data.CoalRequirementInSeason"  class="input" maxlength="5"></ion-input>
         </div>          
 
         <div class="inputContainer">
           <div style="display: inline-flex">Coal Requirement Per Round (MT) </div>      
-          <ion-input placeholder="Enter coal requirement per round" type="tel"  [(ngModel)]="data.CoalRequirementPerRoundMT"  class="input" type="text" maxlength="90"></ion-input>
+          <ion-input placeholder="Enter coal requirement per round" type="tel"  [(ngModel)]="data.CoalRequirementPerRoundMT"  class="input" maxlength="90"></ion-input>
         </div>           
 
         <div class="inputContainer">
           <div style="display: inline-flex">Requirement Of Coal In Balance Days Of Season (MT) </div>      
-          <ion-input placeholder="Enter requirement of coal in balance" type="tel"  [(ngModel)]="data.RequirementOfCoalinBalanceDaysOfSessionMT"  class="input" type="text" maxlength="90"></ion-input>
+          <ion-input placeholder="Enter requirement of coal in balance" type="tel"  [(ngModel)]="data.RequirementOfCoalinBalanceDaysOfSessionMT"  class="input" maxlength="90"></ion-input>
         </div>  
 
 
@@ -299,17 +299,17 @@
 
         <div class="inputContainer" >
           <div style="display: inline-flex">Quantity Manufactured Annually (MT) </div>      
-          <ion-input placeholder="Enter quantity manufactured annually" type="tel" [(ngModel)]="data.QuantityManufacturedAnnual" class="input" type="text" maxlength="7"></ion-input>
+          <ion-input placeholder="Enter quantity manufactured annually" type="tel" [(ngModel)]="data.QuantityManufacturedAnnual" class="input" maxlength="7"></ion-input>
         </div> 
 
         <div class="inputContainer" >
           <div style="display: inline-flex">Quantity Required Annually (MT) </div>      
-          <ion-input placeholder="Enter quantity required annually" type="tel" [(ngModel)]="data.QuantityRequiredAnnual" class="input" type="text" maxlength="7"></ion-input>
+          <ion-input placeholder="Enter quantity required annually" type="tel" [(ngModel)]="data.QuantityRequiredAnnual" class="input" maxlength="7"></ion-input>
         </div> 
 
         <div class="inputContainer" *ngIf="selectedCustomerType=='new'">
           <div style="display: inline-flex">Quantity Required In Balance Days Of Season (MT) </div>      
-          <ion-input placeholder="Enter Quantity required in balance" type="tel" [(ngModel)]="data.QuantityRequiredInBalanceDays" class="input" type="text" maxlength="10"></ion-input>
+          <ion-input placeholder="Enter Quantity required in balance" type="tel" [(ngModel)]="data.QuantityRequiredInBalanceDays" class="input" maxlength="10"></ion-input>
         </div> 
 
 
@@ -331,12 +331,12 @@
 
           <div class="inputContainer">
             <div style="display: inline-flex">Inventory Of Coal (MT) </div>      
-            <ion-input placeholder="Enter inventory of coal" type="tel" [(ngModel)]="data.InventoryOfCoal" class="input" type="text" maxlength="6"></ion-input>
+            <ion-input placeholder="Enter inventory of coal" type="tel" [(ngModel)]="data.InventoryOfCoal" class="input" maxlength="6"></ion-input>
           </div>
 
           <div class="inputContainer">
             <div style="display: inline-flex">Requirements (MT) </div>      
-            <ion-input placeholder="Enter requirements" type="tel" [(ngModel)]="data.Requirements" class="input" type="text" maxlength="5"></ion-input>
+            <ion-input placeholder="Enter requirements" type="tel" [(ngModel)]="data.Requirements" class="input"  maxlength="5"></ion-input>
           </div> 
 
           <div class="inputContainer">

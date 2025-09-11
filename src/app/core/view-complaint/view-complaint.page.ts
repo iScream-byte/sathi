@@ -11,6 +11,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { Network } from '@capacitor/network';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { ComplaintSearchList, ViewComplaintListSearchData, ViewComplaintsSearchModel } from 'src/app/services/Interfaces';
+import { encryptDES_ECB_PKCS5, getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-view-complaint',
@@ -234,24 +235,46 @@ export class ViewComplaintPage implements OnInit {
     const pageNumber = pagenum
     const pageSize = this.PageSize
 
-    const queries = 
-    `CaId=${caID}&Customer_Code=${custCode}&Status=${status}&fromDate=${fromDate}&toDate=${toDate}&PageNumber=${pageNumber}&PageSize=${pageSize}`
-
-    console.log(queries);
+    // const queries = 
+    // `CaId=${caID}&Customer_Code=${custCode}&Status=${status}&fromDate=${fromDate}&toDate=${toDate}&PageNumber=${pageNumber}&PageSize=${pageSize}`
+    const queryJsonhelpdesk = {
+      CA_ID: caID,
+      tisco_sap_code: custCode,
+      Status: status,
+      fromDate: fromDate,
+      toDate: toDate,
+      PageNumber: pageNumber,
+      PageSize: pageSize,
+      DateTime:getCurrentDateTime()
+    }; 
     
+     const queryJsonsahaj =      {
+        "CA_ID": caID,
+        "Customer_Code":custCode,
+        "Status": status,
+        "fromDate": fromDate,
+        "toDate": toDate,
+        DateTime:getCurrentDateTime()
+      }   
 
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queryJsonsahaj))
+    const encryptedhelpdesk = encryptDES_ECB_PKCS5(JSON.stringify(queryJsonhelpdesk))
     if(this.source=='sahaj'){
-      this.coreServices.GetComplaintList('sahaj',queries).subscribe((res: ComplaintSearchList)=>{
-        if(res.Status == "Success" && res.comps.length > 0){
+      this.coreServices.GetComplaintList('sahaj',`"${encrypted}"`).subscribe((res: ComplaintSearchList)=>{
+        
+        if(res.Status && res.comps.length > 0){
           this.complaintsSearchList = this.complaintsSearchList.concat(res.comps);
           this.loader.stopLoader()
         }else{
           this.toast.presentToast('No Data Found','error')
           this.loader.stopLoader()
         }        
+      },(err:any)=>{
+          this.toast.presentToast('No Data Found','error')
+          this.loader.stopLoader()
       })
     }else{
-      this.coreServices.GetComplaintList('helpdesk',queries).subscribe((res: ComplaintSearchList)=>{
+      this.coreServices.GetComplaintList('helpdesk',`"${encryptedhelpdesk}"`).subscribe((res: ComplaintSearchList)=>{
         if(res.Status == "Success" && res.comps.length > 0){
           console.log(res);
       
@@ -261,6 +284,9 @@ export class ViewComplaintPage implements OnInit {
           this.toast.presentToast('No Data Found','error')
           this.loader.stopLoader()
         }        
+      },(err:any)=>{
+          this.toast.presentToast('No Data Found','error')
+          this.loader.stopLoader()
       })
 
     }
@@ -286,20 +312,30 @@ export class ViewComplaintPage implements OnInit {
     const pageNumber = this.PageNumber
     const pageSize = this.PageSize
 
-    const queries = 
-    `CaId=${caID}
-    &Customer_Code=${custCode}
-    &Status=${status}
-    &fromDate=${fromDate}
-    &toDate=${toDate}
-    &PageNumber=${pageNumber}
-    &PageSize=${pageSize}
-    `
+     const queryJson =      {
+        "CA_ID": caID,
+        "Customer_Code":custCode,
+        "Status": status,
+        "fromDate": fromDate,
+        "toDate": toDate,
+        DateTime:getCurrentDateTime()
+      } 
 
-    console.log(queries);
-    
+    const queryJsonhelpdesk = {
+      CA_ID: caID,
+      tisco_sap_code: custCode,
+      Status: status,
+      fromDate: fromDate,
+      toDate: toDate,
+      PageNumber: pageNumber,
+      PageSize: pageSize,
+      DateTime:getCurrentDateTime()
+    }; 
+
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queryJson))
+    const encryptedhelpdesk = encryptDES_ECB_PKCS5(JSON.stringify(queryJsonhelpdesk))
     if(this.source=='sahaj'){
-      this.coreServices.GetComplaintList('sahaj',queries).subscribe((res: ComplaintSearchList)=>{
+      this.coreServices.GetComplaintList('sahaj',`"${encrypted}"`).subscribe((res: ComplaintSearchList)=>{
         if(res.Status == "Success"){
           if(res.comps.length<this.PageSize){
             this.hasMoreRecords = false;
@@ -313,10 +349,12 @@ export class ViewComplaintPage implements OnInit {
         event.target.complete();
         this.loading = false;
 
+      },(err:any)=>{
+          this.toast.presentToast('No more data Found','error')
+          this.loader.stopLoader()
       })
     }else{
-
-      this.coreServices.GetComplaintList('helpdesk',queries).subscribe((res: ComplaintSearchList)=>{
+      this.coreServices.GetComplaintList('helpdesk',`"${encryptedhelpdesk}"`).subscribe((res: ComplaintSearchList)=>{
         if(res.Status == "Success"){     
           if(res.Status == "Success"){
             if(res.comps.length<this.PageSize){
@@ -326,11 +364,13 @@ export class ViewComplaintPage implements OnInit {
               this.PageNumber++
             }
         }else{
-        }
-        
+        }        
         event.target.complete();
         this.loading = false;
-      }}
+      }},(err:any)=>{
+          this.toast.presentToast('No more data Found','error')
+          this.loader.stopLoader()
+      }
       )
 
     }    

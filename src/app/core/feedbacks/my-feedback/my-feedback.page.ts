@@ -16,6 +16,7 @@ import { SearchableDropdownComponent } from 'src/app/utils/searchable-dropdown/s
 import { Network } from '@capacitor/network';
 import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 @Component({
   selector: 'app-my-feedback',
   templateUrl: './my-feedback.page.html',
@@ -114,12 +115,19 @@ export class MyFeedbackPage implements OnInit {
 
   search(){
     this.loader.showLoader()
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append("Key", this.tagName);
-    urlSearchParams.append("fromDate", this.selectedStartDateTime? this.selectedStartDateTime:'');
-    urlSearchParams.append("toDate", this.selectedEndDateTime?this.selectedEndDateTime:'');
-
-    this.coreServices.MyFeedbacks(urlSearchParams).subscribe((res:any)=>{
+    // let urlSearchParams = new URLSearchParams();
+    // urlSearchParams.append("Key", this.tagName);
+    // urlSearchParams.append("fromDate", this.selectedStartDateTime? this.selectedStartDateTime:'');
+    // urlSearchParams.append("toDate", this.selectedEndDateTime?this.selectedEndDateTime:'');
+    const body={
+      KeyId:this.tagName,
+      fromDate:this.selectedStartDateTime? this.selectedStartDateTime:'',
+      toDate:this.selectedEndDateTime?this.selectedEndDateTime:'',
+      DateTime:getCurrentDateTime()
+    }
+    console.log(body);
+    
+    this.coreServices.MyFeedbacks(body).subscribe((res:any)=>{
       console.log(res);
       if(res.status=='Success'){
         this.feedbackListData = res.feedlist
@@ -129,6 +137,10 @@ export class MyFeedbackPage implements OnInit {
         this.toast.presentToast('No data found','error')
         this.loader.stopLoader()
       }
+    },(err:any)=>{
+        this.feedbackListData = []        
+        this.toast.presentToast('No data found','error')
+        this.loader.stopLoader()
     })
     
   }

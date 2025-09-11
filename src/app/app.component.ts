@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MyLoader } from './shared/MyLoader';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Platform } from '@ionic/angular';
+import { LocalStorageService2 } from './services/localstorage.service_2';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
     private alertController: AlertController,
     private menuController: MenuController,
     private storage: LocalStorageService,
+    private storage2: LocalStorageService2,
     private router: Router,
     private loader: MyLoader,
     private navCtrl:NavController,

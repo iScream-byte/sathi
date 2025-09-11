@@ -12,6 +12,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { CAListResponseModel, CustomerRegListArray, CustomerRegSearchModel } from 'src/app/services/Interfaces';
 import * as moment from 'moment';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 @Component({
   selector: 'app-customer-reg-summary',
   templateUrl: './customer-reg-summary.page.html',
@@ -191,19 +192,29 @@ export class CustomerRegSummaryPage implements OnInit {
     this.dataForSearch.fromDate = this.selectedStartDateTime?this.selectedStartDateTime:''
     this.dataForSearch.toDate = this.selectedEndDateTime?this.selectedEndDateTime:''
     this.dataForSearch.DistrictID = this.selectedDistrictId;
-    const queries =
-      'userId=' +
-      this.dataForSearch.userId +
-      '&CaId=' +
-      this.dataForSearch.CaId +
-      '&fromDate=' +
-      this.dataForSearch.fromDate +
-      '&toDate=' +
-      this.dataForSearch.toDate +
-      '&DistrictID=' +
-      this.dataForSearch.DistrictID;
-      console.log(queries);
-    this.coreServices.GetCustomerRegistrationSummary(queries).subscribe(res=>{
+    // const queries =
+    //   'userId=' +
+    //   this.dataForSearch.userId +
+    //   '&CaId=' +
+    //   this.dataForSearch.CaId +
+    //   '&fromDate=' +
+    //   this.dataForSearch.fromDate +
+    //   '&toDate=' +
+    //   this.dataForSearch.toDate +
+    //   '&DistrictID=' +
+    //   this.dataForSearch.DistrictID;
+    //   console.log(queries);
+    const body = {
+      sysuser_id:this.dataForSearch.userId,
+      CA_ID:this.dataForSearch.CaId,
+      fromDate:this.dataForSearch.fromDate,
+      toDate:this.dataForSearch.toDate,
+      District_ID:this.dataForSearch.DistrictID,
+      DateTime:getCurrentDateTime()
+    }
+    console.log(body);
+    
+    this.coreServices.GetCustomerRegistrationSummary(body).subscribe(res=>{
       if(res.status=='Success'){
         this.searchModel = res.visitLst
         this.loader.stopLoader()
@@ -213,6 +224,10 @@ export class CustomerRegSummaryPage implements OnInit {
         this.loader.stopLoader()
       }
       
+    },(err:any)=>{
+        this.searchModel=null
+        this.toast.presentToast('No data found','error')
+        this.loader.stopLoader()
     })
 
   }

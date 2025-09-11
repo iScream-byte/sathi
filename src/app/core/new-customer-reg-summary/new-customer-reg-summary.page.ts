@@ -11,6 +11,7 @@ import { Network } from '@capacitor/network';
 import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { CAListResponseModel, CustomerRegSearchModel, NewRegisteredCustomerForTodayResponseArray, NewRegisteredCustomerForTodaySearch } from 'src/app/services/Interfaces';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-new-customer-reg-summary',
@@ -165,13 +166,15 @@ export class NewCustomerRegSummaryPage implements OnInit {
   search() {
     this.loader.showLoader('searching for records...');
     this.dataForSearch.DistrictId = this.selectedDistrictId;
-    const queries =
-      '&CaId=' +
-      this.dataForSearch.caId +      
-      '&DistrictID=' +
-      this.dataForSearch.DistrictId;
+    const queries = {
+      CA_ID : this.dataForSearch.caId ,      
+      District_ID: this.dataForSearch.DistrictId,
+      DateTime:getCurrentDateTime()
+    }
+    console.log(queries);
+    
     this.coreServices.GetNewCustomerRegistrationSummary(queries).subscribe(res=>{
-      if(res.status=='Success'){
+      if(res){
         this.searchModel = res.visitLst        
         this.loader.stopLoader()
       }else{
@@ -236,6 +239,10 @@ export class NewCustomerRegSummaryPage implements OnInit {
         this.loader.stopLoader()
       }
       
+    },(err:any)=>{
+        this.searchModel=null
+        this.toast.presentToast('No data found','error')
+        this.loader.stopLoader()
     })
 
   }

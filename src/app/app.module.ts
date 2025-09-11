@@ -14,6 +14,7 @@ import { AlertService } from './services/alert.service';
 import { ToastService } from './services/toast.service';
 import { SearchableDropdownComponent } from './utils/searchable-dropdown/searchable-dropdown.component';
 import { FooterComponent } from "./shared/footer/footer.component";
+import { LocalStorageService2 } from './services/localstorage.service_2';
 
 @NgModule({
   declarations: [AppComponent, SearchableDropdownComponent],
@@ -35,6 +36,7 @@ import { FooterComponent } from "./shared/footer/footer.component";
       multi: true, // This ensures that multiple interceptors can be used if needed
     },
     LocalStorageService,
+    LocalStorageService2,
     Storage,
     AlertService,
     ToastService,    

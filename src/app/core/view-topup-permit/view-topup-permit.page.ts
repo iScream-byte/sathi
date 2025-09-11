@@ -14,6 +14,7 @@ import { ToastService } from './../../services/toast.service';
 import { DropdownService } from './../../services/dropdown.service';
 import { SearchableDropdownComponent } from './../../utils/searchable-dropdown/searchable-dropdown.component';
 import { CoreService } from 'src/app/services/core.service';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-view-topup-permit',
@@ -151,8 +152,12 @@ export class ViewTopupPermitPage implements OnInit {
     this.loader.showLoader('fetching product list...');
     this.productData = [];
     this.selectedProductId = '';
+    const body={
+      Customer_Code:this.customerCode,
+      DateTime:getCurrentDateTime()
+    }
     this.dropdownServices
-      .GetSourceListByCustomerCode(`CustomerCode=${customerCode}`)
+      .GetSourceListByCustomerCode(body)
       .subscribe((res) => {
         if (res.Status == 'Success') {
           this.getProductList(res.SourceLst[0].SourceID);
@@ -161,10 +166,13 @@ export class ViewTopupPermitPage implements OnInit {
   }
 
   getProductList(sourceId) {
+    const body = {
+      SourceID:sourceId,
+      Loc_ID:this.locId,
+      DateTime:getCurrentDateTime()
+    }
     this.dropdownServices
-      .GetProductPriceBySourceId(
-        'SourceId=' + sourceId + '&LocId=' + this.locId
-      )
+      .GetProductPriceBySourceId(body)
       .subscribe((res) => {
         if (res.Status == 'Success') {
           this.productData = res.ProdList;
@@ -178,8 +186,13 @@ export class ViewTopupPermitPage implements OnInit {
 
   applyOrViewPermit() {
     this.loader.showLoader('fetching records...');
-    const queryString = `caid=${this.selectedCaId}&CustomerCode=${this.customerCode}&ProdId=${this.selectedProductId}`;
-    this.coreServices.GetTopUpPermitList(queryString).subscribe((res) => {
+    // const queryString = `caid=${this.selectedCaId}&CustomerCode=${this.customerCode}&ProdId=${this.selectedProductId}`;
+    const body={
+      CA_ID:this.selectedCaId,
+      Customer_Code:this.customerCode,
+      DateTime:getCurrentDateTime()
+    }
+    this.coreServices.GetTopUpPermitList(body).subscribe((res) => {
       if (res.Status == 'Success') {
         this.topupListArray = res.permitList;
         this.loader.stopLoader();
@@ -191,6 +204,13 @@ export class ViewTopupPermitPage implements OnInit {
           'error'
         );
       }
+    },(err:any)=>{
+        this.topupListArray = [];
+        this.loader.stopLoader();
+        this.toast.presentToast(
+          'No Available Permit for the month, Please contact MJ Team',
+          'error'
+        );
     });
   }
 
@@ -231,19 +251,20 @@ export class ViewTopupPermitPage implements OnInit {
     this.loader.showLoader('Updating...');
 
     const body = {
-      AgentId: this.agentId,
-      caid: this.selectedCaId,
-      CustomerCode: this.customerCode,
+      Agent_ID: this.agentId,
+      CA_ID: this.selectedCaId,
+      Customer_Code: this.customerCode,
       CustomerName: this.customerName,
       PermitTopUpApplied: topupValue,
-      productid: this.selectedProductId,
+      ProductId: this.selectedProductId,
+      DateTime:getCurrentDateTime()
     };
 
-    let queryString = `AgentId=${body.AgentId}&caid=${body.caid}&CustomerCode=${body.CustomerCode}&CustomerName=${body.CustomerName}&PermitTopUpApplied=${body.PermitTopUpApplied}&ProductId=${body.productid}`;
+    // let queryString = `AgentId=${body.AgentId}&caid=${body.caid}&CustomerCode=${body.CustomerCode}&CustomerName=${body.CustomerName}&PermitTopUpApplied=${body.PermitTopUpApplied}&ProductId=${body.productid}`;
 
-    console.log(queryString);
+    // console.log(queryString);
 
-    this.coreServices.UpdateTopUpQuantity(queryString).subscribe((res) => {
+    this.coreServices.UpdateTopUpQuantity(body).subscribe((res) => {
       console.log(res);
       if (res.Permit_Status == 'Success') {
         this.loader.stopLoader();
@@ -255,6 +276,12 @@ export class ViewTopupPermitPage implements OnInit {
           'error'
         );
       }
+    },(err:any)=>{
+        this.loader.stopLoader();
+        this.toast.presentToast(
+          'Failed to update top up limit. Please try again.',
+          'error'
+        );
     });
   }
 }

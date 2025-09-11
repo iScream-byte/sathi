@@ -16,6 +16,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { SearchableDropdownComponent } from 'src/app/utils/searchable-dropdown/searchable-dropdown.component';
 import { SourceResponseModel } from './../../services/Interfaces';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -141,8 +142,12 @@ export class CustomerDashboardPage implements OnInit {
 
     if (this.customerCode) {
       this.loader.showLoader('fetching source...');
+      const body={
+        Customer_Code:this.customerCode,
+        DateTime:getCurrentDateTime()
+      }
       this.dropdownService
-        .GetSourceListByCustomerCode(`CustomerCode=${this.customerCode}`)
+        .GetSourceListByCustomerCode(body)
         .subscribe((res) => {
           if (res.Status == 'Success') {
             this.sourceListResponse = res.SourceLst;
@@ -166,13 +171,13 @@ export class CustomerDashboardPage implements OnInit {
       return;
     }
     this.loader.showLoader('fetching products...');
+    const body = {
+      SourceID:this.selectedSourceId,
+      Loc_ID:this.userDetails.Loc_ID,
+      DateTime:getCurrentDateTime()
+    }
     this.dropdownService
-      .GetProductPriceBySourceId(
-        'SourceId=' +
-          this.selectedSourceId +
-          '&LocId=' +
-          this.userDetails.Loc_ID
-      )
+      .GetProductPriceBySourceId(body)
       .subscribe((res) => {
         this.loader.stopLoader();
         if (res.Status == 'Success') {
@@ -204,16 +209,14 @@ export class CustomerDashboardPage implements OnInit {
   onProductSelected(e: any) {
     this.loader.showLoader('fetching price...');
     this.selectedProductId = e.target.value;
-    const queries =
-      'SourceId=' +
-      this.selectedSourceId +
-      '&LocId=' +
-      this.selectedLocId +
-      '&ProdId=' +
-      this.selectedProductId +
-      '&CustomerCode=' +
-      this.customerCode;
-    this.dropdownService.GetFinalProductPrice(queries).subscribe((res) => {
+    const body={
+      SourceID: this.selectedSourceId,
+      Loc_ID: this.selectedLocId,
+      ProductID: this.selectedProductId,
+      Customer_Code :this.customerCode,
+      DateTime:getCurrentDateTime()
+    }
+    this.dropdownService.GetFinalProductPrice(body).subscribe((res) => {
       if (res.Status == 'Success') {
         this.productPriceResponse = res.ProdPriceLst;
         this.loader.stopLoader();
@@ -222,6 +225,10 @@ export class CustomerDashboardPage implements OnInit {
         this.productPriceResponse = null;
         this.loader.stopLoader();
       }
+    },(err:any)=>{
+        this.toast.presentToast('No data found', 'error');
+        this.productPriceResponse = null;
+        this.loader.stopLoader();
     });
   }
 

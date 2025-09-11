@@ -16,6 +16,7 @@ import { SearchableDropdownComponent } from './../../utils/searchable-dropdown/s
 import { CoreService } from 'src/app/services/core.service';
 import { CapacitorHttp } from '@capacitor/core';
 import { configs } from 'src/environments/configs';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-permit-topup-approval',
@@ -80,41 +81,6 @@ export class PermitTopupApprovalPage implements OnInit {
     this.loader.showLoader('fetching records...');
     this.coreServices.GetTopUpsForClientApprovalList().subscribe((res) => {
       this.topupListArray = res.permitList;
-      // this.topupListArray = [
-      //   {
-      //     LastDateOfPermitTopUp: '2025-01-10',
-      //     TopUpTime: '12:30 PM',
-      //     CAName: 'CA Point 1',
-      //     AgentName: 'John Doe',
-      //     PermitTopUpApplied: 100,
-      //     productName: 'Product A',
-      //     CustomerName: 'Alice Johnson',
-      //     Customer_Code: 'C12345',
-      //     IndustryType: 'Retail'
-      //   },
-      //   {
-      //     LastDateOfPermitTopUp: '2025-01-12',
-      //     TopUpTime: '09:00 AM',
-      //     CAName: 'CA Point 2',
-      //     AgentName: 'Jane Smith',
-      //     PermitTopUpApplied: 50,
-      //     productName: 'Product B',
-      //     CustomerName: 'Bob Brown',
-      //     Customer_Code: 'C67890',
-      //     IndustryType: 'Technology'
-      //   },
-      //   {
-      //     LastDateOfPermitTopUp: '2025-01-14',
-      //     TopUpTime: '03:45 PM',
-      //     CAName: 'CA Point 3',
-      //     AgentName: 'Michael Johnson',
-      //     PermitTopUpApplied: 200,
-      //     productName: 'Product C',
-      //     CustomerName: 'Charlie Davis',
-      //     Customer_Code: 'C11223',
-      //     IndustryType: 'Healthcare'
-      //   }
-      // ];
       if (this.topupListArray.length > 0) {
         this.nodatafound = false;
         this.loader.stopLoader()
@@ -122,6 +88,9 @@ export class PermitTopupApprovalPage implements OnInit {
         this.nodatafound = true;
         this.loader.stopLoader()
       }
+    },(err:any)=>{
+        this.nodatafound = true;
+        this.loader.stopLoader()
     });
   }
 
@@ -163,8 +132,7 @@ export class PermitTopupApprovalPage implements OnInit {
             }
 
             try {
-              console.log(this.userDetails);
-              
+             
               this.dataForApproveReject = {
                 TopUp_ID: item.TopUp_ID,
                 Limit_ID: item.Limit_ID,
@@ -173,71 +141,64 @@ export class PermitTopupApprovalPage implements OnInit {
                 TopUpStatus: status,
                 CreatedBy: this.userDetails.name,
                 Remarks: data.reason,
-                CustomerName: item.CustomerName,
-                CAName: item.CAName,
-              };
+                // CustomerName: item.CustomerName,
+                // CAName: item.CAName,
+                DateTime:getCurrentDateTime()
 
-              console.log(this.dataForApproveReject);
+              };
               
               this.loader.showLoader()
               
-              // this.coreServices.TopUpApproveReject(this.dataForApproveReject).subscribe(res=>{
-              //   console.log(res);
-              //   this.toast.presentToast(res.message)
-              //   this.loader.stopLoader()
-              //   setTimeout(() => {
-              //     this.getList()
-              //   }, 1000);
-              // },err=>{
-              //   console.log(err);
-              //   this.loader.stopLoader()                
-              // })
-
-              let params = {
-                TopUp_ID: this.dataForApproveReject.TopUp_ID,
-                Limit_ID: this.dataForApproveReject.Limit_ID,
-                Customer_Code: this.dataForApproveReject.Customer_Code,
-                PermitTopUpApplied: this.dataForApproveReject.PermitTopUpApplied,
-                TopUpStatus: this.dataForApproveReject.TopUpStatus,
-                CreatedBy: this.dataForApproveReject.CreatedBy,
-                Remarks: this.dataForApproveReject.Remarks,
-                CustomerName: this.dataForApproveReject.CustomerName,
-                CAName: this.dataForApproveReject.CAName,
-              };
-
-
-              CapacitorHttp.request({
-                method: 'POST',
-                url: configs.apiBase+'TopUpApplyApproved',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                data: params,
-              }).then(res=>{
-                if (res) {
-                      this.toast.presentToast(res.data.message,'success')
-                      this.loader.stopLoader()
-                      setTimeout(() => {
-                        this.getList()
-                      }, 1000);                      
-                }else{
-                  this.toast.presentToast('something went wrong', 'error');
-                  this.loader.stopLoader()  
-                }                
-              }).catch(err=>{
-                this.toast.presentToast('something went wrong', 'error');
-                this.loader.stopLoader()  
+              this.coreServices.TopUpApproveReject(this.dataForApproveReject).subscribe(res=>{
+                console.log(res);
+                this.toast.presentToast(res.message)
+                this.loader.stopLoader()
+                setTimeout(() => {
+                  this.getList()
+                }, 1000);
+              },err=>{
+                console.log(err);
+                this.loader.stopLoader()                
               })
 
+              // let params = {
+              //   TopUp_ID: this.dataForApproveReject.TopUp_ID,
+              //   Limit_ID: this.dataForApproveReject.Limit_ID,
+              //   Customer_Code: this.dataForApproveReject.Customer_Code,
+              //   PermitTopUpApplied: this.dataForApproveReject.PermitTopUpApplied,
+              //   TopUpStatus: this.dataForApproveReject.TopUpStatus,
+              //   CreatedBy: this.dataForApproveReject.CreatedBy,
+              //   Remarks: this.dataForApproveReject.Remarks,
+              //   CustomerName: this.dataForApproveReject.CustomerName,
+              //   CAName: this.dataForApproveReject.CAName,
+              // };
 
-              
-             
 
-
+              // CapacitorHttp.request({
+              //   method: 'POST',
+              //   url: configs.apiBase+'TopUpApplyApproved',
+              //   headers: {
+              //     'Content-Type': 'application/json',
+              //   },
+              //   data: params,
+              // }).then(res=>{
+              //   if (res) {
+              //         this.toast.presentToast(res.data.message,'success')
+              //         this.loader.stopLoader()
+              //         setTimeout(() => {
+              //           this.getList()
+              //         }, 1000);                      
+              //   }else{
+              //     this.toast.presentToast('something went wrong', 'error');
+              //     this.loader.stopLoader()  
+              //   }                
+              // }).catch(err=>{
+              //   this.toast.presentToast('something went wrong', 'error');
+              //   this.loader.stopLoader()  
+              // })
 
             } catch (error) {
-              console.error('Error: ', error);
-              
+              console.error('Error: ', error);              
             }
           },
         },

@@ -12,6 +12,7 @@ import { MenuController } from '@ionic/angular';
 import { CoreService } from 'src/app/services/core.service';
 import * as moment from 'moment';
 import { Update27cFormModel } from './../../services/Interfaces';
+import { getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-update27c',
@@ -139,12 +140,19 @@ export class Update27cPage implements OnInit {
     this.dataFor27cForm.Active_Status = this.isChecked ? 'Y' : 'N';
 
     this.loader.showLoader('Saving...');
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('validForm', this.dataFor27cForm.validForm);
-    urlSearchParams.append('Active_Status', this.dataFor27cForm.Active_Status);
-    urlSearchParams.append('User_ID', this.dataFor27cForm.User_ID);
-    urlSearchParams.append('Customer_Code', this.dataFor27cForm.Customer_Code);
-    this.coreServices.Update27CForm(urlSearchParams).subscribe((res) => {
+    // const urlSearchParams = new URLSearchParams();
+    // urlSearchParams.append('validForm', this.dataFor27cForm.validForm);
+    // urlSearchParams.append('Active_Status', this.dataFor27cForm.Active_Status);
+    // urlSearchParams.append('User_ID', this.dataFor27cForm.User_ID);
+    // urlSearchParams.append('Customer_Code', this.dataFor27cForm.Customer_Code);
+    const body = {
+      User_ID:this.dataFor27cForm.User_ID,
+      Customer_Code:this.dataFor27cForm.Customer_Code,
+      valid_from:this.dataFor27cForm.validForm,
+      Active_Status:this.dataFor27cForm.Active_Status,
+      DateTime:getCurrentDateTime()
+    }
+    this.coreServices.Update27CForm(body).subscribe((res) => {
       console.log(res);
       if (res.status == 'Success') {
         this.toast.presentToast(
@@ -154,6 +162,9 @@ export class Update27cPage implements OnInit {
       } else {
         this.toast.presentToast(`27C already valid for this month`, 'error');
       }
+      this.loader.stopLoader();
+    },(err:any)=>{
+      this.toast.presentToast(`27C already valid for this month`, 'error');
       this.loader.stopLoader();
     });
   }

@@ -10,7 +10,7 @@ import { Network } from '@capacitor/network';
 import { ToastService } from 'src/app/services/toast.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import { AuthServicesService } from './../../services/auth-services.service';
-import { encryptDES_ECB_PKCS5 } from 'src/app/utils/myencrypt';
+import { encryptDES_ECB_PKCS5, getCurrentDateTime } from 'src/app/utils/myencrypt';
 
 @Component({
   selector: 'app-change-password',
@@ -39,7 +39,9 @@ export class ChangePasswordPage implements OnInit {
 
   ngOnInit() {
     this.storage.getItem('NSUDloginDetail').then((val) => {
-      this.userId = JSON.parse(val).userId;
+      this.userId = JSON.parse(val).name;
+      // console.log(JSON.parse(val));
+      
     }).catch((error) => {
       this.toast.presentToast('Error fetching','error')
     });
@@ -84,9 +86,10 @@ export class ChangePasswordPage implements OnInit {
     // urlSearchParams.append("oldpassword", this.oldPassword);
     // urlSearchParams.append("newpassword", this.newPassword);
     const body = {
-      sysuser_id:this.userId,
+      userId:this.userId,
       sysuser_pwd:this.oldPassword,
-      new_pwd:this.newPassword
+      new_pwd:this.newPassword,
+      DateTime:getCurrentDateTime()
     }
 
     const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))

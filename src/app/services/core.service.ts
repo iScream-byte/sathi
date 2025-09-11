@@ -3,7 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { configs } from './../../environments/configs';
 import { BookingSummaryDetailsResponse, CustDashResposneModel, PaymentResponseModel, VisitReportResponseModel, VisitReportSaveModel, CustomerRegSearchResponse, NewRegisteredCustomerForTodayResponseModel, Update27cFormResponseModel, TruckChangeListModel, TruckApproveRejectModel, TopupResponseModel, TopupQuantityResponse, ViewApprovalPermitListModel, ApproveRejectResponseModel, DailyVisitResponseModel } from './Interfaces';
 import { BookingSummaryResponseModel } from 'src/app/services/Interfaces';
-
+import { decryptDES_ECB_PKCS5, encryptDES_ECB_PKCS5, getCurrentDateTime } from '../utils/myencrypt';
+const headers = new HttpHeaders({
+  'Content-Type': 'application/json'
+});
 @Injectable({
   providedIn: 'root',
 })
@@ -11,24 +14,36 @@ export class CoreService {
   constructor(private http: HttpClient) {}
 
   GetCustomerDetails(customerCode) {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('CustomerCode', customerCode);
-    return this.http.get<VisitReportResponseModel>(
-      configs.apiBase + 'GetVisitByCustomerCode?' + urlSearchParams
+    const body = {
+      Customer_Code:customerCode,
+      DateTime:getCurrentDateTime()
+    }
+    console.log(body);
+    
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))  
+    console.log(encrypted);
+     
+    return this.http.post<any>(      
+      configs.apiBase + 'GetVisitByCustomerCode',`"${encrypted}"`,{ headers: headers }
     );
   }
 
-  GetCustomerDetailsAgain(customerCode) {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('CustomerCode', customerCode);
-    return this.http.get<VisitReportResponseModel>(
+  GetCustomerDetailsAgain(customerCode) {  
+    const body = {
+      Customer_Code:customerCode,
+      DateTime:getCurrentDateTime()
+    }
+    
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    return this.http.post<any>(
       configs.apiBase +
-        'GetExistCustomerDetailsByCustomerCode?' +
-        urlSearchParams
+        'GetExistCustomerDetailsByCustomerCode',`"${encrypted}"`,{ headers: headers }
     );
   }
 
-  SaveCustomerReport(body: VisitReportSaveModel) {
+  SaveCustomerReport(body: VisitReportSaveModel) {    
+    // console.log(body);
+    
     let params = {
       'Visit_ID': body.Visit_ID,
       'sysuser_id': body.sysuser_id,
@@ -135,126 +150,144 @@ export class CoreService {
       'OtherName1': body.OtherName1,
       'FileNameOthers1': body.FileNameOthers1,
       'FileOthersPath1': body.FileOthersPath1,
-      'filebyteOthers1': body.filebyteOthers1
+      'filebyteOthers1': body.filebyteOthers1,
+
+      'Firing_Month':body.CurrentYearFiringPlanStartMonthAndYear,
+      'Closing_Month':body.CurrentYearFiringPlanCloseMonthAndYear,
+      'Ownerphonenumber':body.Ownerphonenumber,
+      DateTime:getCurrentDateTime()      
   }
+
+    
     console.log(params);
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+    
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(params))    
     return this.http.post(
-      configs.apiBase+'CustomerVisitWithFileUploadEntry',
-      params,
-      { headers: headers }
+      configs.apiBase+'CustomerVisitWithFileUploadEntry',`"${encrypted}"`,{ headers: headers }
     );
   }
 
   GetVisitReportSummary(payload){
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('userId', payload.userId);
-    urlSearchParams.append('CaId', payload.CaId);
-    urlSearchParams.append('fromDate', payload.fromDate);
-    urlSearchParams.append('toDate', payload.toDate);
-    urlSearchParams.append('DistrictID', payload.DistrictID);
-    return this.http.get(configs.apiBase+'GetDatewiseVisitSummary?'+urlSearchParams)
+    const body = {
+      sysuser_id :payload.userId,
+      CA_ID : payload.CaId,
+      fromDate : payload.fromDate,
+      toDate : payload.toDate,
+      District_ID : payload.DistrictID,
+      DateTime:getCurrentDateTime()
+    }    
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    return this.http.post(configs.apiBase+'GetDatewiseVisitSummary',`"${encrypted}"`,{ headers: headers })
   }
 
 
   GetComplaintList(source:any,queries:any){
     if(source=='sahaj'){
-      return this.http.get(configs.apiBase+'GetComplaintDetails?'+queries)
+      return this.http.post(configs.apiBase+'GetComplaintDetails',queries ,{ headers: headers })
     }else{
-      return this.http.get(configs.apiBase+'GetHelpDeskList?'+queries)    
+      return this.http.post(configs.apiBase+'GetHelpDeskList',queries ,{ headers: headers })    
     }
   }
 
 
   GetPaymentStatus(queries:any){
-    return this.http.get<PaymentResponseModel>(configs.apiBase+'GetPaymentDetails?'+queries)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    return this.http.post<PaymentResponseModel>(configs.apiBase+'GetPaymentDetails',`"${encrypted}"`,{ headers: headers })
   }
 
 
-  GetBookingSummary(queries:string){
-    return this.http.get<BookingSummaryResponseModel>(configs.apiBase+'GetBookingSummary?'+queries)
+  GetBookingSummary(queries:any){
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    return this.http.post<BookingSummaryResponseModel>(configs.apiBase+'GetBookingSummary',`"${encrypted}"`,{ headers: headers })
   }
 
 
-  GetBookingSummaryDetails(queries:string){
-    return this.http.get<BookingSummaryDetailsResponse>(configs.apiBase+'GetBookingStatusType?'+queries)
+  GetBookingSummaryDetails(queries:any){
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    return this.http.post<BookingSummaryDetailsResponse>(configs.apiBase+'GetBookingStatusType',`"${encrypted}"`,{ headers: headers })
   }  
   
-  GetCustomerDashboardDetails(queries:string){
-    return this.http.get<CustDashResposneModel>(configs.apiBase+'GetCustomerDashBoard?'+queries)
+  GetCustomerDashboardDetails(queries:any){
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    return this.http.post<CustDashResposneModel>(configs.apiBase+'GetCustomerDashBoard',`"${encrypted}"`,{ headers: headers })
   }  
   
-  GetCustomerRegistrationSummary(queries:string){
-    return this.http.get<CustomerRegSearchResponse>(configs.apiBase+'GetUnregisteredCustomerDatewiseVisit?'+queries)
+  GetCustomerRegistrationSummary(queries:any){
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    console.log(encrypted);
+    
+    return this.http.post<CustomerRegSearchResponse>(configs.apiBase+'GetUnregisteredCustomerDatewiseVisit',`"${encrypted}"`,{ headers: headers })
   }  
   
-  GetNewCustomerRegistrationSummary(queries:string){
-    return this.http.get<NewRegisteredCustomerForTodayResponseModel>(configs.apiBase+'GetTodayUnregisteredVisitCustomer?'+queries)
+  GetNewCustomerRegistrationSummary(queries:any){
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    console.log(encrypted);
+    
+    return this.http.post<NewRegisteredCustomerForTodayResponseModel>(configs.apiBase+'GetTodayUnregisteredVisitCustomer',`"${encrypted}"`,{ headers: headers })
   }  
   
   Update27CForm(queries:any){
-    return this.http.get<Update27cFormResponseModel>(configs.apiBase+'Update27cForm?'+queries)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    return this.http.post<Update27cFormResponseModel>(configs.apiBase+'Update27cForm',`"${encrypted}"`,{ headers: headers })
   }
   
   GetTruckChangeList(queries:any){
-    return this.http.get<TruckChangeListModel>(configs.apiBase+'GetTruckChangeList?'+queries)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))    
+    return this.http.post<any>(configs.apiBase+'GetTruckChangeList',`"${encrypted}"`,{ headers: headers })
   }  
 
   ApproveRejectTruck(queries:any){
-    return this.http.get<TruckApproveRejectModel>(configs.apiBase+'ApproveRejectTruck?'+queries)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    console.log(encrypted);
+    
+    return this.http.post<any>(configs.apiBase+'ApproveRejectTruck',`"${encrypted}"`,{ headers: headers })
   }  
   
   GetTopUpPermitList(queries:any){
-    return this.http.get<TopupResponseModel>(configs.apiBase+'GetPermitLimitByCustomer?'+queries)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    return this.http.post<TopupResponseModel>(configs.apiBase+'GetPermitLimitByCustomer',`"${encrypted}"`,{ headers: headers })
   }
 
   UpdateTopUpQuantity(queries:any){
-    return this.http.get<TopupQuantityResponse>(configs.apiBase+'UpdateTopUpQuantity?'+queries)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    return this.http.post<TopupQuantityResponse>(configs.apiBase+'UpdateTopUpQuantity',`"${encrypted}"`,{ headers: headers })
   }
 
 
   GetTopUpsForClientApprovalList(){
-    return this.http.get<ViewApprovalPermitListModel>(configs.apiBase+'GetTopupLimitByCAForClientApproval')
+    const body={
+      DateTime:getCurrentDateTime()
+    }
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    return this.http.post<ViewApprovalPermitListModel>(configs.apiBase+'GetTopupLimitByCAForClientApproval',`"${encrypted}"`,{ headers: headers })
   }
 
 
   GetNotificationList(body){
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append("ca_id", body.CaId);
-    urlSearchParams.append("fromDate", body.fromDate);
-    urlSearchParams.append("toDate", body.toDate);
-    return this.http.get(configs.apiBase+'notification?'+urlSearchParams)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    return this.http.post(configs.apiBase+'notification',`"${encrypted}"`,{ headers: headers })
   }
 
 
   TopUpApproveReject(body){
-    let params = {
-      TopUp_ID: body.TopUp_ID,
-      Limit_ID: body.Limit_ID,
-      Customer_Code: body.Customer_Code,
-      PermitTopUpApplied: body.PermitTopUpApplied,
-      TopUpStatus: body.TopUpStatus,
-      CreatedBy: body.CreatedBy,
-      Remarks: body.Remarks,
-      CustomerName: body.CustomerName,
-      CAName: body.CAName,
-    };
-    let headers = {
-      "Content-Type": "application/json",
-    };    
-    return this.http.post<ApproveRejectResponseModel>(configs.apiBase+'TopUpApplyApproved',params,{headers:headers})
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    return this.http.post<ApproveRejectResponseModel>(configs.apiBase+'TopUpApplyApproved',`"${encrypted}"`,{ headers: headers })
   }
 
 
 
   SendFeedback(body){
-    return this.http.post(configs.apiBase+'postFeedbackApi',body)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
+    console.log(encrypted);
+    
+    return this.http.post(configs.apiBase+'SendFeedback',`"${encrypted}"`,{ headers: headers })
   }
 
   MyFeedbacks(queries){
-    return this.http.get(configs.apiBase+'GetFeedbackList?'+queries)
+    const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(queries))
+    console.log(encrypted);
+    
+    return this.http.post(configs.apiBase+'GetFeedbackList',`"${encrypted}"`,{ headers: headers })
   }
   
 }
