@@ -19,7 +19,7 @@ import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-s
 import { CapacitorHttp } from '@capacitor/core';
 import { configs } from 'src/environments/configs';
 import { LocalStorageService2 } from 'src/app/services/localstorage.service_2';
-import { decryptDES_ECB_PKCS5, encryptDES_ECB_PKCS5 } from 'src/app/utils/myencrypt';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 @Component({
   selector: 'app-visit-report',
@@ -40,6 +40,7 @@ export class VisitReportPage implements OnInit {
     private storageService:LocalStorageService,
     private storageService2:LocalStorageService2,
     private coreServices:CoreService,
+    private file: File
     // private myhttp:HttpClient
   ) {
     this.getNativeStorageData()
@@ -594,19 +595,31 @@ export class VisitReportPage implements OnInit {
         }
       }else if (docType == 'pan') {
         console.log("Taking Pan Photo", docType);
-        this.selectedImagePan = "data:image/jpeg;base64," + photo.base64String;
-        this.saveBase64DataPan(photo.base64String);
+        const fileUri = await this.saveBase64Image(photo.base64String!, `pan_${Date.now()}.jpeg`);
+        this.selectedImagePan = fileUri;
+        this.saveBase64DataPan(photo.base64String!); 
+        console.log(fileUri);
+        
+        // this.selectedImagePan = "data:image/jpeg;base64," + photo.base64String;
+        // this.saveBase64DataPan(photo.base64String);
       }else if (docType == 'adhar') {
-        this.selectedImageAadhaar = "data:image/jpeg;base64," + photo.base64String;
+        const fileUri = await this.saveBase64Image(photo.base64String!, `adhar_${Date.now()}.jpeg`);
+        this.selectedImageAadhaar = fileUri;
         this.saveBase64DataAadhaar(photo.base64String);
       }else if (docType == 'gst') {
-        this.selectedImageTrade = "data:image/jpeg;base64," + photo.base64String;
+        const fileUri = await this.saveBase64Image(photo.base64String!, `gst_${Date.now()}.jpeg`);
+        this.selectedImageTrade = fileUri;
+        // this.selectedImageTrade = "data:image/jpeg;base64," + photo.base64String;
         this.saveBase64DataTrade(photo.base64String);
       }else if (docType == 'cto') {
-        this.selectedImageCTO = "data:image/jpeg;base64," + photo.base64String;
+        const fileUri = await this.saveBase64Image(photo.base64String!, `cto_${Date.now()}.jpeg`);
+        this.selectedImageCTO=fileUri
+        // this.selectedImageCTO = "data:image/jpeg;base64," + photo.base64String;
         this.saveBase64DataCTO(photo.base64String);
       } else if (docType == 'jimms') {
-        this.selectedImageJIMMS = "data:image/jpeg;base64," + photo.base64String;
+        const fileUri = await this.saveBase64Image(photo.base64String!, `jimms_${Date.now()}.jpeg`);
+        this.selectedImageJIMMS=fileUri
+        // this.selectedImageJIMMS = "data:image/jpeg;base64," + photo.base64String;
         this.saveBase64DataJIMMS(photo.base64String);
       }
 
@@ -623,6 +636,20 @@ export class VisitReportPage implements OnInit {
 
 
   async openCamera(type) {
+
+      // Request permissions from Camera plugin
+      const permResult = await Camera.requestPermissions({
+        permissions: ['camera', 'photos']
+      });
+
+      const isCameraGranted = permResult.camera === 'granted';
+      const isPhotosGranted = permResult.photos === 'granted';
+
+      if (!isCameraGranted || !isPhotosGranted) {
+        this.toast.presentToast('Camera or Gallery permission denied', 'error');
+        return;
+      }
+
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image Source',
       buttons: [{
@@ -1488,5 +1515,29 @@ export class VisitReportPage implements OnInit {
     
     
   }
+
+
+
+
+  private base64ToBlob(b64Data: string, contentType = 'image/jpeg'): Blob {
+  const byteCharacters = atob(b64Data);
+  const byteArrays = [];
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    byteArrays.push(new Uint8Array(byteNumbers));
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
+
+async saveBase64Image(b64: string, fileName: string): Promise<string> {
+  const blob = this.base64ToBlob(b64);
+  const path = this.file.dataDirectory;  // 🔒 app-private internal storage
+  await this.file.writeFile(path, fileName, blob, { replace: true });
+  return path + fileName; // full URI to saved file
+}
 
 }

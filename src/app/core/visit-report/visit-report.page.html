@@ -324,7 +324,7 @@
     <ion-accordion-group>
       <ion-accordion value="first">
         <ion-item slot="header" color="light">
-          <ion-label>Other Information</ion-label>
+          <ion-label style="font-family: Montserrat">Other Information</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content" style="display: flex; flex-direction: column; gap: 15px; background-color: rgb(243, 243, 243);">
 
@@ -386,7 +386,7 @@
 
       <ion-accordion value="second" *ngIf="hasNetwork">
         <ion-item slot="header" color="light">
-          <ion-label>Upload Documents</ion-label>
+          <ion-label style="font-family: Montserrat">Upload Documents</ion-label>
         </ion-item>
 
         <div class="ion-padding" slot="content" *ngIf="selectedCustomerType=='new'">
@@ -397,16 +397,16 @@
               <img [src]="selectedImagePan!= null ? selectedImagePan : defaultImageUrl" width="70" height="70" class="doc-image" />
             </div>
             <div class="right-container">
-              <div>PAN CARD</div>
-              <div (click)="openCamera('pan')" class="up-document">Upload Documents</div>
+              <div style="font-family: Montserrat">PAN CARD</div>
+              <div (click)="openCamera('pan')" class="up-document" style="font-family: Montserrat">Upload Documents</div>
               <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox   [(ngModel)]="panna" (ionChange)="CheckboxpannaClicked()"></ion-checkbox>
-                  <ion-label>Not Available</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Not Available</ion-label>
                 </div>                
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox  [(ngModel)]="pancl" (ionChange)="CheckboxpanclClicked()"></ion-checkbox>
-                  <ion-label>Collect Later</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Collect Later</ion-label>
                 </div>
               </div>
               
@@ -423,16 +423,16 @@
               <img [src]="selectedImageAadhaar!= null ? selectedImageAadhaar : defaultImageUrl" width="70" height="70" class="doc-image"/>
             </div>
             <div class="right-container">
-              <div>ADHAAR CARD</div>
-              <div (click)="openCamera('adhar')" class="up-document">Upload Documents</div>
+              <div style="font-family: Montserrat">ADHAAR CARD</div>
+              <div (click)="openCamera('adhar')" class="up-document" style="font-family: Montserrat">Upload Documents</div>
               <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox   [(ngModel)]="aadharna" (ionChange)="CheckboxaadharnaClicked()"></ion-checkbox>
-                  <ion-label>Not Available</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Not Available</ion-label>
                 </div>                
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox  [(ngModel)]="aadharcl" (ionChange)="CheckboxaadharclClicked()"></ion-checkbox>
-                  <ion-label>Collect Later</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Collect Later</ion-label>
                 </div>
               </div>
               
@@ -449,16 +449,16 @@
               <img [src]="selectedImageTrade!= null ? selectedImageTrade : defaultImageUrl" width="70" height="70" class="doc-image"/>
             </div>
             <div class="right-container">
-              <div>GST</div>
-              <div (click)="openCamera('gst')" class="up-document">Upload Documents</div>
+              <div style="font-family: Montserrat">GST</div>
+              <div (click)="openCamera('gst')" class="up-document" style="font-family: Montserrat">Upload Documents</div>
               <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox   [(ngModel)]="GSTna" (ionChange)="CheckboxGSTnaClicked()"></ion-checkbox>
-                  <ion-label>Not Available</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Not Available</ion-label>
                 </div>                
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox  [(ngModel)]="GSTcl" (ionChange)="CheckboxGSTclClicked()"></ion-checkbox>
-                  <ion-label>Collect Later</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Collect Later</ion-label>
                 </div>
               </div>              
             </div>
@@ -473,16 +473,16 @@
               <img [src]="selectedImageCTO!= null ? selectedImageCTO : defaultImageUrl" width="70" height="70" class="doc-image"/>
             </div>
             <div class="right-container">
-              <div>CTO<span style="font-size: 10px;"> (Non Brick Kiln only)</span></div>
-              <div (click)="openCamera('cto')" class="up-document">Upload Documents</div>
+              <div style="font-family: Montserrat">CTO<span style="font-size: 10px; font-family: Montserrat"> (Non Brick Kiln only)</span></div>
+              <div (click)="openCamera('cto')" class="up-document" style="font-family: Montserrat">Upload Documents</div>
               <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox   [(ngModel)]="CTOna" (ionChange)="CheckboxCTOnaClicked()"></ion-checkbox>
-                  <ion-label>Not Available</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Not Available</ion-label>
                 </div>                
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox  [(ngModel)]="CTOcl" (ionChange)="CheckboxCTOclClicked()"></ion-checkbox>
-                  <ion-label>Collect Later</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Collect Later</ion-label>
                 </div>
               </div>              
             </div>
@@ -497,16 +497,16 @@
               <img [src]="selectedImageJIMMS!= null ? selectedImageJIMMS : defaultImageUrl" width="70" height="70" class="doc-image"/>
             </div>
             <div class="right-container">
-              <div>JIMMS</div>
-              <div (click)="openCamera('jimms')" class="up-document">Upload Documents</div>
+              <div style="font-family: Montserrat">JIMMS</div>
+              <div (click)="openCamera('jimms')" class="up-document" style="font-family: Montserrat">Upload Documents</div>
               <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; justify-content: center; align-self: center;">
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox   [(ngModel)]="JIMMSna" (ionChange)="CheckboxJIMMSnaClicked()"></ion-checkbox>
-                  <ion-label>Not Available</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Not Available</ion-label>
                 </div>                
                 <div style="display: flex; align-items: center; gap: 5px;">
                   <ion-checkbox  [(ngModel)]="JIMMScl" (ionChange)="CheckboxJIMMSclClicked()"></ion-checkbox>
-                  <ion-label>Collect Later</ion-label>
+                  <ion-label style="font-size: 12px; font-weight: 500;">Collect Later</ion-label>
                 </div>
               </div>              
             </div>
@@ -572,7 +572,7 @@
 
     <div style="display: flex; align-items: center; gap: 5px; align-self: center;">
       <ion-checkbox [(ngModel)]="geotag" [disabled]='geoTagChkBox' (change)="CheckboxgeotagClicked()"></ion-checkbox>
-      <ion-label>Geotag Current Location</ion-label>
+      <ion-label style="font-family: Montserrat">Geotag Current Location</ion-label>
     </div>
     
 
@@ -586,7 +586,7 @@
 
 
 
-    <div (click)="saveNow()" class="save-button">SAVE NOW</div>
+    <div (click)="saveNow()" class="save-button" style="font-family: Montserrat">SAVE NOW</div>
 
 
   </div>

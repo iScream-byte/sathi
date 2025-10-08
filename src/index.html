@@ -8,18 +8,41 @@
   <base href="/" />
 
   <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport"
+        content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 
   <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
 
+  <!-- ✅ Security Headers -->
+  <!-- Content Security Policy (CSP) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self' data: gap:;
+          script-src 'self' 'unsafe-inline' 'unsafe-eval';
+          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+          img-src 'self' data:;
+          connect-src 'self' https://uatcapointapp.mjunction.in/;
+          font-src 'self' https://fonts.gstatic.com;
+          frame-ancestors 'none';
+        ">
+  <!-- Prevent MIME sniffing -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <!-- Prevent clickjacking -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <!-- Enforce HTTPS (useful when hosting as PWA) -->
+  <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
+
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+  <!-- ✅ Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>

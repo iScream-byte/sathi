@@ -71,6 +71,7 @@ export class LoginPage implements OnInit {
     const encrypted = encryptDES_ECB_PKCS5(JSON.stringify(body))
 
     this.loader.showLoader('Logging in...');
+    // console.log(encrypted);
     
     this.authService.LoginRequest(`"${encrypted}"`).subscribe((res:any) => {
       console.log('loginressssssssssssssss=======', res);

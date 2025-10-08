@@ -15,6 +15,7 @@ import { ToastService } from './services/toast.service';
 import { SearchableDropdownComponent } from './utils/searchable-dropdown/searchable-dropdown.component';
 import { FooterComponent } from "./shared/footer/footer.component";
 import { LocalStorageService2 } from './services/localstorage.service_2';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 @NgModule({
   declarations: [AppComponent, SearchableDropdownComponent],
@@ -39,7 +40,8 @@ import { LocalStorageService2 } from './services/localstorage.service_2';
     LocalStorageService2,
     Storage,
     AlertService,
-    ToastService,    
+    ToastService,
+    File    
   ],
   bootstrap: [AppComponent],
 })

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import { LocalStorageService } from './../../services/localstorage.service';
-import { checkIfRooted } from './../../utils/root-check.util';
-
+import { ToastService } from 'src/app/services/toast.service';
+import { CapacitorJailbreakRootDetection } from '@meedika/capacitor-jailbreak-root-detection';
 @Component({
   selector: 'app-splash-screen',
   templateUrl: './splash-screen.page.html',
@@ -14,7 +14,9 @@ export class SplashScreenPage implements OnInit {
   constructor(
     private router: Router,
     private menuCtrl: MenuController,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private platform: Platform,
+    private toast: ToastService,
   ) { }
 
   ngOnInit() {}
@@ -23,26 +25,32 @@ export class SplashScreenPage implements OnInit {
     this.menuCtrl.enable(true);
   }
 
-  async ionViewWillEnter() {
-    this.menuCtrl.enable(false);
+async ionViewWillEnter() {
+  this.menuCtrl.enable(false);
 
-    const isRooted = await checkIfRooted();
-    console.log(isRooted);
-    
-    if (isRooted) {
-      alert('This device is rooted. The app cannot run on rooted devices.');
-      return;
+  await this.platform.ready();
+
+  try {
+    const res = await CapacitorJailbreakRootDetection.isJailbrokenOrRooted();
+    const res2 = await CapacitorJailbreakRootDetection.isSimulator();    
+    const isRooted = res.result;
+    const isSimu = res2.result;
+    if (isRooted || isSimu) {
+      this.toast.presentToast('Rooted Device Detected', 'error');
+      // return;
     }
-
-    setTimeout(() => {
-      this.storage.getItem('rememberMe').then(res => {
-        console.log(res);
-        if (res) {
-          this.router.navigate(['/landing-page'], { replaceUrl: true });
-        } else {
-          this.router.navigate(['auth/login'], { replaceUrl: true });
-        }
-      });
-    }, 4000);
+  } catch (err) {
+    this.toast.presentToast('Error detecting root/jailbreak', 'error');
   }
+
+  setTimeout(() => {
+    this.storage.getItem('rememberMe').then(res => {
+      if (res) {
+        this.router.navigate(['/landing-page'], { replaceUrl: true });
+      } else {
+        this.router.navigate(['auth/login'], { replaceUrl: true });
+      }
+    });
+  }, 4000);
+}
 }
